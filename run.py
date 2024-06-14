@@ -3,6 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.colors import ListedColormap
 import arviz as az
+import pandas as pd
 
 import torch
 import torch.nn.functional as F
@@ -176,12 +177,15 @@ def main():
     gp.compute_model(geo_model_test)
     
     y_obs_label = 7 -y_obs[mask]
-    
+    ################################################################################
+    # Custom grid
+    ################################################################################
     x_loc = 20
     y_loc = 0
     z_loc = np.linspace(0,-82, 83)
     xyz_coord = np.array([[x_loc, y_loc, z] for z in z_loc])[mask]
     gp.set_custom_grid(geo_model_test.grid, xyz_coord=xyz_coord)
+    ################################################################################
     
     geo_model_test.interpolation_options.mesh_extraction = False
     sol = gp.compute_model(geo_model_test)
@@ -192,6 +196,17 @@ def main():
     gp.compute_model(geo_model_test)
     
     sp_coords_copy_test = geo_model_test.interpolation_input.surface_points.sp_coords.copy()
+    
+    ################################################################################
+    # Store the Initial Interface data and orientation data
+    ################################################################################
+    df_sp_init = geo_model_test.surface_points.df
+    df_or_init = geo_model_test.orientations.df
+    print("Initial",df_sp_init)
+    df_sp_init.to_csv("./Results/Initial_sp.csv")
+    df_or_init.to_csv("./Results/Initial_or.csv")
+    ################################################################################
+    
     geo_model_test.transform.apply_inverse(sp_coords_copy_test)
     
     # Change the backend to PyTorch for probabilistic modeling
@@ -280,40 +295,34 @@ def main():
         
         with pyro.plate('N='+str(y_obs_label.shape[0]), y_obs_label.shape[0]):
             assignment = pyro.sample("assignment", dist.Categorical(class_label))
-            #print("mean\n", mean[assignment])
-            #obs = pyro.sample("obs", dist.Normal(custom_grid_values, 0.5 ), obs=y_obs_label.reshape(-1))
-            #obs = pyro.sample("obs", dist.Normal(sample[assignment], 0.1 ), obs=y_obs_label.reshape(-1))
-            #print(sample_tesnor[assignment].shape, loc_cov[assignment].shape, y_obs_label.shape)
             obs = pyro.sample("obs", dist.MultivariateNormal(loc=sample_tesnor[assignment],covariance_matrix=loc_cov[assignment]), obs=y_obs_label)
-            #obs = pyro.sample("obs", dist.Normal(mean[assignment],  sigma[assignment]), obs=y_obs_label.reshape(-1))
-        #return obs
         
+    ################################################################################
+    # Prior
+    ################################################################################
     pyro.set_rng_seed(42)
-
-    prior = Predictive(model_test, num_samples=100)(normalised_hsi)
-
+    prior = Predictive(model_test, num_samples=10)(normalised_hsi)
     # Key to avoid
     avoid_key = ['mu_1 < 0','mu_1 > mu_2','mu_2 > -38.5', 'mu_3 < -38.5','mu_3 > -61.4','mu_4 < -61.5', 'mu_4 > -83']
-
     # Create sub-dictionary without the avoid_key
     prior = dict((key, value) for key, value in prior.items() if key not in avoid_key)
-
     data = az.from_pyro(prior=prior)
     
+    ################################################################################
+    # Posterior 
+    ################################################################################
     pyro.primitives.enable_validation(is_validate=True)
     nuts_kernel = NUTS(model_test, step_size=0.0085, adapt_step_size=True, target_accept_prob=0.9, max_tree_depth=10, init_strategy=init_to_mean)
-    #nuts_kernel = NUTS(model_test, step_size=0.00085, adapt_step_size=True, target_accept_prob=0.9, max_tree_depth=10)
-    #nuts_kernel = NUTS(model_test)
-    #initial_values = {'mu_1': torch.tensor(0.01, dtype=torch.float64),'mu_2': torch.tensor(0.01, dtype=torch.float64) }
-    initial_values = {'mu_1': torch.tensor(0.01, dtype=torch.float64),'mu_2': torch.tensor(0.01, dtype=torch.float64) }
-    #mcmc = MCMC(nuts_kernel, num_samples=200, warmup_steps=50, disable_validation=False, initial_params=initial_values)
-    mcmc = MCMC(nuts_kernel, num_samples=50, warmup_steps=50, disable_validation=False)
+    mcmc = MCMC(nuts_kernel, num_samples=100, warmup_steps=50, disable_validation=False)
     mcmc.run(normalised_hsi)
     
     posterior_samples = mcmc.get_samples()
     posterior_predictive = Predictive(model_test, posterior_samples)(normalised_hsi)
     data = az.from_pyro(posterior=mcmc, prior=prior, posterior_predictive=posterior_predictive)
     
+    ################################################################################
+    #  Try Plot the data and save it as file in output folder
+    ################################################################################
     mu_1_mean = posterior_samples["mu_1"].mean()
     mu_2_mean = posterior_samples["mu_2"].mean()
     mu_3_mean = posterior_samples["mu_3"].mean()
@@ -354,11 +363,15 @@ def main():
     )
     
     sp_coords_copy_test2 =interpolation_input.surface_points.sp_coords
-    
     sp_cord= geo_model_test.transform.apply_inverse(sp_coords_copy_test2.detach().numpy())
     
-    print("co_ordinates\n",sp_coords_copy_test)
-    
+    ################################################################################
+    # Store the Initial Interface data and orientation data
+    ################################################################################
+    df_sp_final = pd.DataFrame(sp_cord, columns=["X","Y","Z"])
+    df_sp_final.to_csv("./Results/Final_sp.csv")
+    ################################################################################
+    '''
     geo_model_test_post = gp.create_geomodel(
     project_name='Gempy_abc_Test_post',
     extent=[0, 86, -10, 10, -83, 0],
@@ -465,7 +478,7 @@ def main():
 
     gp.set_custom_grid(geo_model_test_post.grid, xyz_coord=xyz_coord)
     gp.compute_model(geo_model_test_post)
-
+    '''
     
 if __name__ == "__main__":
     main()
