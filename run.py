@@ -45,22 +45,61 @@ def main():
         SalinasA_gt[mask] = label_data[i]
         i=i+1
     
-    ###### TODO################################################################
+    ######################################################################
     ## Arrange Data as concatationation of spacial co-ordinate and pixel values
     ###########################################################################
+    H, W = SalinasA_gt.shape # get the shape of groud truth
+    n_features = SalinasA_corrected.shape[2]+4 # get the number of features including co-ordinates and label
     
-    column = 20
-    y_obs = torch.tensor(SalinasA_gt[:,column], dtype=torch.float64)
-    mask = y_obs!=0
-    y_obs_label = y_obs[mask]
-    y_obs_hsi = torch.tensor(SalinasA_corrected[:,column,:], dtype=torch.float64)[mask]
+    # Create a dataset which has "X","Y","Z", "Label", and spectral channel information
+    data_hsi = torch.zeros((H*W, n_features ))
+    for i in range(H):
+        for j in range(W):
+            data_hsi[i*W+j,0] = j
+            data_hsi[i*W +j,2] = - i
+            data_hsi[i*W +j,3] = SalinasA_gt[i,j]
+            data_hsi[i*W +j,4:] = torch.tensor(SalinasA_corrected[i,j,:])
+            
+    # Create a list of column name
+    column_name=["X","Y","Z", "Label"]
+    for i in range(SalinasA_corrected.shape[2]):
+        column_name.append("feature_"+str(i+1))
+        
+    # Create a pandas dataframe to store the database
+    df_hsi = pd.DataFrame(data_hsi,columns=column_name)
+    # Create a database by removing the non labelled pixel information 
+    df_with_non_labelled_pixel = df_hsi.loc[(df_hsi['Label']!=0)]
     
-    normalised_hsi = zscore(y_obs_hsi, axis=1)
-
+    # Normalise along the spectral lines 
+    df_with_spectral_normalised = df_with_non_labelled_pixel
+    df_with_spectral_normalised.iloc[:, 4:] = df_with_spectral_normalised.iloc[:, 4:].apply(zscore,axis=1)
+    
+    
+    # column = 20
+    # y_obs = torch.tensor(SalinasA_gt[:,column], dtype=torch.float64)
+    # mask = y_obs!=0
+    # y_obs_label = y_obs[mask]
+    # y_obs_hsi = torch.tensor(SalinasA_corrected[:,column,:], dtype=torch.float64)[mask]
+    
+    # normalised_hsi = zscore(y_obs_hsi, axis=1)
+    
+    
+    ###########################################################################
+    ## Obtain the preprocessed data
+    ###########################################################################
+    normalised_data = df_with_spectral_normalised.loc[(df_with_spectral_normalised["X"]>=19)&(df_with_spectral_normalised["X"]<=21)]
+    normalised_hsi =torch.tensor(normalised_data.iloc[:,4:].to_numpy(), dtype=torch.float64)
+    y_obs_label = torch.tensor(normalised_data.iloc[:,3].to_numpy(), dtype=torch.float64)
+    
+    ###########################################################################
+    ## Apply Classical clustering methods to find different cluster information our data
+    ###########################################################################
     gm =gm = BayesianGaussianMixture(n_components=6, random_state=0).fit(normalised_hsi)
     
+    # make the labels to start with 1 instead of 0
     gmm_label = gm.predict(normalised_hsi) +1 
     
+    # reaarange the label information so it is would be consistent with ground truth label
     gmm_label2 = torch.zeros_like(y_obs_label)
     gmm_label2[gmm_label==2]=6
     gmm_label2[gmm_label==4]=5
@@ -69,7 +108,15 @@ def main():
     gmm_label2[gmm_label==6]=2
     gmm_label2[gmm_label==5]=1
     
+    # rearrange the mean and covariance accordingly too
     mean_init, cov_init = gm.means_[[4,5,2,0,3,1]], gm.covariances_[[4,5,2,0,3,1]]
+    #################################TODO##################################################
+    ## Apply different dimentionality reduction techniques and save the plot in Result file
+    #######################################################################################
+    
+    ######################################################################################
+    ## Apply Classical clustering methods to find different cluster information our data
+    ######################################################################################
     
     geo_model_test = gp.create_geomodel(
     project_name='Gempy_abc_Test',
@@ -174,16 +221,22 @@ def main():
     geo_model_test.structural_frame.structural_groups[0].elements[3], geo_model_test.structural_frame.structural_groups[0].elements[2],\
     geo_model_test.structural_frame.structural_groups[0].elements[5], geo_model_test.structural_frame.structural_groups[0].elements[4]  
 
+
     gp.compute_model(geo_model_test)
+    picture_test = gpv.plot_2d(geo_model_test, cell_number=5, legend='force')
+    plt.savefig("./Results/Prior_model.png")
     
-    y_obs_label = 7 -y_obs[mask]
+    # Label information need to be in same order as it is created in gempy model
+    y_obs_label = 7 - y_obs_label
+    
     ################################################################################
     # Custom grid
     ################################################################################
-    x_loc = 20
-    y_loc = 0
-    z_loc = np.linspace(0,-82, 83)
-    xyz_coord = np.array([[x_loc, y_loc, z] for z in z_loc])[mask]
+    # x_loc = 20
+    # y_loc = 0
+    # z_loc = np.linspace(0,-82, 83)
+    # xyz_coord = np.array([[x_loc, y_loc, z] for z in z_loc])[mask] 
+    xyz_coord = normalised_data.iloc[:,:3].to_numpy()
     gp.set_custom_grid(geo_model_test.grid, xyz_coord=xyz_coord)
     ################################################################################
     
@@ -202,7 +255,7 @@ def main():
     ################################################################################
     df_sp_init = geo_model_test.surface_points.df
     df_or_init = geo_model_test.orientations.df
-    print("Initial",df_sp_init)
+    
     df_sp_init.to_csv("./Results/Initial_sp.csv")
     df_or_init.to_csv("./Results/Initial_or.csv")
     ################################################################################
@@ -218,7 +271,7 @@ def main():
     
     
     @config_enumerate
-    def model_test(y_obs_label):
+    def model_test(obs_data):
         """
         This Pyro model represents the probabilistic aspects of the geological model.
         It defines a prior distribution for the top layer's location and
@@ -293,9 +346,9 @@ def main():
             sample.append(sample_data)
         sample_tesnor = torch.stack(sample, dim=0)
         
-        with pyro.plate('N='+str(y_obs_label.shape[0]), y_obs_label.shape[0]):
+        with pyro.plate('N='+str(obs_data.shape[0]), obs_data.shape[0]):
             assignment = pyro.sample("assignment", dist.Categorical(class_label))
-            obs = pyro.sample("obs", dist.MultivariateNormal(loc=sample_tesnor[assignment],covariance_matrix=loc_cov[assignment]), obs=y_obs_label)
+            obs = pyro.sample("obs", dist.MultivariateNormal(loc=sample_tesnor[assignment],covariance_matrix=loc_cov[assignment]), obs=obs_data)
         
     ################################################################################
     # Prior
@@ -371,7 +424,7 @@ def main():
     df_sp_final = pd.DataFrame(sp_cord, columns=["X","Y","Z"])
     df_sp_final.to_csv("./Results/Final_sp.csv")
     ################################################################################
-    '''
+    
     geo_model_test_post = gp.create_geomodel(
     project_name='Gempy_abc_Test_post',
     extent=[0, 86, -10, 10, -83, 0],
@@ -478,7 +531,9 @@ def main():
 
     gp.set_custom_grid(geo_model_test_post.grid, xyz_coord=xyz_coord)
     gp.compute_model(geo_model_test_post)
-    '''
+    picture_test_post = gpv.plot_2d(geo_model_test_post, cell_number=5, legend='force')
+    plt.savefig("./Results/Posterior_model.png")
+    
     
 if __name__ == "__main__":
     main()
