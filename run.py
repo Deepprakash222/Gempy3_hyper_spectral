@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 from matplotlib.colors import ListedColormap
 import arviz as az
 import pandas as pd
+import argparse
 
 import torch
 import torch.nn.functional as F
@@ -30,8 +31,14 @@ from sklearn.cluster import KMeans
 
 
 
-def main():
-    
+def main(startval,endval,dimred):
+    '''
+    This function defines a model which uses hyperspectral data, applies clustering methods to find cluster information and then uses Bayesian Modelling to model a posterior.
+    The arguments passed to main are:
+    startval: It defines the starting X column value of Hyperspectral data.
+    endval: It defines the end X column value of Hyperspectral data.
+    dimred: Defines the type of dimensionality reduction user wants to follow . 1 is for PCA, 2 is for T-SNE.
+    '''
     # Load .mat file
     SalinasA= np.array(scipy.io.loadmat('./HSI_Salinas/SalinasA.mat')['salinasA'])
     SalinasA_corrected= np.array(scipy.io.loadmat('./HSI_Salinas/SalinasA_corrected.mat')['salinasA_corrected'])
@@ -87,7 +94,7 @@ def main():
     ###########################################################################
     ## Obtain the preprocessed data
     ###########################################################################
-    normalised_data = df_with_spectral_normalised.loc[(df_with_spectral_normalised["X"]>=19)&(df_with_spectral_normalised["X"]<=21)]
+    normalised_data = df_with_spectral_normalised.loc[(df_with_spectral_normalised["X"]>=startval)&(df_with_spectral_normalised["X"]<=endval)]
     normalised_hsi =torch.tensor(normalised_data.iloc[:,4:].to_numpy(), dtype=torch.float64)
     y_obs_label = torch.tensor(normalised_data.iloc[:,3].to_numpy(), dtype=torch.float64)
     
@@ -267,7 +274,7 @@ def main():
     
     # geo_model_test.interpolation_options.uni_degree = 0
     # geo_model_test.interpolation_options.mesh_extraction = False
-    geo_model_test.interpolation_options.sigmoid_slope = 50
+    geo_model_test.interpolation_options.sigmoid_slope = 30
     
     
     @config_enumerate
@@ -536,4 +543,9 @@ def main():
     
     
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser(description='pass values using command line')
+    parser.add_argument('--startval', metavar='startcol', required=True, type=int, help='start x column value')
+    parser.add_argument('--endval', metavar='endcol', required=True, type=int, help='end x column value')
+    parser.add_argument('--dimred', metavar='dimred', type=int, help='type of dimensionality reduction')
+    args = parser.parse_args()
+    main(startval=args.startval,endval=args.endval,dimred=args.dimred)
