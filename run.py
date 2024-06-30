@@ -24,6 +24,8 @@ from gempy_probability.plot_posterior import default_red, default_blue, PlotPost
 import scipy.io
 from scipy.stats import zscore
 from sklearn.manifold import TSNE
+from sklearn.preprocessing import StandardScaler
+from sklearn.decomposition import PCA
 
 from sklearn.mixture import GaussianMixture
 from sklearn.mixture import BayesianGaussianMixture
@@ -37,7 +39,7 @@ def main(startval,endval,dimred):
     The arguments passed to main are:
     startval: It defines the starting X column value of Hyperspectral data.
     endval: It defines the end X column value of Hyperspectral data.
-    dimred: Defines the type of dimensionality reduction user wants to follow . 1 is for PCA, 2 is for T-SNE.
+    dimred: Defines the type of dimensionality reduction user wants to follow .Currently either pca or tsne.
     '''
     # Load .mat file
     SalinasA= np.array(scipy.io.loadmat('./HSI_Salinas/SalinasA.mat')['salinasA'])
@@ -120,7 +122,37 @@ def main(startval,endval,dimred):
     #################################TODO##################################################
     ## Apply different dimentionality reduction techniques and save the plot in Result file
     #######################################################################################
-    
+    if(dimred=="pca"):
+        # Separate spatial coordinates and features
+        spatial_coords = normalised_data.iloc[:,0:3]
+        features = normalised_data.iloc[:,4:]
+        # Normalize the features
+        scaler = StandardScaler()
+        features_normalized = scaler.fit_transform(features)
+
+        # Apply PCA
+        pca = PCA(n_components=0.95,svd_solver="full")  # Keep 95% of variance
+        features_pca = pca.fit_transform(features_normalized)
+        print(f"Number of components kept: {pca.n_components_}")
+        print(f"Cumulative explained variance: {cumulative_variance_ratio[-1]:.4f}")
+        plt.figure(figsize=(10, 8))
+        plt.scatter(features_pca[:, 0], features_pca[:, 1], c=normalised_data.iloc[:,3].to_numpy(), cmap='viridis')
+        plt.xlabel('First Principal Component')
+        plt.ylabel('Second Principal Component')
+        plt.title('PCA with 0.96 variance accounted by 2 PCs')
+        plt.colorbar(label='Output Label')
+        #plt.show()
+        plt.savefig('./Results/PCA_redn.png')
+    if(dimred=="tsne"):
+        tsne = TSNE(n_components=2, random_state=42)
+        X_tsne = tsne.fit_transform(normalised_data.iloc[:,4:])
+        #tsne.kl_divergence_
+        plt.figure(figsize=(10, 8))
+        plt.scatter(X_tsne[:, 0], X_tsne[:, 1], c=normalised_data.iloc[:,3].to_numpy(), cmap='viridis')
+        plt.title('TSNE Reduction from 204 to 2 components')
+        plt.colorbar(label='Output Label')
+        #plt.show()
+        plt.savefig('./Results/TSNE_redn.png')
     ######################################################################################
     ## Apply Classical clustering methods to find different cluster information our data
     ######################################################################################
@@ -546,6 +578,6 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='pass values using command line')
     parser.add_argument('--startval', metavar='startcol', required=True, type=int, help='start x column value')
     parser.add_argument('--endval', metavar='endcol', required=True, type=int, help='end x column value')
-    parser.add_argument('--dimred', metavar='dimred', type=int, help='type of dimensionality reduction')
+    parser.add_argument('--dimred', metavar='dimred', type=str, help='type of dimensionality reduction')
     args = parser.parse_args()
     main(startval=args.startval,endval=args.endval,dimred=args.dimred)
