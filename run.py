@@ -28,6 +28,20 @@ from sklearn.mixture import GaussianMixture
 from sklearn.mixture import BayesianGaussianMixture
 from sklearn.cluster import KMeans
 
+def cluster_acc(Y_pred, Y, ignore_label=None):
+    if ignore_label is not None:
+        index = Y!= ignore_label
+        Y=Y[index]
+        Y_pred=Y_pred[index]
+    from scipy.optimize import linear_sum_assignment as linear_assignment
+    assert Y_pred.shape == Y.shape
+    print(Y_pred.max())
+    D = int((max(Y_pred.max(), Y.max())).item())
+    w = torch.zeros((D, D))
+    for i in range(Y_pred.shape[0]):
+        w[int(Y_pred[i].item())-1, int(Y[i].item())-1] += 1
+    ind = linear_assignment(w.max() - w)
+    return ind[0], ind[1], (w[ind[0], ind[1]]).sum() / Y_pred.shape[0], w
 
 
 def main():
@@ -71,7 +85,7 @@ def main():
     df_with_non_labelled_pixel = df_hsi.loc[(df_hsi['Label']!=0)]
     
     # Normalise along the spectral lines 
-    df_with_spectral_normalised = df_with_non_labelled_pixel
+    df_with_spectral_normalised = df_with_non_labelled_pixel.copy()
     df_with_spectral_normalised.iloc[:, 4:] = df_with_spectral_normalised.iloc[:, 4:].apply(zscore,axis=1)
     
     
@@ -87,7 +101,7 @@ def main():
     ###########################################################################
     ## Obtain the preprocessed data
     ###########################################################################
-    normalised_data = df_with_spectral_normalised.loc[(df_with_spectral_normalised["X"]>=19)&(df_with_spectral_normalised["X"]<=21)]
+    normalised_data = df_with_spectral_normalised.loc[(df_with_spectral_normalised["X"]>=18)&(df_with_spectral_normalised["X"]<=22)]
     normalised_hsi =torch.tensor(normalised_data.iloc[:,4:].to_numpy(), dtype=torch.float64)
     y_obs_label = torch.tensor(normalised_data.iloc[:,3].to_numpy(), dtype=torch.float64)
     
@@ -98,18 +112,33 @@ def main():
     
     # make the labels to start with 1 instead of 0
     gmm_label = gm.predict(normalised_hsi) +1 
+    gmm_label_order, y_obs_label_order, accuracy_init, _ = cluster_acc( gmm_label, y_obs_label)
+    
     
     # reaarange the label information so it is would be consistent with ground truth label
-    gmm_label2 = torch.zeros_like(y_obs_label)
-    gmm_label2[gmm_label==2]=6
-    gmm_label2[gmm_label==4]=5
-    gmm_label2[gmm_label==1]=4
-    gmm_label2[gmm_label==3]=3
-    gmm_label2[gmm_label==6]=2
-    gmm_label2[gmm_label==5]=1
+    gmm_label_rearranged = torch.tensor([y_obs_label_order[x-1] +1  for x in gmm_label], dtype=torch.float64)
     
+    #print(gmm_label_rearranged - y_obs_label)
+    
+    # gmm_label2 = torch.zeros_like(y_obs_label)
+    # gmm_label2[gmm_label==2]=6
+    # gmm_label2[gmm_label==4]=5
+    # gmm_label2[gmm_label==1]=4
+    # gmm_label2[gmm_label==3]=3
+    # gmm_label2[gmm_label==6]=2
+    # gmm_label2[gmm_label==5]=1
+    
+   
     # rearrange the mean and covariance accordingly too
-    mean_init, cov_init = gm.means_[[4,5,2,0,3,1]], gm.covariances_[[4,5,2,0,3,1]]
+    #rearrange_list = [4,5,2,0,3,1]
+    #rearrange_list = [3,4,2,0,5,1]
+    rearrange_list = y_obs_label_order
+    mean_init, cov_init = gm.means_[rearrange_list], gm.covariances_[rearrange_list]
+    ####################################TODO#################################################
+    #   Try to find the initial accuracy of classification
+    #########################################################################################
+    print("Intial accuracy\n", accuracy_init)
+    
     #################################TODO##################################################
     ## Apply different dimentionality reduction techniques and save the plot in Result file
     #######################################################################################
@@ -117,7 +146,7 @@ def main():
     ######################################################################################
     ## Apply Classical clustering methods to find different cluster information our data
     ######################################################################################
-    
+  
     geo_model_test = gp.create_geomodel(
     project_name='Gempy_abc_Test',
     extent=[0, 86, -10, 10, -83, 0],
@@ -267,8 +296,7 @@ def main():
     
     # geo_model_test.interpolation_options.uni_degree = 0
     # geo_model_test.interpolation_options.mesh_extraction = False
-    geo_model_test.interpolation_options.sigmoid_slope = 50
-    
+    geo_model_test.interpolation_options.sigmoid_slope = 40
     
     @config_enumerate
     def model_test(obs_data):
@@ -289,12 +317,21 @@ def main():
         mu_surface_4 = pyro.sample('mu_4', dist.Normal(prior_mean_surface_4, torch.tensor(0.2, dtype=torch.float64)))
         #print(mu_surface_1, mu_surface_2)
         # Ensure that mu_surface_1 is greater than mu_surface_2
+        # pyro.sample('mu_1 < 0', dist.Delta(torch.tensor(1.0, dtype=torch.float64)), obs=(mu_surface_1 < 3.7))
+        # pyro.sample('mu_1 > mu_2', dist.Delta(torch.tensor(1.0, dtype=torch.float64)), obs=(mu_surface_1 > mu_surface_2))
+        # pyro.sample('mu_2 > -38.5', dist.Delta(torch.tensor(1.0, dtype=torch.float64)), obs=(mu_surface_2 > 1.775))
+        # pyro.sample('mu_3 < -38.5', dist.Delta(torch.tensor(1.0, dtype=torch.float64)), obs=(mu_surface_3 < 1.4))
+        # pyro.sample('mu_3 > -61.5', dist.Delta(torch.tensor(1.0, dtype=torch.float64)), obs=(mu_surface_3 > 0.625))
+        # pyro.sample('mu_4 < -61.5', dist.Delta(torch.tensor(1.0, dtype=torch.float64)), obs=(mu_surface_4 < 0.625))
+        # pyro.sample('mu_4 > -83', dist.Delta(torch.tensor(1.0, dtype=torch.float64)), obs=(mu_surface_4 > - 0.2 ))
+        
+        
         pyro.sample('mu_1 < 0', dist.Delta(torch.tensor(1.0, dtype=torch.float64)), obs=(mu_surface_1 < 3.7))
         pyro.sample('mu_1 > mu_2', dist.Delta(torch.tensor(1.0, dtype=torch.float64)), obs=(mu_surface_1 > mu_surface_2))
-        pyro.sample('mu_2 > -38.5', dist.Delta(torch.tensor(1.0, dtype=torch.float64)), obs=(mu_surface_2 > 1.775))
-        pyro.sample('mu_3 < -38.5', dist.Delta(torch.tensor(1.0, dtype=torch.float64)), obs=(mu_surface_3 < 1.4))
-        pyro.sample('mu_3 > -61.5', dist.Delta(torch.tensor(1.0, dtype=torch.float64)), obs=(mu_surface_3 > 0.625))
-        pyro.sample('mu_4 < -61.5', dist.Delta(torch.tensor(1.0, dtype=torch.float64)), obs=(mu_surface_4 < 0.625))
+        pyro.sample('mu_2 > mu_3', dist.Delta(torch.tensor(1.0, dtype=torch.float64)), obs=(mu_surface_2 > mu_surface_3))
+        pyro.sample('mu_3 < mu_4', dist.Delta(torch.tensor(1.0, dtype=torch.float64)), obs=(mu_surface_3 > mu_surface_4))
+        #pyro.sample('mu_3 > -61.5', dist.Delta(torch.tensor(1.0, dtype=torch.float64)), obs=(mu_surface_3 > 0.625))
+        #pyro.sample('mu_4 < -61.5', dist.Delta(torch.tensor(1.0, dtype=torch.float64)), obs=(mu_surface_4 < 0.625))
         pyro.sample('mu_4 > -83', dist.Delta(torch.tensor(1.0, dtype=torch.float64)), obs=(mu_surface_4 > - 0.2 ))
         # Update the model with the new top layer's location
         interpolation_input = geo_model_test.interpolation_input
@@ -336,27 +373,34 @@ def main():
         # Compute and observe the thickness of the geological layer
         
         custom_grid_values = geo_model_test.solutions.octrees_output[0].last_output_center.custom_grid_values
-        lambda_ = 10.0
+        accuracy_intermediate = torch.sum(torch.round(custom_grid_values) == y_obs_label) / y_obs_label.shape[0]
+        print("accuracy_intermediate\n", accuracy_intermediate)
+        lambda_ = 20.0
         loc_mean = torch.tensor(mean_init,dtype=torch.float64)
         loc_cov =  torch.tensor(cov_init, dtype=torch.float64)
-        class_label = F.softmax(-lambda_* (torch.tensor([1,2,3,4,5,6], dtype=torch.float64) - custom_grid_values.reshape(-1,1))**2, dim=1)
+        class_label = torch.mean(F.softmax(-lambda_* (torch.tensor([1,2,3,4,5,6], dtype=torch.float64) - custom_grid_values.reshape(-1,1))**2, dim=1),dim=0)
         sample =[]
         for i in range(loc_mean.shape[0]):
             sample_data = pyro.sample("sample_data"+str(i+1), dist.MultivariateNormal(loc=loc_mean[i],covariance_matrix=loc_cov[i]))
             sample.append(sample_data)
         sample_tesnor = torch.stack(sample, dim=0)
         
+        #cov_likelihood = 5.0 * torch.eye(loc_cov[0].shape[0], dtype=torch.float64)
+        
         with pyro.plate('N='+str(obs_data.shape[0]), obs_data.shape[0]):
             assignment = pyro.sample("assignment", dist.Categorical(class_label))
-            obs = pyro.sample("obs", dist.MultivariateNormal(loc=sample_tesnor[assignment],covariance_matrix=loc_cov[assignment]), obs=obs_data)
-        
+            obs = pyro.sample("obs", dist.MultivariateNormal(loc=sample_tesnor[assignment],covariance_matrix= 68.0 * loc_cov[assignment]), obs=obs_data)
+            #obs = pyro.sample("obs", dist.MultivariateNormal(loc=sample_tesnor[assignment],covariance_matrix=cov_likelihood), obs=obs_data)
+            
+    
     ################################################################################
     # Prior
     ################################################################################
     pyro.set_rng_seed(42)
     prior = Predictive(model_test, num_samples=10)(normalised_hsi)
     # Key to avoid
-    avoid_key = ['mu_1 < 0','mu_1 > mu_2','mu_2 > -38.5', 'mu_3 < -38.5','mu_3 > -61.4','mu_4 < -61.5', 'mu_4 > -83']
+    #avoid_key = ['mu_1 < 0','mu_1 > mu_2','mu_2 > -38.5', 'mu_3 < -38.5','mu_3 > -61.4','mu_4 < -61.5', 'mu_4 > -83']
+    avoid_key = ['mu_1 < 0','mu_1 > mu_2','mu_2 > mu_3', 'mu_3 > mu_4' , 'mu_4 > -83']
     # Create sub-dictionary without the avoid_key
     prior = dict((key, value) for key, value in prior.items() if key not in avoid_key)
     data = az.from_pyro(prior=prior)
@@ -372,6 +416,19 @@ def main():
     posterior_samples = mcmc.get_samples()
     posterior_predictive = Predictive(model_test, posterior_samples)(normalised_hsi)
     data = az.from_pyro(posterior=mcmc, prior=prior, posterior_predictive=posterior_predictive)
+    
+    # Extract acceptance probabilities
+
+    # # Extract the diagnostics
+    # diagnostics = mcmc.diagnostics()
+    # accept_probs = diagnostics["accept_prob"]
+
+    # # Plot the acceptance probabilities
+    # plt.plot(accept_probs)
+    # plt.xlabel('Iteration')
+    # plt.ylabel('Acceptance Probability')
+    # plt.title('Acceptance Probabilities of NUTS Sampler')
+    # plt.savefig("./Results/Acceptance_Probabilities_of_NUTS_Sampler")
     
     ################################################################################
     #  Try Plot the data and save it as file in output folder
@@ -531,6 +588,14 @@ def main():
 
     gp.set_custom_grid(geo_model_test_post.grid, xyz_coord=xyz_coord)
     gp.compute_model(geo_model_test_post)
+    
+    custom_grid_values_post = geo_model_test_post.solutions.octrees_output[0].last_output_center.custom_grid_values
+    ####################################TODO#################################################
+    #   Try to find the final accuracy to check if it has improved the classification
+    #########################################################################################
+    accuracy_final = torch.sum(torch.round(torch.tensor(custom_grid_values_post)) == y_obs_label) / y_obs_label.shape[0]
+    print("accuracy_init: ", accuracy_init , "accuracy_final: ", accuracy_final)
+    
     picture_test_post = gpv.plot_2d(geo_model_test_post, cell_number=5, legend='force')
     plt.savefig("./Results/Posterior_model.png")
     
