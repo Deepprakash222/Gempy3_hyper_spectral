@@ -149,7 +149,7 @@ def main():
     ###########################################################################
     ## Apply Classical clustering methods to find different cluster information our data
     ###########################################################################
-    gm =gm = BayesianGaussianMixture(n_components=6, random_state=42).fit(normalised_hsi)
+    gm =gm = BayesianGaussianMixture(n_components=6, random_state=42, reg_covar=0.001 ).fit(normalised_hsi)
     
     # make the labels to start with 1 instead of 0
     gmm_label = gm.predict(normalised_hsi) +1 
@@ -183,7 +183,7 @@ def main():
     #################################TODO##################################################
     ## Apply different dimentionality reduction techniques and save the plot in Result file
     #######################################################################################
-    # TSNE_transformation(data=normalised_data, label=gmm_label_rearranged, filename="./Results/tsne_gmm_label.png")
+    TSNE_transformation(data=normalised_hsi, label=gmm_label_rearranged, filename="./Result_with_wishart/tsne_gmm_label.png")
     
     ######################################################################################
     ## Apply Classical clustering methods to find different cluster information our data
@@ -295,10 +295,9 @@ def main():
 
     gp.compute_model(geo_model_test)
     picture_test = gpv.plot_2d(geo_model_test, cell_number=5, legend='force')
-    plt.savefig("./Results/Prior_model.png")
+    plt.savefig("./Result_with_wishart/Prior_model.png")
     
     # Label information need to be in same order as it is created in gempy model
-    
     y_obs_label = 7 - y_obs_label
     
     ################################################################################
@@ -328,8 +327,8 @@ def main():
     df_sp_init = geo_model_test.surface_points.df
     df_or_init = geo_model_test.orientations.df
     
-    df_sp_init.to_csv("./Results/Initial_sp.csv")
-    df_or_init.to_csv("./Results/Initial_or.csv")
+    df_sp_init.to_csv("./Result_with_wishart/Initial_sp.csv")
+    df_or_init.to_csv("./Result_with_wishart/Initial_or.csv")
     ################################################################################
     
     geo_model_test.transform.apply_inverse(sp_coords_copy_test)
@@ -340,9 +339,9 @@ def main():
     # geo_model_test.interpolation_options.uni_degree = 0
     # geo_model_test.interpolation_options.mesh_extraction = False
     geo_model_test.interpolation_options.sigmoid_slope = 40
-    
-    factor=0.01
+    store_accuracy=[]
     @config_enumerate
+    
     def model_test(obs_data):
         """
         This Pyro model represents the probabilistic aspects of the geological model.
@@ -417,27 +416,34 @@ def main():
         # Compute and observe the thickness of the geological layer
         
         custom_grid_values = geo_model_test.solutions.octrees_output[0].last_output_center.custom_grid_values
-        #accuracy_intermediate = torch.sum(torch.round(custom_grid_values) == y_obs_label) / y_obs_label.shape[0]
-        #store_accuracy.append(accuracy_intermediate)
-        
-        lambda_ = 15.0
+        accuracy_intermediate = torch.sum(torch.round(custom_grid_values) == y_obs_label) / y_obs_label.shape[0]
+        store_accuracy.append(accuracy_intermediate)
+        lambda_ = 10.0
         loc_mean = torch.tensor(mean_init,dtype=torch.float64)
         loc_cov =  torch.tensor(cov_init, dtype=torch.float64)
         #class_label = F.softmax(-lambda_* (torch.tensor([1,2,3,4,5,6], dtype=torch.float64) - custom_grid_values.reshape(-1,1))**2, dim=1)
         class_label = torch.mean(F.softmax(-lambda_* (torch.tensor([1,2,3,4,5,6], dtype=torch.float64) - custom_grid_values.reshape(-1,1))**2, dim=1),dim=0)
-        
-        sample =[]
+        D = loc_mean.shape[1]
+        sample_mean =[]
         for i in range(loc_mean.shape[0]):
 
-            sample_data = pyro.sample("sample_data"+str(i+1), dist.MultivariateNormal(loc=loc_mean[i],covariance_matrix=loc_cov[i]))
-            sample.append(sample_data)
-        sample_tesnor = torch.stack(sample, dim=0)
+            sample_data_mean= pyro.sample("sample_data_mean_"+str(i+1), dist.MultivariateNormal(loc=loc_mean[i],covariance_matrix=loc_cov[i]))
+            sample_mean.append(sample_data_mean)
+        mean_tesnor = torch.stack(sample_mean, dim=0)
+        
+        sample_cov =[]
+        for i in range(loc_mean.shape[0]):
+            #print(torch.linalg.det(loc_cov[i]))
+            #sample_data_cov = pyro.sample("sample_data_cov_"+str(i+1), dist.Wishart(df=D+1, scale_tril=torch.linalg.cholesky(loc_cov[i]+0.1 *torch.eye(D))))
+            sample_data_cov = pyro.sample("sample_data_cov_"+str(i+1), dist.Wishart(df=D+1, covariance_matrix = loc_cov[i]))
+            sample_cov.append(torch.linalg.inv(sample_data_cov))
+        cov_tesnor = torch.stack(sample_cov, dim=0)
         
         #cov_likelihood = 5.0 * torch.eye(loc_cov[0].shape[0], dtype=torch.float64)
         
         with pyro.plate('N='+str(obs_data.shape[0]), obs_data.shape[0]):
             assignment = pyro.sample("assignment", dist.Categorical(class_label))
-            obs = pyro.sample("obs", dist.MultivariateNormal(loc=sample_tesnor[assignment],covariance_matrix= factor * loc_cov[assignment]), obs=obs_data)
+            obs = pyro.sample("obs", dist.MultivariateNormal(loc=mean_tesnor[assignment],covariance_matrix = cov_tesnor[assignment]), obs=obs_data)
             #obs = pyro.sample("obs", dist.MultivariateNormal(loc=sample_tesnor[assignment],covariance_matrix=cov_likelihood), obs=obs_data)
             
     
@@ -458,133 +464,15 @@ def main():
     ################################################################################
     pyro.primitives.enable_validation(is_validate=True)
     nuts_kernel = NUTS(model_test, step_size=0.0085, adapt_step_size=True, target_accept_prob=0.9, max_tree_depth=10, init_strategy=init_to_mean)
-    mcmc = MCMC(nuts_kernel, num_samples=150, warmup_steps=50, disable_validation=False)
+    mcmc = MCMC(nuts_kernel, num_samples=5, warmup_steps=0, disable_validation=False)
     mcmc.run(normalised_hsi)
     
     posterior_samples = mcmc.get_samples()
     posterior_predictive = Predictive(model_test, posterior_samples)(normalised_hsi)
     data = az.from_pyro(posterior=mcmc, prior=prior, posterior_predictive=posterior_predictive)
     
-    # Find the MAP value
-    
-    unnormalise_posterior_value={}
-    unnormalise_posterior_value["log_prior_geo_list"]=[]
-    unnormalise_posterior_value["log_prior_hsi_list"]=[]
-    unnormalise_posterior_value["log_likelihood_list"]=[]
-    unnormalise_posterior_value["log_posterior_list"]=[]
-    # log_prior_geo_list=[]
-    # log_prior_hsi_list=[]
-    # log_likelihood_list=[]
-    # log_posterior_list=[]
-    keys_list = list(posterior_samples.keys())
-   
-    prior_mean_surface_1 = sp_coords_copy_test[11, 2]
-    prior_mean_surface_2 = sp_coords_copy_test[14, 2]
-    prior_mean_surface_3 = sp_coords_copy_test[5, 2]
-    prior_mean_surface_4 = sp_coords_copy_test[0, 2]
-    
-    store_accuracy=[]
-    
-    for i in range(posterior_samples["mu_1"].shape[0]):
-        post_mu_1 = posterior_samples[keys_list[0]][i]
-        post_mu_2 = posterior_samples[keys_list[1]][i]
-        post_mu_3 = posterior_samples[keys_list[2]][i]
-        post_mu_4 = posterior_samples[keys_list[3]][i]
-        post_sample_data1 = posterior_samples[keys_list[4]][i]
-        post_sample_data2 = posterior_samples[keys_list[5]][i]
-        post_sample_data3 = posterior_samples[keys_list[6]][i]
-        post_sample_data4 = posterior_samples[keys_list[7]][i]
-        post_sample_data5 = posterior_samples[keys_list[8]][i]
-        post_sample_data6 = posterior_samples[keys_list[9]][i]
-        
-        
-        # Calculate the log probability of the value
-        
-        log_prior_geo = dist.Normal(prior_mean_surface_1, torch.tensor(0.2, dtype=torch.float64)).log_prob(post_mu_1)+\
-                    dist.Normal(prior_mean_surface_2, torch.tensor(0.2, dtype=torch.float64)).log_prob(post_mu_2)+\
-                    dist.Normal(prior_mean_surface_3, torch.tensor(0.2, dtype=torch.float64)).log_prob(post_mu_3)+\
-                    dist.Normal(prior_mean_surface_4, torch.tensor(0.2, dtype=torch.float64)).log_prob(post_mu_4)
-        
-        # Update the model with the new top layer's location
-        interpolation_input = geo_model_test.interpolation_input
-        
-        
-        interpolation_input.surface_points.sp_coords = torch.index_put(
-            interpolation_input.surface_points.sp_coords,
-            (torch.tensor([11]), torch.tensor([2])),
-            post_mu_1
-        )
-        interpolation_input.surface_points.sp_coords = torch.index_put(
-            interpolation_input.surface_points.sp_coords,
-            (torch.tensor([14]), torch.tensor([2])),
-            post_mu_2
-        )
-        
-        interpolation_input.surface_points.sp_coords = torch.index_put(
-            interpolation_input.surface_points.sp_coords,
-            (torch.tensor([5]), torch.tensor([2])),
-            post_mu_3
-        )
-        interpolation_input.surface_points.sp_coords = torch.index_put(
-            interpolation_input.surface_points.sp_coords,
-            (torch.tensor([0]), torch.tensor([2])),
-            post_mu_4
-        )
-        
-        
-        #print("interpolation_input",interpolation_input.surface_points.sp_coords)
-        
-        # # Compute the geological model
-        geo_model_test.solutions = gempy_engine.compute_model(
-            interpolation_input=interpolation_input,
-            options=geo_model_test.interpolation_options,
-            data_descriptor=geo_model_test.input_data_descriptor,
-            geophysics_input=geo_model_test.geophysics_input,
-        )
-        
-        # Compute and observe the thickness of the geological layer
-        
-        custom_grid_values = geo_model_test.solutions.octrees_output[0].last_output_center.custom_grid_values
-        accuracy_intermediate = torch.sum(torch.round(custom_grid_values) == y_obs_label) / y_obs_label.shape[0]
-        store_accuracy.append(accuracy_intermediate)
-        lambda_ = 15.0
-        loc_mean = torch.tensor(mean_init,dtype=torch.float64)
-        loc_cov =  torch.tensor(cov_init, dtype=torch.float64)
-        #class_label = F.softmax(-lambda_* (torch.tensor([1,2,3,4,5,6], dtype=torch.float64) - custom_grid_values.reshape(-1,1))**2, dim=1)
-        pi_k = torch.mean(F.softmax(-lambda_* (torch.tensor([1,2,3,4,5,6], dtype=torch.float64) - custom_grid_values.reshape(-1,1))**2, dim=1),dim=0)
-        
-    
-        log_prior_hsi = dist.MultivariateNormal(loc=loc_mean[0],covariance_matrix=loc_cov[0]).log_prob(post_sample_data1)+\
-                        dist.MultivariateNormal(loc=loc_mean[1],covariance_matrix=loc_cov[1]).log_prob(post_sample_data2)+\
-                        dist.MultivariateNormal(loc=loc_mean[2],covariance_matrix=loc_cov[2]).log_prob(post_sample_data3)+\
-                        dist.MultivariateNormal(loc=loc_mean[3],covariance_matrix=loc_cov[3]).log_prob(post_sample_data4)+\
-                        dist.MultivariateNormal(loc=loc_mean[4],covariance_matrix=loc_cov[4]).log_prob(post_sample_data5)+\
-                        dist.MultivariateNormal(loc=loc_mean[5],covariance_matrix=loc_cov[5]).log_prob(post_sample_data6)
-        log_likelihood=torch.tensor(0.0, dtype=torch.float64)
-
-        for j in range(normalised_hsi.shape[0]):
-            likelihood = pi_k[0] *torch.exp(dist.MultivariateNormal(loc=post_sample_data1,covariance_matrix= factor * loc_cov[0]).log_prob(normalised_hsi[j])) +\
-                         pi_k[1] *torch.exp(dist.MultivariateNormal(loc=post_sample_data2,covariance_matrix= factor * loc_cov[1]).log_prob(normalised_hsi[j]))+\
-                         pi_k[2] *torch.exp(dist.MultivariateNormal(loc=post_sample_data3,covariance_matrix= factor * loc_cov[2]).log_prob(normalised_hsi[j])) +\
-                         pi_k[2] *torch.exp(dist.MultivariateNormal(loc=post_sample_data4,covariance_matrix= factor * loc_cov[3]).log_prob(normalised_hsi[j])) +\
-                         pi_k[4] *torch.exp(dist.MultivariateNormal(loc=post_sample_data5,covariance_matrix= factor * loc_cov[4]).log_prob(normalised_hsi[j])) +\
-                         pi_k[5] *torch.exp(dist.MultivariateNormal(loc=post_sample_data6,covariance_matrix= factor * loc_cov[5]).log_prob(normalised_hsi[j])) 
-            log_likelihood += torch.log(likelihood)
-        
-        # log_prior_geo_list.append(log_prior_geo)
-        # log_prior_hsi_list.append(log_prior_hsi)
-        # log_likelihood_list.append(log_likelihood)
-        # log_posterior_list.append(log_prior_geo + log_prior_hsi + log_likelihood)
-        unnormalise_posterior_value["log_prior_geo_list"].append(log_prior_geo)
-        unnormalise_posterior_value["log_prior_hsi_list"].append(log_prior_hsi)
-        unnormalise_posterior_value["log_likelihood_list"].append(log_likelihood)
-        unnormalise_posterior_value["log_posterior_list"].append(log_prior_geo + log_prior_hsi + log_likelihood)
-    
-    MAP_sample_index=torch.argmax(torch.tensor(unnormalise_posterior_value["log_posterior_list"]))
-    plt.figure(figsize=(10,8))
-    plt.plot(torch.arange(len(store_accuracy))+1, torch.tensor(store_accuracy))
-    plt.savefig("./Results/accuracy.png")
-    
+    print(posterior_samples)
+    exit()
     # Extract acceptance probabilities
     
     # # Extract the diagnostics
@@ -596,43 +484,38 @@ def main():
     # plt.xlabel('Iteration')
     # plt.ylabel('Acceptance Probability')
     # plt.title('Acceptance Probabilities of NUTS Sampler')
-    # plt.savefig("./Results/Acceptance_Probabilities_of_NUTS_Sampler")
+    # plt.savefig("./Result_with_wishart/Acceptance_Probabilities_of_NUTS_Sampler")
     
     ################################################################################
     #  Try Plot the data and save it as file in output folder
     ################################################################################
-    # mu_1_post = posterior_samples["mu_1"].mean()
-    # mu_2_post = posterior_samples["mu_2"].mean()
-    # mu_3_post = posterior_samples["mu_3"].mean()
-    # mu_4_post = posterior_samples["mu_4"].mean()
-    
-    mu_1_post = posterior_samples["mu_1"][MAP_sample_index]
-    mu_2_post = posterior_samples["mu_2"][MAP_sample_index]
-    mu_3_post = posterior_samples["mu_3"][MAP_sample_index]
-    mu_4_post = posterior_samples["mu_4"][MAP_sample_index]
+    mu_1_mean = posterior_samples["mu_1"].mean()
+    mu_2_mean = posterior_samples["mu_2"].mean()
+    mu_3_mean = posterior_samples["mu_3"].mean()
+    mu_4_mean = posterior_samples["mu_4"].mean()
     
     # # Update the model with the new top layer's location
     interpolation_input = geo_model_test.interpolation_input
     interpolation_input.surface_points.sp_coords = torch.index_put(
         interpolation_input.surface_points.sp_coords,
         (torch.tensor([11]), torch.tensor([2])),
-        mu_1_post
+        posterior_samples["mu_1"].mean()
     )
     interpolation_input.surface_points.sp_coords = torch.index_put(
         interpolation_input.surface_points.sp_coords,
         (torch.tensor([14]), torch.tensor([2])),
-        mu_2_post
+        posterior_samples["mu_2"].mean()
     )
 
     interpolation_input.surface_points.sp_coords = torch.index_put(
             interpolation_input.surface_points.sp_coords,
             (torch.tensor([5]), torch.tensor([2])),
-            mu_3_post
+            posterior_samples["mu_3"].mean()
         )
     interpolation_input.surface_points.sp_coords = torch.index_put(
             interpolation_input.surface_points.sp_coords,
             (torch.tensor([0]), torch.tensor([2])),
-            mu_4_post
+            posterior_samples["mu_4"].mean()
         )
         
     #print("interpolation_input",interpolation_input.surface_points.sp_coords)
@@ -652,7 +535,7 @@ def main():
     # Store the Initial Interface data and orientation data
     ################################################################################
     df_sp_final = pd.DataFrame(sp_cord, columns=["X","Y","Z"])
-    df_sp_final.to_csv("./Results/Final_sp.csv")
+    df_sp_final.to_csv("./Result_with_wishart/Final_sp.csv")
     ################################################################################
     
     geo_model_test_post = gp.create_geomodel(
@@ -770,9 +653,9 @@ def main():
     print("accuracy_init: ", accuracy_init , "accuracy_final: ", accuracy_final)
     
     picture_test_post = gpv.plot_2d(geo_model_test_post, cell_number=5, legend='force')
-    plt.savefig("./Results/Posterior_model.png")
+    plt.savefig("./Result_with_wishart/Posterior_model.png")
     
-    TSNE_transformation(data=normalised_data, label=custom_grid_values_post, filename="./Results/tsne_gempy_final_label.png")
+    TSNE_transformation(data=normalised_data, label=custom_grid_values_post, filename="./Result_with_wishart/tsne_gempy_final_label.png")
     
 if __name__ == "__main__":
     main()
