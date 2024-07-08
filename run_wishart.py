@@ -426,7 +426,6 @@ def main():
         D = loc_mean.shape[1]
         sample_mean =[]
         for i in range(loc_mean.shape[0]):
-
             sample_data_mean= pyro.sample("sample_data_mean_"+str(i+1), dist.MultivariateNormal(loc=loc_mean[i],covariance_matrix=loc_cov[i]))
             sample_mean.append(sample_data_mean)
         mean_tesnor = torch.stack(sample_mean, dim=0)
@@ -434,11 +433,15 @@ def main():
         sample_cov =[]
         for i in range(loc_mean.shape[0]):
             #print(torch.linalg.det(loc_cov[i]))
-            #sample_data_cov = pyro.sample("sample_data_cov_"+str(i+1), dist.Wishart(df=D+1, scale_tril=torch.linalg.cholesky(loc_cov[i]+0.1 *torch.eye(D))))
-            sample_data_cov = pyro.sample("sample_data_cov_"+str(i+1), dist.Wishart(df=D+1, covariance_matrix = loc_cov[i]))
-            sample_cov.append(torch.linalg.inv(sample_data_cov))
+            #sample_data_cov = pyro.sample("sample_data_cov_"+str(i+1), dist.Wishart(df=D, scale_tril=torch.linalg.cholesky(loc_cov[i]+1e-5 *torch.eye(D))))
+            #sample_data_cov = pyro.sample("sample_data_cov_"+str(i+1), dist.Wishart(df=D, covariance_matrix = loc_cov[i]+1e2 *torch.eye(D)))
+            sample_data_cov = pyro.sample("sample_data_cov_"+str(i+1), dist.LKJCholesky(dim=3, concentration=0.5))
+            print(sample_data_cov)
+            #sample_cov.append(torch.linalg.inv(sample_data_cov))
+            sample_cov.append(torch.matmul(sample_data_cov , sample_data_cov.T))
+            exit()
         cov_tesnor = torch.stack(sample_cov, dim=0)
-        
+       
         #cov_likelihood = 5.0 * torch.eye(loc_cov[0].shape[0], dtype=torch.float64)
         
         with pyro.plate('N='+str(obs_data.shape[0]), obs_data.shape[0]):
