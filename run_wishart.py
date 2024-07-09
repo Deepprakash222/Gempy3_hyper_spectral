@@ -149,7 +149,7 @@ def main():
     ###########################################################################
     ## Apply Classical clustering methods to find different cluster information our data
     ###########################################################################
-    gm =gm = BayesianGaussianMixture(n_components=6, random_state=42, reg_covar=0.001 ).fit(normalised_hsi)
+    gm =gm = BayesianGaussianMixture(n_components=6, random_state=42, reg_covar=1e-6 ).fit(normalised_hsi)
     
     # make the labels to start with 1 instead of 0
     gmm_label = gm.predict(normalised_hsi) +1 
@@ -433,13 +433,15 @@ def main():
         sample_cov =[]
         for i in range(loc_mean.shape[0]):
             #print(torch.linalg.det(loc_cov[i]))
-            #sample_data_cov = pyro.sample("sample_data_cov_"+str(i+1), dist.Wishart(df=D, scale_tril=torch.linalg.cholesky(loc_cov[i]+1e-5 *torch.eye(D))))
+            sample_data_cov = pyro.sample("sample_data_cov_"+str(i+1), dist.Wishart(df=D, scale_tril=torch.linalg.cholesky(loc_cov[i])))
             #sample_data_cov = pyro.sample("sample_data_cov_"+str(i+1), dist.Wishart(df=D, covariance_matrix = loc_cov[i]+1e2 *torch.eye(D)))
-            sample_data_cov = pyro.sample("sample_data_cov_"+str(i+1), dist.LKJCholesky(dim=3, concentration=0.5))
-            print(sample_data_cov)
-            #sample_cov.append(torch.linalg.inv(sample_data_cov))
-            sample_cov.append(torch.matmul(sample_data_cov , sample_data_cov.T))
-            exit()
+            #sample_data_cov = pyro.sample("sample_data_cov_"+str(i+1), dist.LKJCholesky(dim=3, concentration=0.5))
+            #print(sample_data_cov)
+            sample_cov.append(sample_data_cov+1e-3 * torch.eye(D))
+            # print(torch.linalg.inv(sample_data_cov))
+            # print(torch.prod(torch.linalg.eigvals(sample_data_cov)))
+            #sample_cov.append(torch.matmul(sample_data_cov , sample_data_cov.T))
+        
         cov_tesnor = torch.stack(sample_cov, dim=0)
        
         #cov_likelihood = 5.0 * torch.eye(loc_cov[0].shape[0], dtype=torch.float64)

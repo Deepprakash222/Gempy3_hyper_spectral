@@ -5,6 +5,7 @@ from matplotlib.colors import ListedColormap
 import arviz as az
 import pandas as pd
 from datetime import datetime
+import json
 
 import torch
 import torch.nn.functional as F
@@ -55,21 +56,29 @@ def cluster_acc(Y_pred, Y, ignore_label=None):
     return ind[0], ind[1], (w[ind[0], ind[1]]).sum() / Y_pred.shape[0], w
 
 def TSNE_transformation(data, label, filename):
+    """ This function applies TSNE algorithms to reduce the high dimensional data into 2D
+        for better visualization
+
+    Args:
+        data (float): High dimensional Input data 
+        label (int): Label information of each data entry
+        filename (str): Location to store the image after dimensionality reduction
+    """
     from sklearn.manifold import TSNE
-    model = TSNE(n_components=2, random_state=0)
+    model = TSNE(n_components=2, random_state=42)
     transformed_data = model.fit_transform(data) 
-    colors = ['black', 'red', 'green', 'blue', 'yellow', 'purple', 'orange']
+    label_to_color = { 1: 'red', 2: 'blue', 3: 'green', 4: 'yellow', 5: 'orange', 6: 'purple'}
     plt.figure(figsize=(10,8))
-    plt.scatter(transformed_data[:,0],transformed_data[:,1],c= label, cmap=ListedColormap(colors[1:]))
+    for label_ in np.unique(label):
+        idx =label ==label_
+        plt.scatter(transformed_data[idx][:,0],transformed_data[idx][:,1], c=label_to_color[label_],label=f' {label_}',s=50, marker='o',alpha=1.0, edgecolors='w')
+    # Create a legend
+    plt.legend()
     # Add axis labels
     plt.xlabel('Component 1')
     plt.ylabel('Component 2')
-
-    # Create a legend
-    legend_labels = np.unique(label)
+    plt.title("Data after dimensionality reduction")
     
-    handles = [plt.Line2D([0], [0], marker='o', color='w', markerfacecolor=ListedColormap(colors[1:])(i/len(legend_labels)), markersize=10) for i in legend_labels]
-    plt.legend(handles, legend_labels, title="Labels")
     plt.savefig(filename)
     
     
@@ -130,7 +139,7 @@ def main():
     ###########################################################################
     ## Obtain the preprocessed data
     ###########################################################################
-    normalised_data = df_with_spectral_normalised.loc[(df_with_spectral_normalised["X"]>=18)&(df_with_spectral_normalised["X"]<=22)]
+    normalised_data = df_with_spectral_normalised.loc[(df_with_spectral_normalised["X"]>=17)&(df_with_spectral_normalised["X"]<=23)]
     normalised_hsi =torch.tensor(normalised_data.iloc[:,4:].to_numpy(), dtype=torch.float64)
     
     ## It is difficult to work with data in such a high dimensions, because the covariance matrix 
@@ -145,7 +154,7 @@ def main():
     ###########################################################################
     ## Apply Classical clustering methods to find different cluster information our data
     ###########################################################################
-    gm =gm = BayesianGaussianMixture(n_components=6, random_state=0).fit(normalised_hsi)
+    gm = BayesianGaussianMixture(n_components=6, random_state=0).fit(normalised_hsi)
     
     # make the labels to start with 1 instead of 0
     gmm_label = gm.predict(normalised_hsi) +1 
@@ -179,7 +188,7 @@ def main():
     #################################TODO##################################################
     ## Apply different dimentionality reduction techniques and save the plot in Result file
     #######################################################################################
-    #TSNE_transformation(data=normalised_data, label=gmm_label_rearranged, filename="./Results_without_prior_gmm/tsne_gmm_label.png")
+    TSNE_transformation(data=normalised_data, label=gmm_label_rearranged, filename="./Results_without_prior_gmm/tsne_gmm_label.png")
     
     ######################################################################################
     ## Apply Classical clustering methods to find different cluster information our data
@@ -337,6 +346,7 @@ def main():
     # geo_model_test.interpolation_options.mesh_extraction = False
     geo_model_test.interpolation_options.sigmoid_slope = 40
     store_accuracy=[]
+    
     @config_enumerate
     def model_test(obs_data):
         """
@@ -414,7 +424,7 @@ def main():
         custom_grid_values = geo_model_test.solutions.octrees_output[0].last_output_center.custom_grid_values
         # accuracy_intermediate = torch.sum(torch.round(custom_grid_values) == y_obs_label) / y_obs_label.shape[0]
         # store_accuracy.append(accuracy_intermediate)
-        lambda_ = 10.0
+        lambda_ = 5.0
         # loc_mean = torch.tensor(mean_init,dtype=torch.float64)
         # loc_cov =  torch.tensor(cov_init, dtype=torch.float64)
         z_nk = F.softmax(-lambda_* (torch.tensor([1,2,3,4,5,6], dtype=torch.float64) - custom_grid_values.reshape(-1,1))**2, dim=1)
@@ -443,19 +453,23 @@ def main():
             assignment = pyro.sample("assignment", dist.Categorical(pi_k))
             #print(obs_data.shape, mean_tensor[assignment].shape,cov_tensor[assignment].shape)
             obs = pyro.sample("obs", dist.MultivariateNormal(loc=mean_tensor[assignment],covariance_matrix = cov_tensor[assignment]), obs=obs_data)
-            
+  
+    dot = pyro.render_model(model_test, model_args=(normalised_hsi,),render_distributions=True,filename='./Results_without_prior_gmm/Bayesian_graph.png')
     
     ################################################################################
     # Prior
     ################################################################################
     pyro.set_rng_seed(42)
-    prior = Predictive(model_test, num_samples=10)(normalised_hsi)
+    prior = Predictive(model_test, num_samples=100)(normalised_hsi)
     # Key to avoid
     #avoid_key = ['mu_1 < 0','mu_1 > mu_2','mu_2 > -38.5', 'mu_3 < -38.5','mu_3 > -61.4','mu_4 < -61.5', 'mu_4 > -83']
     avoid_key = ['mu_1 < 0','mu_1 > mu_2','mu_2 > mu_3', 'mu_3 > mu_4' , 'mu_4 > -83']
     # Create sub-dictionary without the avoid_key
     prior = dict((key, value) for key, value in prior.items() if key not in avoid_key)
+    plt.figure(figsize=(8,10))
     data = az.from_pyro(prior=prior)
+    az.plot_trace(data.prior)
+    plt.savefig("./Results_without_prior_gmm/prior.png")
     
     ################################################################################
     # Posterior 
@@ -467,7 +481,53 @@ def main():
     
     posterior_samples = mcmc.get_samples()
     posterior_predictive = Predictive(model_test, posterior_samples)(normalised_hsi)
+    plt.figure(figsize=(8,10))
     data = az.from_pyro(posterior=mcmc, prior=prior, posterior_predictive=posterior_predictive)
+    az.plot_trace(data)
+    plt.savefig("./Results_without_prior_gmm/posterior.png")
+    
+    ###############################################TODO################################
+    # Plot and save the file for each parameter
+    ###################################################################################
+    plt.figure(figsize=(8,10))
+    az.plot_density(
+        data=[data.posterior, data.prior],
+        shade=.9,
+        var_names=['mu_1'],
+        data_labels=["Posterior Predictive", "Prior Predictive"],
+        colors=[default_red, default_blue],
+    )
+    plt.savefig("./Results_without_prior_gmm/mu_1.png")
+    
+    plt.figure(figsize=(8,10))
+    az.plot_density(
+        data=[data.posterior, data.prior],
+        shade=.9,
+        var_names=['mu_2'],
+        data_labels=["Posterior Predictive", "Prior Predictive"],
+        colors=[default_red, default_blue],
+    )
+    plt.savefig("./Results_without_prior_gmm/mu_2.png")
+    
+    plt.figure(figsize=(8,10))
+    az.plot_density(
+        data=[data.posterior, data.prior],
+        shade=.9,
+        var_names=['mu_3'],
+        data_labels=["Posterior Predictive", "Prior Predictive"],
+        colors=[default_red, default_blue],
+    )
+    plt.savefig("./Results_without_prior_gmm/mu_3.png")
+    
+    plt.figure(figsize=(8,10))
+    az.plot_density(
+        data=[data.posterior, data.prior],
+        shade=.9,
+        var_names=['mu_4'],
+        data_labels=["Posterior Predictive", "Prior Predictive"],
+        colors=[default_red, default_blue],
+    )
+    plt.savefig("./Results_without_prior_gmm/mu_4.png")
     
     # Find the MAP value
     
@@ -543,7 +603,7 @@ def main():
         custom_grid_values = geo_model_test.solutions.octrees_output[0].last_output_center.custom_grid_values
         accuracy_intermediate = torch.sum(torch.round(custom_grid_values) == y_obs_label) / y_obs_label.shape[0]
         store_accuracy.append(accuracy_intermediate)
-        lambda_ = 10.0
+        lambda_ = 5.0
         # loc_mean = torch.tensor(mean_init,dtype=torch.float64)
         # loc_cov =  torch.tensor(cov_init, dtype=torch.float64)
         z_nk = F.softmax(-lambda_* (torch.tensor([1,2,3,4,5,6], dtype=torch.float64) - custom_grid_values.reshape(-1,1))**2, dim=1)
@@ -776,10 +836,45 @@ def main():
     accuracy_final = torch.sum(torch.round(torch.tensor(custom_grid_values_post)) == y_obs_label) / y_obs_label.shape[0]
     print("accuracy_init: ", accuracy_init , "accuracy_final: ", accuracy_final)
     
+    ###################################TODO###################################################
+    # store the weights, mean, and covariance of Gaussian mixture model
+    ##########################################################################################
+    lambda_ = 5.0
+    # loc_mean = torch.tensor(mean_init,dtype=torch.float64)
+    # loc_cov =  torch.tensor(cov_init, dtype=torch.float64)
+    z_nk = F.softmax(-lambda_* (torch.tensor([1,2,3,4,5,6], dtype=torch.float64) - torch.tensor(custom_grid_values_post).reshape(-1,1))**2, dim=1)
+    #class_label = torch.mean(F.softmax(-lambda_* (torch.tensor([1,2,3,4,5,6], dtype=torch.float64) - custom_grid_values.reshape(-1,1))**2, dim=1),dim=0)
+    
+    N_k = torch.sum(z_nk,axis=0)
+    N = len(custom_grid_values)
+    pi_k = N_k /N
+    mean = []
+    cov = []
+    for i in range(6):
+        mean_k = torch.sum( z_nk[:,i][:,None] * normalised_hsi, axis=0)/ N_k[i]
+        #cov_k = torch.sum( (normalised_hsi - mean_k.reshape((-1,1))) (normalised_hsi - mean_k).T )
+        cov_k = torch.zeros((mean_k.shape[0],mean_k.shape[0]), dtype=torch.float64)
+        for j in range(298):
+                cov_k +=  z_nk[j,i]* torch.matmul((normalised_hsi[j,:] - mean_k).reshape((-1,1)) ,(normalised_hsi[j,:] - mean_k).reshape((1,-1)))
+        mean.append(mean_k.detach().numpy())
+        cov_k=cov_k/N_k[i] #+ 1e-3 * torch.diag(torch.ones(cov_k.shape[0],dtype=torch.float64))
+        cov.append(cov_k.detach().numpy())
+    mean_tensor = np.stack(mean, axis=0)
+    cov_tensor = np.stack(cov,axis=0)
+    
+    gmm_data ={}
+    gmm_data["weights"]=pi_k.detach().numpy().tolist()
+    gmm_data["means"] = mean_tensor.tolist()
+    gmm_data["covariances"] = cov_tensor.tolist()
+    # Save to file
+    with open("./Results_without_prior_gmm/gmm_data.json", "w") as json_file:
+        json.dump(gmm_data, json_file)
+    ##########################################################################################
+    
     picture_test_post = gpv.plot_2d(geo_model_test_post, cell_number=5, legend='force')
     plt.savefig("./Results_without_prior_gmm/Posterior_model.png")
-    
-    TSNE_transformation(data=normalised_data, label=custom_grid_values_post, filename="./Results_without_prior_gmm/tsne_gempy_final_label.png")
+    # Reduced data with final label from gempy
+    TSNE_transformation(data=normalised_data, label= 7- np.round(custom_grid_values_post), filename="./Results_without_prior_gmm/tsne_gempy_final_label.png")
     
 if __name__ == "__main__":
     
