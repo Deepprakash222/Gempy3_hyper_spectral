@@ -378,7 +378,7 @@ def main():
         pyro.sample('mu_1 < 0', dist.Delta(torch.tensor(1.0, dtype=torch.float64)), obs=(mu_surface_1 < 3.7))
         pyro.sample('mu_1 > mu_2', dist.Delta(torch.tensor(1.0, dtype=torch.float64)), obs=(mu_surface_1 > mu_surface_2))
         pyro.sample('mu_2 > mu_3', dist.Delta(torch.tensor(1.0, dtype=torch.float64)), obs=(mu_surface_2 > mu_surface_3))
-        pyro.sample('mu_3 < mu_4', dist.Delta(torch.tensor(1.0, dtype=torch.float64)), obs=(mu_surface_3 > mu_surface_4))
+        pyro.sample('mu_3 > mu_4', dist.Delta(torch.tensor(1.0, dtype=torch.float64)), obs=(mu_surface_3 > mu_surface_4))
         #pyro.sample('mu_3 > -61.5', dist.Delta(torch.tensor(1.0, dtype=torch.float64)), obs=(mu_surface_3 > 0.625))
         #pyro.sample('mu_4 < -61.5', dist.Delta(torch.tensor(1.0, dtype=torch.float64)), obs=(mu_surface_4 < 0.625))
         pyro.sample('mu_4 > -83', dist.Delta(torch.tensor(1.0, dtype=torch.float64)), obs=(mu_surface_4 > - 0.2 ))
@@ -435,11 +435,11 @@ def main():
         pi_k = N_k /N
         mean = []
         cov = []
-        for i in range(6):
+        for i in range(z_nk.shape[1]):
             mean_k = torch.sum( z_nk[:,i][:,None] * obs_data, axis=0)/ N_k[i]
             #cov_k = torch.sum( (normalised_hsi - mean_k.reshape((-1,1))) (normalised_hsi - mean_k).T )
             cov_k = torch.zeros((mean_k.shape[0],mean_k.shape[0]),dtype=torch.float64)
-            for j in range(298):
+            for j in range(z_nk.shape[0]):
                  cov_k +=  z_nk[j,i]* torch.matmul((obs_data[j,:] - mean_k).reshape((-1,1)) ,(obs_data[j,:] - mean_k).reshape((1,-1)))
             mean.append(mean_k)
             cov_k=cov_k/N_k[i] #+ 1e-3 * torch.diag(torch.ones(cov_k.shape[0],dtype=torch.float64))
@@ -547,6 +547,7 @@ def main():
     prior_mean_surface_4 = sp_coords_copy_test[0, 2]
     
     store_accuracy=[]
+    store_gmm_accuracy = []
     
     for i in range(posterior_samples["mu_1"].shape[0]):
         post_mu_1 = posterior_samples[keys_list[0]][i]
@@ -602,6 +603,7 @@ def main():
         
         custom_grid_values = geo_model_test.solutions.octrees_output[0].last_output_center.custom_grid_values
         accuracy_intermediate = torch.sum(torch.round(custom_grid_values) == y_obs_label) / y_obs_label.shape[0]
+        #print("accuracy_intermediate", accuracy_intermediate)
         store_accuracy.append(accuracy_intermediate)
         lambda_ = 5.0
         # loc_mean = torch.tensor(mean_init,dtype=torch.float64)
@@ -614,19 +616,21 @@ def main():
         pi_k = N_k /N
         mean = []
         cov = []
-        for i in range(6):
+        for i in range(z_nk.shape[1]):
             mean_k = torch.sum( z_nk[:,i][:,None] * normalised_hsi, axis=0)/ N_k[i]
             #cov_k = torch.sum( (normalised_hsi - mean_k.reshape((-1,1))) (normalised_hsi - mean_k).T )
             cov_k = torch.zeros((mean_k.shape[0],mean_k.shape[0]), dtype=torch.float64)
-            for j in range(298):
+            for j in range(z_nk.shape[0]):
                  cov_k +=  z_nk[j,i]* torch.matmul((normalised_hsi[j,:] - mean_k).reshape((-1,1)) ,(normalised_hsi[j,:] - mean_k).reshape((1,-1)))
             mean.append(mean_k)
             cov_k=cov_k/N_k[i] #+ 1e-3 * torch.diag(torch.ones(cov_k.shape[0],dtype=torch.float64))
             cov.append(cov_k)
         mean_tensor = torch.stack(mean, dim=0)
         cov_tensor = torch.stack(cov,dim=0)
-    
         
+        # We can also calculate the accuracy using the mean and covariance to see if our GMM model has imroved or not
+        gamma_nk = torch.zeros(z_nk.shape)
+
         log_likelihood=torch.tensor(0.0, dtype=torch.float64)
 
         for j in range(normalised_hsi.shape[0]):
@@ -636,8 +640,16 @@ def main():
                          pi_k[2] *torch.exp(dist.MultivariateNormal(loc=mean_tensor[3],covariance_matrix= cov_tensor[3]).log_prob(normalised_hsi[j])) +\
                          pi_k[4] *torch.exp(dist.MultivariateNormal(loc=mean_tensor[4],covariance_matrix= cov_tensor[4]).log_prob(normalised_hsi[j])) +\
                          pi_k[5] *torch.exp(dist.MultivariateNormal(loc=mean_tensor[5],covariance_matrix= cov_tensor[5]).log_prob(normalised_hsi[j])) 
+                        
+            for k in range(gamma_nk.shape[1]):
+                gamma_nk[j][k] = (pi_k[k] * torch.exp(dist.MultivariateNormal(loc=mean_tensor[k],covariance_matrix= cov_tensor[k]).log_prob(normalised_hsi[j]))) / likelihood
+                
             log_likelihood += torch.log(likelihood)
         
+        gmm_label_new = torch.argmax(gamma_nk,dim=1) +1
+        gmm_accuracy = torch.sum(gmm_label_new == y_obs_label) / y_obs_label.shape[0]
+        store_gmm_accuracy.append(gmm_accuracy)
+        #print("gmm_label_accuracy", gmm_accuracy)
         # log_prior_geo_list.append(log_prior_geo)
         # log_prior_hsi_list.append(log_prior_hsi)
         # log_likelihood_list.append(log_likelihood)
@@ -650,6 +662,11 @@ def main():
     plt.figure(figsize=(10,8))
     plt.plot(torch.arange(len(store_accuracy))+1, torch.tensor(store_accuracy))
     plt.savefig("./Results_without_prior_gmm/accuracy.png")
+    
+    plt.figure(figsize=(10,8))
+    plt.plot(torch.arange(len(store_accuracy))+1, torch.tensor(store_gmm_accuracy))
+    plt.savefig("./Results_without_prior_gmm/accuracy_gmm.png")
+    
     #print(unnormalise_posterior_value)
     
     # Extract acceptance probabilities
