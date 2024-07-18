@@ -5,10 +5,10 @@ from matplotlib.colors import ListedColormap
 import arviz as az
 import pandas as pd
 
-import torch
-import torch.nn.functional as F
 import pyro
 import pyro.distributions as dist
+import torch
+import torch.nn.functional as F
 from pyro.infer import MCMC, NUTS, Predictive, EmpiricalMarginal
 from pyro.infer.autoguide import init_to_mean, init_to_median, init_to_value
 from pyro.infer.inspect import get_dependencies
@@ -433,15 +433,24 @@ def main():
         sample_cov =[]
         for i in range(loc_mean.shape[0]):
             #print(torch.linalg.det(loc_cov[i]))
-            sample_data_cov = pyro.sample("sample_data_cov_"+str(i+1), dist.Wishart(df=D, scale_tril=torch.linalg.cholesky(loc_cov[i])))
+            #sample_data_cov = pyro.sample("sample_data_cov_"+str(i+1), dist.Wishart(df=D, scale_tril=torch.linalg.cholesky(loc_cov[i])))
             #sample_data_cov = pyro.sample("sample_data_cov_"+str(i+1), dist.Wishart(df=D, covariance_matrix = loc_cov[i]+1e2 *torch.eye(D)))
-            #sample_data_cov = pyro.sample("sample_data_cov_"+str(i+1), dist.LKJCholesky(dim=3, concentration=0.5))
-            #print(sample_data_cov)
+            import os
+            import sys
+            print("PYTHONPATH:", os.getenv("PYTHONPATH"))
+            print("Python version:", sys.version)
+            print("Python executable:", sys.executable)
+            print("Torch path:", torch.__file__)
+            print("Pyro path:", pyro.__file__)
+            exit()
+            sample_data_cov = pyro.sample("sample_data_cov_"+str(i+1), dist.LKJCholesky(dim=3, concentration=0.5))
+            exit()
+            print(sample_data_cov)
             sample_cov.append(sample_data_cov+1e-3 * torch.eye(D))
             # print(torch.linalg.inv(sample_data_cov))
             # print(torch.prod(torch.linalg.eigvals(sample_data_cov)))
             #sample_cov.append(torch.matmul(sample_data_cov , sample_data_cov.T))
-        
+            exit()
         cov_tesnor = torch.stack(sample_cov, dim=0)
        
         #cov_likelihood = 5.0 * torch.eye(loc_cov[0].shape[0], dtype=torch.float64)
