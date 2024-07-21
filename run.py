@@ -504,7 +504,7 @@ def main():
     geo_model_test.interpolation_options.sigmoid_slope = 40
     
     factor=1 #0.01
-    
+    alpha = 0.1
     @config_enumerate
     def model_test(obs_data):
         """
@@ -584,7 +584,6 @@ def main():
         #store_accuracy.append(accuracy_intermediate)
         
         lambda_ = 15.0
-        alpha = 0.1
         loc_mean = torch.tensor(mean_init,dtype=torch.float64)
         loc_cov =  torch.tensor(cov_init, dtype=torch.float64)
         cov_matrix = alpha * torch.eye(loc_mean[0].shape[0],dtype=torch.float64)
@@ -770,16 +769,25 @@ def main():
         lambda_ = 15.0
         loc_mean = torch.tensor(mean_init,dtype=torch.float64)
         loc_cov =  torch.tensor(cov_init, dtype=torch.float64)
+        cov_matrix = alpha * torch.eye(loc_mean[0].shape[0],dtype=torch.float64)
         #class_label = F.softmax(-lambda_* (torch.tensor([1,2,3,4,5,6], dtype=torch.float64) - custom_grid_values.reshape(-1,1))**2, dim=1)
-        pi_k = torch.mean(F.softmax(-lambda_* (torch.tensor([1,2,3,4,5,6], dtype=torch.float64) - custom_grid_values.reshape(-1,1))**2, dim=1),dim=0)
+        pi_k = torch.mean(F.softmax(-lambda_* (torch.linspace(1,cluster,cluster, dtype=torch.float64) - custom_grid_values.reshape(-1,1))**2, dim=1),dim=0)
         
     
-        log_prior_hsi = dist.MultivariateNormal(loc=loc_mean[0],covariance_matrix=loc_cov[0]).log_prob(post_sample_data1)+\
-                        dist.MultivariateNormal(loc=loc_mean[1],covariance_matrix=loc_cov[1]).log_prob(post_sample_data2)+\
-                        dist.MultivariateNormal(loc=loc_mean[2],covariance_matrix=loc_cov[2]).log_prob(post_sample_data3)+\
-                        dist.MultivariateNormal(loc=loc_mean[3],covariance_matrix=loc_cov[3]).log_prob(post_sample_data4)+\
-                        dist.MultivariateNormal(loc=loc_mean[4],covariance_matrix=loc_cov[4]).log_prob(post_sample_data5)+\
-                        dist.MultivariateNormal(loc=loc_mean[5],covariance_matrix=loc_cov[5]).log_prob(post_sample_data6)
+        # log_prior_hsi = dist.MultivariateNormal(loc=loc_mean[0],covariance_matrix=loc_cov[0]).log_prob(post_sample_data1)+\
+        #                 dist.MultivariateNormal(loc=loc_mean[1],covariance_matrix=loc_cov[1]).log_prob(post_sample_data2)+\
+        #                 dist.MultivariateNormal(loc=loc_mean[2],covariance_matrix=loc_cov[2]).log_prob(post_sample_data3)+\
+        #                 dist.MultivariateNormal(loc=loc_mean[3],covariance_matrix=loc_cov[3]).log_prob(post_sample_data4)+\
+        #                 dist.MultivariateNormal(loc=loc_mean[4],covariance_matrix=loc_cov[4]).log_prob(post_sample_data5)+\
+        #                 dist.MultivariateNormal(loc=loc_mean[5],covariance_matrix=loc_cov[5]).log_prob(post_sample_data6)
+        
+        log_prior_hsi = dist.MultivariateNormal(loc=loc_mean[0],covariance_matrix=cov_matrix).log_prob(post_sample_data1)+\
+                        dist.MultivariateNormal(loc=loc_mean[1],covariance_matrix=cov_matrix).log_prob(post_sample_data2)+\
+                        dist.MultivariateNormal(loc=loc_mean[2],covariance_matrix=cov_matrix).log_prob(post_sample_data3)+\
+                        dist.MultivariateNormal(loc=loc_mean[3],covariance_matrix=cov_matrix).log_prob(post_sample_data4)+\
+                        dist.MultivariateNormal(loc=loc_mean[4],covariance_matrix=cov_matrix).log_prob(post_sample_data5)+\
+                        dist.MultivariateNormal(loc=loc_mean[5],covariance_matrix=cov_matrix).log_prob(post_sample_data6)
+        
         log_likelihood=torch.tensor(0.0, dtype=torch.float64)
 
         for j in range(normalised_hsi.shape[0]):

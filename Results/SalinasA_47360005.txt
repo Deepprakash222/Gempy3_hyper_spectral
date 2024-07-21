@@ -1,0 +1,15 @@
+Traceback (most recent call last):
+  File "/home/jt925938/anaconda3/envs/gempy_pyro/lib/python3.10/site-packages/matplotlib/cbook.py", line 27, in <module>
+    from numpy.exceptions import VisibleDeprecationWarning  # numpy >= 1.25
+ModuleNotFoundError: No module named 'numpy.exceptions'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/rwthfs/rz/cluster/home/jt925938/gempy_pyro/Gempy3_hyper_spectral/run.py", line 3, in <module>
+    import matplotlib.pyplot as plt
+  File "/home/jt925938/anaconda3/envs/gempy_pyro/lib/python3.10/site-packages/matplotlib/__init__.py", line 161, in <module>
+    from . import _api, _version, cbook, _docstring, rcsetup
+  File "/home/jt925938/anaconda3/envs/gempy_pyro/lib/python3.10/site-packages/matplotlib/cbook.py", line 29, in <module>
+    from numpy import VisibleDeprecationWarning
+ImportError: cannot import name 'VisibleDeprecationWarning' from 'numpy' (unknown location)
