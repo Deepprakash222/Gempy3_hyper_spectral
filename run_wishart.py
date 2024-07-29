@@ -331,6 +331,17 @@ def main():
     #rearrange_list = [3,4,2,0,5,1]
     rearrange_list = y_obs_label_order
     mean_init, cov_init = gm.means_[rearrange_list], gm.covariances_[rearrange_list]
+    
+    eigen_vector_list , eigen_values_list =[],[]
+    for i in range(cov_init.shape[0]):
+        eigen_values, eigen_vectors = np.linalg.eig(cov_init[i])
+        # D = np.diag(eigen_values)
+        # Q = np.array(eigen_vectors)
+        # A = Q @ D @ Q.T
+        # print(A - cov_init[i])
+        eigen_values_list.append(eigen_values)
+        eigen_vector_list.append(eigen_vectors)
+        
     ####################################TODO#################################################
     #   Try to find the initial accuracy of classification
     #########################################################################################
@@ -577,10 +588,10 @@ def main():
         # Compute and observe the thickness of the geological layer
         
         custom_grid_values = geo_model_test.solutions.octrees_output[0].last_output_center.custom_grid_values
-        accuracy_intermediate = torch.sum(torch.round(custom_grid_values) == y_obs_label) / y_obs_label.shape[0]
-        print(accuracy_intermediate)
+        # accuracy_intermediate = torch.sum(torch.round(custom_grid_values) == y_obs_label) / y_obs_label.shape[0]
+        # print(accuracy_intermediate)
         
-        lambda_ = 10.0
+        lambda_ = 15.0
         loc_mean = torch.tensor(mean_init,dtype=torch.float64)
         loc_cov =  torch.tensor(cov_init, dtype=torch.float64)
         #class_label = F.softmax(-lambda_* (torch.tensor([1,2,3,4,5,6], dtype=torch.float64) - custom_grid_values.reshape(-1,1))**2, dim=1)
@@ -592,10 +603,12 @@ def main():
         for i in range(loc_mean.shape[0]):
             sample_data_mean= pyro.sample("sample_data_mean_"+str(i+1), dist.MultivariateNormal(loc=loc_mean[i],covariance_matrix=loc_cov[i]))
             sample_mean.append(sample_data_mean)
-            scale_tr = pyro.sample("scale_"+str(i),dist.LKJCholesky(D, torch.tensor(0.5,dtype=torch.float64)))
-            scales = scale_tr @ torch.transpose(scale_tr)
-            sample_cov.append(scales)
-        
+            eigen_values_init = torch.tensor(eigen_values_list[i],dtype=torch.float64)
+            eigen_vectors_data = torch.tensor(eigen_vector_list[i], dtype=torch.float64)
+            sample_eigen_values = pyro.sample("sample_data_cov_"+str(i+1), dist.MultivariateNormal(loc=torch.sqrt(eigen_values_init),covariance_matrix=torch.eye(D, dtype=torch.float64)))
+            sample_cov_data = eigen_vectors_data @ torch.diag(sample_eigen_values)**2 @ eigen_vectors_data.T
+            sample_cov.append(sample_cov_data)
+            
         mean_tesnor = torch.stack(sample_mean, dim=0)
         cov_tesnor = torch.stack(sample_cov, dim=0)
         
@@ -644,15 +657,15 @@ def main():
     ################################################################################
     pyro.primitives.enable_validation(is_validate=True)
     nuts_kernel = NUTS(model_test, step_size=0.0085, adapt_step_size=True, target_accept_prob=0.9, max_tree_depth=10, init_strategy=init_to_mean)
-    mcmc = MCMC(nuts_kernel, num_samples=5, warmup_steps=0, disable_validation=False)
+    mcmc = MCMC(nuts_kernel, num_samples=150, warmup_steps=50, disable_validation=False)
     mcmc.run(normalised_hsi)
     
     posterior_samples = mcmc.get_samples()
     posterior_predictive = Predictive(model_test, posterior_samples)(normalised_hsi)
     data = az.from_pyro(posterior=mcmc, prior=prior, posterior_predictive=posterior_predictive)
     
-    print(posterior_samples)
-    exit()
+    #print(posterior_samples)
+    
     # Extract acceptance probabilities
     
     # # Extract the diagnostics
@@ -845,7 +858,6 @@ if __name__ == "__main__":
     start_time = datetime.now()
     # 
 
-    
     # Run the main function
     #main()
     main()

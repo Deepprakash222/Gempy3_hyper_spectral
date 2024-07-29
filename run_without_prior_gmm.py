@@ -521,8 +521,8 @@ def main():
         prior_mean_surface_4 = sp_coords_copy_test[0, 2]
 
         mu_surface_1 = pyro.sample('mu_1', dist.Normal(prior_mean_surface_1, torch.tensor(0.2, dtype=torch.float64)))
-        mu_surface_2 = pyro.sample('mu_2', dist.Normal(prior_mean_surface_2, torch.tensor(0.2, dtype=torch.float64)))
-        mu_surface_3 = pyro.sample('mu_3', dist.Normal(prior_mean_surface_3, torch.tensor(0.2, dtype=torch.float64)))
+        mu_surface_2 = pyro.sample('mu_2', dist.Normal(prior_mean_surface_2 + 0.05, torch.tensor(0.2, dtype=torch.float64)))
+        mu_surface_3 = pyro.sample('mu_3', dist.Normal(prior_mean_surface_3 - 0.05, torch.tensor(0.2, dtype=torch.float64)))
         mu_surface_4 = pyro.sample('mu_4', dist.Normal(prior_mean_surface_4, torch.tensor(0.2, dtype=torch.float64)))
         #print(mu_surface_1, mu_surface_2)
         # Ensure that mu_surface_1 is greater than mu_surface_2
@@ -718,8 +718,8 @@ def main():
         # Calculate the log probability of the value
         
         log_prior_geo = dist.Normal(prior_mean_surface_1, torch.tensor(0.2, dtype=torch.float64)).log_prob(post_mu_1)+\
-                    dist.Normal(prior_mean_surface_2, torch.tensor(0.2, dtype=torch.float64)).log_prob(post_mu_2)+\
-                    dist.Normal(prior_mean_surface_3, torch.tensor(0.2, dtype=torch.float64)).log_prob(post_mu_3)+\
+                    dist.Normal(prior_mean_surface_2+ 0.05, torch.tensor(0.2, dtype=torch.float64)).log_prob(post_mu_2)+\
+                    dist.Normal(prior_mean_surface_3 - 0.05, torch.tensor(0.2, dtype=torch.float64)).log_prob(post_mu_3)+\
                     dist.Normal(prior_mean_surface_4, torch.tensor(0.2, dtype=torch.float64)).log_prob(post_mu_4)
         
         # Update the model with the new top layer's location
