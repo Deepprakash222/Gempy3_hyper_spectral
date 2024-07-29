@@ -306,8 +306,7 @@ def main():
     ###########################################################################
     ## Apply Classical clustering methods to find different cluster information our data
     ###########################################################################
-    
-    gm = BayesianGaussianMixture(n_components=cluster, random_state=0).fit(normalised_hsi)
+    gm =gm = BayesianGaussianMixture(n_components=cluster, random_state=42, reg_covar=1e-6 ).fit(normalised_hsi)
     
     # make the labels to start with 1 instead of 0
     gmm_label = gm.predict(normalised_hsi) +1 
@@ -689,7 +688,9 @@ def main():
     )
     plt.savefig("./Results_without_prior_gmm/mu_4.png")
     
+    ###############################################TODO################################
     # Find the MAP value
+    ###################################################################################
     
     unnormalise_posterior_value={}
     unnormalise_posterior_value["log_prior_geo_list"]=[]
