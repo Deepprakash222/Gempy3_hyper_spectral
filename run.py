@@ -220,6 +220,7 @@ def main():
     """
     This function defines a model which uses hyperspectral data, applies clustering methods to find cluster information and then uses Bayesian
     """
+    print("THis is dev4")
     args = parser.parse_args()
     startval=args.startval
     endval=args.endval
@@ -623,6 +624,78 @@ def main():
     ################################################################################
     # Posterior 
     ################################################################################
+    import torch.distributions.constraints as constraints
+
+    # def guide(obs_data):
+    #     # Register variational parameters for mu_1, mu_2, mu_3, mu_4
+    #     # Define prior for the top layer's location
+    #     prior_mean_surface_1 = sp_coords_copy_test[11, 2]
+    #     prior_mean_surface_2 = sp_coords_copy_test[14, 2]
+    #     prior_mean_surface_3 = sp_coords_copy_test[5, 2]
+    #     prior_mean_surface_4 = sp_coords_copy_test[0, 2]
+
+    #     mu_1_loc = pyro.param('mu_1_loc', torch.tensor(prior_mean_surface_1, dtype=torch.float64))
+    #     mu_1_scale = pyro.param('mu_1_scale', torch.tensor(1.0, dtype=torch.float64), constraint=constraints.positive)
+    #     mu_2_loc = pyro.param('mu_2_loc', torch.tensor(prior_mean_surface_2, dtype=torch.float64))
+    #     mu_2_scale = pyro.param('mu_2_scale', torch.tensor(1.0, dtype=torch.float64), constraint=constraints.positive)
+    #     mu_3_loc = pyro.param('mu_3_loc', torch.tensor(prior_mean_surface_3, dtype=torch.float64))
+    #     mu_3_scale = pyro.param('mu_3_scale', torch.tensor(1.0, dtype=torch.float64), constraint=constraints.positive)
+    #     mu_4_loc = pyro.param('mu_4_loc', torch.tensor(prior_mean_surface_4, dtype=torch.float64))
+    #     mu_4_scale = pyro.param('mu_4_scale', torch.tensor(1.0, dtype=torch.float64), constraint=constraints.positive)
+        
+    #     # Sample from the variational distributions
+    #     pyro.sample('mu_1', dist.Normal(mu_1_loc, mu_1_scale))
+    #     pyro.sample('mu_2', dist.Normal(mu_2_loc, mu_2_scale))
+    #     pyro.sample('mu_3', dist.Normal(mu_3_loc, mu_3_scale))
+    #     pyro.sample('mu_4', dist.Normal(mu_4_loc, mu_4_scale))
+
+    #     # Variational parameters for the mixture model
+    #     lambda_ = 15.0
+    #     loc_mean = torch.tensor(mean_init,dtype=torch.float64)
+    #     loc_cov =  torch.tensor(cov_init, dtype=torch.float64)
+    #     cov_matrix = alpha * torch.eye(loc_mean[0].shape[0],dtype=torch.float64)
+        
+    #     loc_mean_q = pyro.param('loc_mean_q', loc_mean.clone().detach())
+    #     loc_cov_q = pyro.param('loc_cov_q', loc_cov.clone().detach(), constraint=constraints.positive_definite)
+
+    #     # Sampling for the cluster means and covariances
+    #     sample_q = []
+    #     for i in range(loc_mean.shape[0]):
+    #         sample_q_data = pyro.sample(f'sample_q_data{i+1}', dist.MultivariateNormal(loc=loc_mean_q[i], covariance_matrix=loc_cov_q[i]))
+    #         sample_q.append(sample_q_data)
+        
+    #     sample_q_tensor = torch.stack(sample_q, dim=0)
+        
+    #     # Guide for the assignment of observations to clusters
+    #     with pyro.plate('N='+str(obs_data.shape[0]), obs_data.shape[0]):
+        
+    #         assignment_logits = pyro.param('assignment_logits', torch.ones(sample_q_tensor.shape[0], dtype=torch.float64))
+    #         pyro.sample('assignment', dist.Categorical(logits=assignment_logits))
+    # # Setup the optimizer
+    # adam_params = {"lr": 0.001, "betas": (0.9, 0.999)}
+    # optimizer = Adam(adam_params)
+
+    # # Setup the inference algorithm
+    # svi = SVI(model_test, guide, optimizer, loss=Trace_ELBO())
+
+    
+    # num_steps = 1000
+
+    # # Observed data (this should be provided or generated according to your specific problem)
+    # # For example:
+    # # obs_data = torch.tensor([...], dtype=torch.float64)  # Replace with actual data
+
+    # # Gradient descent to minimize the loss
+    # for step in range(num_steps):
+    #     loss = svi.step(normalised_hsi)  # This updates the variational parameters in the guide
+    #     if step % 100 == 0:
+    #         print(f'Step {step} : Loss = {loss}')
+
+    # print("loc_mean_q:")
+    # print(loc_mean_q)
+
+    # print("loc_cov_q:")
+    # print(loc_cov_q)
     def guide(obs_data):
         """
         This function defines the variational distribution (guide) for the model.
@@ -658,12 +731,21 @@ def main():
             pyro.sample(f"sample_data{i}", dist.MultivariateNormal(loc, scale_tril=torch.diag(scale)))
 
         # Add variational parameter for assignment
-        assignment_probs = pyro.param("assignment_probs", torch.ones(6) / 6, constraint=dist.constraints.simplex)
+        # assignment_logits = pyro.param("assignment_logits", torch.zeros(6))
+        # assignment_probs = F.softmax(assignment_logits, dim=-1)
+        # with pyro.plate('N='+str(obs_data.shape[0]), obs_data.shape[0]):
+        #     pyro.sample("assignment", dist.Categorical(probs=assignment_probs))
+
+        assignment_weights = pyro.param("assignment_weights", torch.ones(6) + 0.1)
+        assignment_probs_unnormalized = F.relu(assignment_weights)
+        assignment_probs = assignment_probs_unnormalized / assignment_probs_unnormalized.sum()
+
         with pyro.plate('N='+str(obs_data.shape[0]), obs_data.shape[0]):
-            pyro.sample("assignment", dist.Categorical(assignment_probs))
+            pyro.sample("assignment", dist.Categorical(probs=assignment_probs))
+
 
     # Setup SVI
-    optimizer = Adam({"lr": 0.01})
+    optimizer = pyro.optim.ClippedAdam({"lr": 0.005, "betas": (0.9, 0.999)})
     svi = SVI(model_test, guide, optimizer, loss=Trace_ELBO())
 
     # Run optimization
@@ -672,7 +754,10 @@ def main():
         loss = svi.step(normalised_hsi)
         if i % 100 == 0:
             print(f"Iteration {i}/{num_iterations} : Loss = {loss}")
-
+            weights = pyro.param('assignment_weights').data
+            probs = F.relu(weights) / F.relu(weights).sum()
+            print(f"assignment_weights: {weights}")
+            print(f"assignment_probs: {probs}")
     # Get the optimized parameters
     params = {name: param.data.clone().detach() for name, param in pyro.get_param_store().items()}
 
@@ -685,14 +770,15 @@ def main():
             scale = params[f"{param_name}_scale"]
             posterior_samples[param_name] = dist.Normal(loc, scale).sample((1000,))
 
+    print(posterior_samples)
     # Generate posterior predictive samples
-    posterior_predictive = Predictive(model_test, posterior_samples)(normalised_hsi)
+    #posterior_predictive = Predictive(model_test, posterior_samples)(normalised_hsi)
     
     # Plot results
-    plt.figure(figsize=(8,10))
-    data = az.from_pyro(posterior=posterior_samples, prior=prior, posterior_predictive=posterior_predictive)
-    az.plot_trace(data)
-    plt.savefig("./Results/posterior_svi.png")
+    # plt.figure(figsize=(8,10))
+    # data = az.from_pyro(posterior=posterior_samples, prior=prior, posterior_predictive=posterior_predictive)
+    # az.plot_trace(data)
+    # plt.savefig("./Results/posterior_svi.png")
 
 
     # pyro.primitives.enable_validation(is_validate=True)
