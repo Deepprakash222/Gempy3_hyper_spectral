@@ -1,11 +1,9 @@
-import os
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.colors import ListedColormap
 import arviz as az
 import pandas as pd
-import argparse
-
+import os
 import torch
 import torch.nn.functional as F
 import pyro
@@ -27,20 +25,71 @@ from sklearn.manifold import TSNE
 from sklearn.preprocessing import StandardScaler
 from sklearn.decomposition import PCA
 
+import argparse
+
 from sklearn.mixture import GaussianMixture
 from sklearn.mixture import BayesianGaussianMixture
 from sklearn.cluster import KMeans
+from model1 import model_test
+def cluster_acc(Y_pred, Y, ignore_label=None):
+    """ Rearranging the class labels of prediction so that it maximise the 
+        match class labels.
 
+    Args:
+        Y_pred (int): An array for predicted labels
+        Y (float): An array for true labels
+        ignore_label (int, optional): Laels to be ignored
 
+    Returns:
+        _type_: _description_
+    """
+    if ignore_label is not None:
+        index = Y!= ignore_label
+        Y=Y[index]
+        Y_pred=Y_pred[index]
+    from scipy.optimize import linear_sum_assignment as linear_assignment
+    assert Y_pred.shape == Y.shape
+    D = int((max(Y_pred.max(), Y.max())).item())
+    w = torch.zeros((D, D))
+    for i in range(Y_pred.shape[0]):
+        w[int(Y_pred[i].item())-1, int(Y[i].item())-1] += 1
+    ind = linear_assignment(w.max() - w)
+    return ind[0], ind[1], (w[ind[0], ind[1]]).sum() / Y_pred.shape[0], w
 
-def main(startval,endval,dimred):
+def TSNE_transformation(data, label, filename):
+    from sklearn.manifold import TSNE
+    model = TSNE(n_components=2, random_state=0)
+    transformed_data = model.fit_transform(data) 
+    colors = ['black', 'red', 'green', 'blue', 'yellow', 'purple', 'orange']
+    plt.figure(figsize=(10,8))
+    plt.scatter(transformed_data[:,0],transformed_data[:,1],c= label, cmap=ListedColormap(colors[1:]))
+    # Add axis labels
+    plt.xlabel('Component 1')
+    plt.ylabel('Component 2')
+
+    # Create a legend
+    legend_labels = np.unique(label)
+    
+    handles = [plt.Line2D([0], [0], marker='o', color='w', markerfacecolor=ListedColormap(colors[1:])(i/len(legend_labels)), markersize=10) for i in legend_labels]
+    plt.legend(handles, legend_labels, title="Labels")
+    plt.savefig(filename)
+    
+# def find_MAP(geo_model, posterior_sample_dict,sample_size):
+#     for i in range(sample_size):
+#         log_posterior_unnormalized = 0
+#         for key, values in posterior_sample_dict:
+#                 log_posterior_unnormalized += 
+    
+def main(startval, endval, dimred, numlayers):
     '''
     This function defines a model which uses hyperspectral data, applies clustering methods to find cluster information and then uses Bayesian Modelling to model a posterior.
     The arguments passed to main are:
     startval: It defines the starting X column value of Hyperspectral data.
     endval: It defines the end X column value of Hyperspectral data.
     dimred: Defines the type of dimensionality reduction user wants to follow .Currently either pca or tsne.
+    
     '''
+    print("This is dev3")
     # Load .mat file
     SalinasA= np.array(scipy.io.loadmat('./HSI_Salinas/SalinasA.mat')['salinasA'])
     SalinasA_corrected= np.array(scipy.io.loadmat('./HSI_Salinas/SalinasA_corrected.mat')['salinasA_corrected'])
@@ -55,9 +104,9 @@ def main(startval,endval,dimred):
         i=i+1
     
     ######################################################################
-    ## Arrange Data as concatationation of spacial co-ordinate and pixel values
+    ## Arrange Data as concatenation of spacial co-ordinate and pixel values
     ###########################################################################
-    H, W = SalinasA_gt.shape # get the shape of groud truth
+    H, W = SalinasA_gt.shape # get the shape of ground truth
     n_features = SalinasA_corrected.shape[2]+4 # get the number of features including co-ordinates and label
     
     # Create a dataset which has "X","Y","Z", "Label", and spectral channel information
@@ -80,7 +129,7 @@ def main(startval,endval,dimred):
     df_with_non_labelled_pixel = df_hsi.loc[(df_hsi['Label']!=0)]
     
     # Normalise along the spectral lines 
-    df_with_spectral_normalised = df_with_non_labelled_pixel
+    df_with_spectral_normalised = df_with_non_labelled_pixel.copy()
     df_with_spectral_normalised.iloc[:, 4:] = df_with_spectral_normalised.iloc[:, 4:].apply(zscore,axis=1)
     
     
@@ -96,67 +145,64 @@ def main(startval,endval,dimred):
     ###########################################################################
     ## Obtain the preprocessed data
     ###########################################################################
-    normalised_data = df_with_spectral_normalised.loc[(df_with_spectral_normalised["X"]>=startval)&(df_with_spectral_normalised["X"]<=endval)]
+    normalised_data = df_with_spectral_normalised.loc[(df_with_spectral_normalised["X"]>=18)&(df_with_spectral_normalised["X"]<=22)]
     normalised_hsi =torch.tensor(normalised_data.iloc[:,4:].to_numpy(), dtype=torch.float64)
+    
+    ## It is difficult to work with data in such a high dimensions, because the covariance matrix 
+    ## determinant quickly goes to zero even if eigen-values are in the range of 1e-3. Therefore it is advisable 
+    ## to fist apply dimensionality reduction to a lower dimensions
+    from sklearn.decomposition import PCA
+    pca = PCA(n_components=10)
+    transformed_hsi = pca.fit_transform(normalised_hsi)
+    normalised_hsi = torch.tensor(transformed_hsi, dtype=torch.float64)
     y_obs_label = torch.tensor(normalised_data.iloc[:,3].to_numpy(), dtype=torch.float64)
     
     ###########################################################################
     ## Apply Classical clustering methods to find different cluster information our data
     ###########################################################################
-    gm =gm = BayesianGaussianMixture(n_components=6, random_state=0).fit(normalised_hsi)
+    gm =gm = BayesianGaussianMixture(n_components=6, random_state=42).fit(normalised_hsi)
     
     # make the labels to start with 1 instead of 0
     gmm_label = gm.predict(normalised_hsi) +1 
+    gmm_label_order, y_obs_label_order, accuracy_init, _ = cluster_acc( gmm_label, y_obs_label)
+    
     
     # reaarange the label information so it is would be consistent with ground truth label
-    gmm_label2 = torch.zeros_like(y_obs_label)
-    gmm_label2[gmm_label==2]=6
-    gmm_label2[gmm_label==4]=5
-    gmm_label2[gmm_label==1]=4
-    gmm_label2[gmm_label==3]=3
-    gmm_label2[gmm_label==6]=2
-    gmm_label2[gmm_label==5]=1
+    gmm_label_rearranged = torch.tensor([y_obs_label_order[x-1] +1  for x in gmm_label], dtype=torch.float64)
     
+    #print(gmm_label_rearranged - y_obs_label)
+    
+    # gmm_label2 = torch.zeros_like(y_obs_label)
+    # gmm_label2[gmm_label==2]=6
+    # gmm_label2[gmm_label==4]=5
+    # gmm_label2[gmm_label==1]=4
+    # gmm_label2[gmm_label==3]=3
+    # gmm_label2[gmm_label==6]=2
+    # gmm_label2[gmm_label==5]=1
+    
+   
     # rearrange the mean and covariance accordingly too
-    mean_init, cov_init = gm.means_[[4,5,2,0,3,1]], gm.covariances_[[4,5,2,0,3,1]]
+    #rearrange_list = [4,5,2,0,3,1]
+    #rearrange_list = [3,4,2,0,5,1]
+    rearrange_list = y_obs_label_order
+    mean_init, cov_init = gm.means_[rearrange_list], gm.covariances_[rearrange_list]
+    ####################################TODO#################################################
+    #   Try to find the initial accuracy of classification
+    #########################################################################################
+    print("Intial accuracy\n", accuracy_init)
+    
     #################################TODO##################################################
     ## Apply different dimentionality reduction techniques and save the plot in Result file
     #######################################################################################
-    if(dimred=="pca"):
-        # Separate spatial coordinates and features
-        spatial_coords = normalised_data.iloc[:,0:3]
-        features = normalised_data.iloc[:,4:]
-        # Normalize the features
-        scaler = StandardScaler()
-        features_normalized = scaler.fit_transform(features)
-
-        # Apply PCA
-        pca = PCA(n_components=0.95,svd_solver="full")  # Keep 95% of variance
-        features_pca = pca.fit_transform(features_normalized)
-        print(f"Number of components kept: {pca.n_components_}")
-        print(f"Cumulative explained variance: {cumulative_variance_ratio[-1]:.4f}")
-        plt.figure(figsize=(10, 8))
-        plt.scatter(features_pca[:, 0], features_pca[:, 1], c=normalised_data.iloc[:,3].to_numpy(), cmap='viridis')
-        plt.xlabel('First Principal Component')
-        plt.ylabel('Second Principal Component')
-        plt.title('PCA with 0.96 variance accounted by 2 PCs')
-        plt.colorbar(label='Output Label')
-        #plt.show()
-        plt.savefig('./Results/PCA_redn.png')
+    # TSNE_transformation(data=normalised_data, label=gmm_label_rearranged, filename="./Results/tsne_gmm_label.png")
     if(dimred=="tsne"):
-        tsne = TSNE(n_components=2, random_state=42)
-        X_tsne = tsne.fit_transform(normalised_data.iloc[:,4:])
-        #tsne.kl_divergence_
-        plt.figure(figsize=(10, 8))
-        plt.scatter(X_tsne[:, 0], X_tsne[:, 1], c=normalised_data.iloc[:,3].to_numpy(), cmap='viridis')
-        plt.title('TSNE Reduction from 204 to 2 components')
-        plt.colorbar(label='Output Label')
-        #plt.show()
-        plt.savefig('./Results/TSNE_redn.png')
+        TSNE_transformation(data=normalised_data, label=gmm_label_rearranged, filename="./Results/tsne_gmm_label.png")
+    elif(dimred=="pca"):
+        PCA_transformation(data=normalised_data, label=gmm_label_rearranged, filename="./Results/pca_gmm_label.png")
     ######################################################################################
     ## Apply Classical clustering methods to find different cluster information our data
     ######################################################################################
-    
+  
     geo_model_test = gp.create_geomodel(
     project_name='Gempy_abc_Test',
     extent=[0, 86, -10, 10, -83, 0],
@@ -266,6 +312,7 @@ def main(startval,endval,dimred):
     plt.savefig("./Results/Prior_model.png")
     
     # Label information need to be in same order as it is created in gempy model
+    
     y_obs_label = 7 - y_obs_label
     
     ################################################################################
@@ -306,60 +353,128 @@ def main(startval,endval,dimred):
     
     # geo_model_test.interpolation_options.uni_degree = 0
     # geo_model_test.interpolation_options.mesh_extraction = False
-    geo_model_test.interpolation_options.sigmoid_slope = 30
+    geo_model_test.interpolation_options.sigmoid_slope = 40
     
-    
-    @config_enumerate
-    def model_test(obs_data):
-        """
-        This Pyro model represents the probabilistic aspects of the geological model.
-        It defines a prior distribution for the top layer's location and
-        computes the thickness of the geological layer as an observed variable.
-        """
-        # Define prior for the top layer's location
-        prior_mean_surface_1 = sp_coords_copy_test[11, 2]
-        prior_mean_surface_2 = sp_coords_copy_test[14, 2]
-        prior_mean_surface_3 = sp_coords_copy_test[5, 2]
-        prior_mean_surface_4 = sp_coords_copy_test[0, 2]
+    factor=0.01
+    test_list=[]
+    test_list.append({"update":"interface_data","id":11, "direction":"Z", "prior_distribution":"normal","normal":{"mean":torch.tensor(3.2,dtype=torch.float64), "std":torch.tensor(0.02,dtype=torch.float64)}})
+    test_list.append({"update":"interface_data","id":14, "direction":"Z", "prior_distribution":"normal","normal":{"mean":torch.tensor(2.3,dtype=torch.float64), "std":torch.tensor(0.02,dtype=torch.float64)}})
+    test_list.append({"update":"interface_data","id":5, "direction":"Z", "prior_distribution":"normal","normal":{"mean":torch.tensor(1.25,dtype=torch.float64), "std":torch.tensor(0.02,dtype=torch.float64)}})
+    test_list.append({"update":"interface_data","id":0, "direction":"Z", "prior_distribution":"normal","normal":{"mean":torch.tensor(0.0,dtype=torch.float64), "std":torch.tensor(0.02,dtype=torch.float64)}})
 
-        mu_surface_1 = pyro.sample('mu_1', dist.Normal(prior_mean_surface_1, torch.tensor(0.2, dtype=torch.float64)))
-        mu_surface_2 = pyro.sample('mu_2', dist.Normal(prior_mean_surface_2, torch.tensor(0.2, dtype=torch.float64)))
-        mu_surface_3 = pyro.sample('mu_3', dist.Normal(prior_mean_surface_3, torch.tensor(0.2, dtype=torch.float64)))
-        mu_surface_4 = pyro.sample('mu_4', dist.Normal(prior_mean_surface_4, torch.tensor(0.2, dtype=torch.float64)))
-        #print(mu_surface_1, mu_surface_2)
-        # Ensure that mu_surface_1 is greater than mu_surface_2
-        pyro.sample('mu_1 < 0', dist.Delta(torch.tensor(1.0, dtype=torch.float64)), obs=(mu_surface_1 < 3.7))
-        pyro.sample('mu_1 > mu_2', dist.Delta(torch.tensor(1.0, dtype=torch.float64)), obs=(mu_surface_1 > mu_surface_2))
-        pyro.sample('mu_2 > -38.5', dist.Delta(torch.tensor(1.0, dtype=torch.float64)), obs=(mu_surface_2 > 1.775))
-        pyro.sample('mu_3 < -38.5', dist.Delta(torch.tensor(1.0, dtype=torch.float64)), obs=(mu_surface_3 < 1.4))
-        pyro.sample('mu_3 > -61.5', dist.Delta(torch.tensor(1.0, dtype=torch.float64)), obs=(mu_surface_3 > 0.625))
-        pyro.sample('mu_4 < -61.5', dist.Delta(torch.tensor(1.0, dtype=torch.float64)), obs=(mu_surface_4 < 0.625))
-        pyro.sample('mu_4 > -83', dist.Delta(torch.tensor(1.0, dtype=torch.float64)), obs=(mu_surface_4 > - 0.2 ))
+    #@config_enumerate
+                
+    
+    ################################################################################
+    # Prior
+    ################################################################################
+    pyro.set_rng_seed(42)
+    prior = Predictive(model_test, num_samples=10)(normalised_hsi,test_list,geo_model_test,mean_init,cov_init,factor)
+    # Key to avoid
+    #avoid_key = ['mu_1 < 0','mu_1 > mu_2','mu_2 > -38.5', 'mu_3 < -38.5','mu_3 > -61.4','mu_4 < -61.5', 'mu_4 > -83']
+    avoid_key = ['mu_1 < 0','mu_1 > mu_2','mu_2 > mu_3', 'mu_3 > mu_4' , 'mu_4 > -83']
+    # Create sub-dictionary without the avoid_key
+    prior = dict((key, value) for key, value in prior.items() if key not in avoid_key)
+    data = az.from_pyro(prior=prior)
+    
+    ################################################################################
+    # Posterior 
+    ################################################################################
+
+    
+    pyro.primitives.enable_validation(is_validate=True)
+    nuts_kernel = NUTS(model_test, step_size=0.0085, adapt_step_size=True, target_accept_prob=0.9, max_tree_depth=10, init_strategy=init_to_mean)
+    mcmc = MCMC(nuts_kernel, num_samples=150, warmup_steps=50, disable_validation=False)
+    mcmc.run(normalised_hsi,test_list,geo_model_test,mean_init,cov_init,factor)
+    
+    posterior_samples = mcmc.get_samples()
+    posterior_predictive = Predictive(model_test, posterior_samples)(normalised_hsi,test_list,geo_model_test,mean_init,cov_init,factor)
+    data = az.from_pyro(posterior=mcmc, prior=prior, posterior_predictive=posterior_predictive)
+    
+    # Find the MAP value
+    
+    unnormalise_posterior_value={}
+    unnormalise_posterior_value["log_prior_geo_list"]=[]
+    unnormalise_posterior_value["log_prior_hsi_list"]=[]
+    unnormalise_posterior_value["log_likelihood_list"]=[]
+    unnormalise_posterior_value["log_posterior_list"]=[]
+    # log_prior_geo_list=[]
+    # log_prior_hsi_list=[]
+    # log_likelihood_list=[]
+    # log_posterior_list=[]
+    keys_list = list(posterior_samples.keys())
+   
+    prior_mean_surface_1 = sp_coords_copy_test[11, 2]
+    prior_mean_surface_2 = sp_coords_copy_test[14, 2]
+    prior_mean_surface_3 = sp_coords_copy_test[5, 2]
+    prior_mean_surface_4 = sp_coords_copy_test[0, 2]
+    
+    store_accuracy=[]
+    #number of layers returned from model
+    num_layers=4
+    RV_mu_post ={}
+    RV_sampledata_post ={} 
+    # Create a dictionary which can store all the random variable of our model
+
+    for i in range(posterior_samples["mu_1"].shape[0]):
+        for j in range(0,num_layers):
+            RV_mu_post["mu_"+ str(j+1)] = posterior_samples[keys_list[j]][i]
+        for j, k in zip(range(1, 7), range(4, 10)):
+            RV_sampledata_post["post_sample_data"+ str(j)] = posterior_samples[keys_list[k]][i]
+
+    
+    #for i in range(posterior_samples["mu_1"].shape[0]):
+        # post_mu_1 = posterior_samples[keys_list[0]][i]
+        # post_mu_2 = posterior_samples[keys_list[1]][i]
+        # post_mu_3 = posterior_samples[keys_list[2]][i]
+        # post_mu_4 = posterior_samples[keys_list[3]][i]
+        # post_sample_data1 = posterior_samples[keys_list[4]][i]
+        # post_sample_data2 = posterior_samples[keys_list[5]][i]
+        # post_sample_data3 = posterior_samples[keys_list[6]][i]
+        # post_sample_data4 = posterior_samples[keys_list[7]][i]
+        # post_sample_data5 = posterior_samples[keys_list[8]][i]
+        # post_sample_data6 = posterior_samples[keys_list[9]][i]
+        
+        
+        # Calculate the log probability of the value
+        log_prior_geo = dist.Normal(prior_mean_surface_1, torch.tensor(0.2, dtype=torch.float64)).log_prob(RV_mu_post["mu_1"])+\
+                dist.Normal(prior_mean_surface_2, torch.tensor(0.2, dtype=torch.float64)).log_prob(RV_mu_post["mu_2"])+\
+                dist.Normal(prior_mean_surface_3, torch.tensor(0.2, dtype=torch.float64)).log_prob(RV_mu_post["mu_3"])+\
+                dist.Normal(prior_mean_surface_4, torch.tensor(0.2, dtype=torch.float64)).log_prob(RV_mu_post["mu_4"])
+    
+        # log_prior_geo = dist.Normal(prior_mean_surface_1, torch.tensor(0.2, dtype=torch.float64)).log_prob(post_mu_1)+\
+        #             dist.Normal(prior_mean_surface_2, torch.tensor(0.2, dtype=torch.float64)).log_prob(post_mu_2)+\
+        #             dist.Normal(prior_mean_surface_3, torch.tensor(0.2, dtype=torch.float64)).log_prob(post_mu_3)+\
+        #             dist.Normal(prior_mean_surface_4, torch.tensor(0.2, dtype=torch.float64)).log_prob(post_mu_4)
+        
         # Update the model with the new top layer's location
         interpolation_input = geo_model_test.interpolation_input
+        counter1=1
+        for interpolation_input_data in test_list[:num_layers]:
+            interpolation_input.surface_points.sp_coords = torch.index_put(interpolation_input.surface_points.sp_coords,(torch.tensor([interpolation_input_data["id"]]), torch.tensor([2])), RV_mu_post["post_mu_"+ str(counter1)])
+            counter1=counter1+1
         
+        # interpolation_input.surface_points.sp_coords = torch.index_put(
+        #     interpolation_input.surface_points.sp_coords,
+        #     (torch.tensor([11]), torch.tensor([2])),
+        #     post_mu_1
+        # )
+        # interpolation_input.surface_points.sp_coords = torch.index_put(
+        #     interpolation_input.surface_points.sp_coords,
+        #     (torch.tensor([14]), torch.tensor([2])),
+        #     post_mu_2
+        # )
         
-        interpolation_input.surface_points.sp_coords = torch.index_put(
-            interpolation_input.surface_points.sp_coords,
-            (torch.tensor([11]), torch.tensor([2])),
-            mu_surface_1
-        )
-        interpolation_input.surface_points.sp_coords = torch.index_put(
-            interpolation_input.surface_points.sp_coords,
-            (torch.tensor([14]), torch.tensor([2])),
-            mu_surface_2
-        )
-        
-        interpolation_input.surface_points.sp_coords = torch.index_put(
-            interpolation_input.surface_points.sp_coords,
-            (torch.tensor([5]), torch.tensor([2])),
-            mu_surface_3
-        )
-        interpolation_input.surface_points.sp_coords = torch.index_put(
-            interpolation_input.surface_points.sp_coords,
-            (torch.tensor([0]), torch.tensor([2])),
-            mu_surface_4
-        )
+        # interpolation_input.surface_points.sp_coords = torch.index_put(
+        #     interpolation_input.surface_points.sp_coords,
+        #     (torch.tensor([5]), torch.tensor([2])),
+        #     post_mu_3
+        # )
+        # interpolation_input.surface_points.sp_coords = torch.index_put(
+        #     interpolation_input.surface_points.sp_coords,
+        #     (torch.tensor([0]), torch.tensor([2])),
+        #     post_mu_4
+        # )
         
         
         #print("interpolation_input",interpolation_input.surface_points.sp_coords)
@@ -375,74 +490,112 @@ def main(startval,endval,dimred):
         # Compute and observe the thickness of the geological layer
         
         custom_grid_values = geo_model_test.solutions.octrees_output[0].last_output_center.custom_grid_values
-        lambda_ = 10.0
+        accuracy_intermediate = torch.sum(torch.round(custom_grid_values) == y_obs_label) / y_obs_label.shape[0]
+        store_accuracy.append(accuracy_intermediate)
+        lambda_ = 15.0
         loc_mean = torch.tensor(mean_init,dtype=torch.float64)
         loc_cov =  torch.tensor(cov_init, dtype=torch.float64)
-        class_label = F.softmax(-lambda_* (torch.tensor([1,2,3,4,5,6], dtype=torch.float64) - custom_grid_values.reshape(-1,1))**2, dim=1)
-        sample =[]
-        for i in range(loc_mean.shape[0]):
-            sample_data = pyro.sample("sample_data"+str(i+1), dist.MultivariateNormal(loc=loc_mean[i],covariance_matrix=loc_cov[i]))
-            sample.append(sample_data)
-        sample_tesnor = torch.stack(sample, dim=0)
+        #class_label = F.softmax(-lambda_* (torch.tensor([1,2,3,4,5,6], dtype=torch.float64) - custom_grid_values.reshape(-1,1))**2, dim=1)
+        pi_k = torch.mean(F.softmax(-lambda_* (torch.tensor([1,2,3,4,5,6], dtype=torch.float64) - custom_grid_values.reshape(-1,1))**2, dim=1),dim=0)
         
-        with pyro.plate('N='+str(obs_data.shape[0]), obs_data.shape[0]):
-            assignment = pyro.sample("assignment", dist.Categorical(class_label))
-            obs = pyro.sample("obs", dist.MultivariateNormal(loc=sample_tesnor[assignment],covariance_matrix=loc_cov[assignment]), obs=obs_data)
+        num_components = len(loc_mean)
+        log_prior_hsi = torch.tensor(0.0, dtype=torch.float64)
+        for l in range(num_components):
+            log_prior_hsi += dist.MultivariateNormal(loc=loc_mean[l],covariance_matrix=loc_cov[l]).log_prob(RV_sampledata_post["post_sample_data"+ str(l+1)]) 
+
+    
+        # log_prior_hsi = dist.MultivariateNormal(loc=loc_mean[0],covariance_matrix=loc_cov[0]).log_prob(post_sample_data1)+\
+        #                 dist.MultivariateNormal(loc=loc_mean[1],covariance_matrix=loc_cov[1]).log_prob(post_sample_data2)+\
+        #                 dist.MultivariateNormal(loc=loc_mean[2],covariance_matrix=loc_cov[2]).log_prob(post_sample_data3)+\
+        #                 dist.MultivariateNormal(loc=loc_mean[3],covariance_matrix=loc_cov[3]).log_prob(post_sample_data4)+\
+        #                 dist.MultivariateNormal(loc=loc_mean[4],covariance_matrix=loc_cov[4]).log_prob(post_sample_data5)+\
+        #                 dist.MultivariateNormal(loc=loc_mean[5],covariance_matrix=loc_cov[5]).log_prob(post_sample_data6)
+        log_likelihood=torch.tensor(0.0, dtype=torch.float64)
+        for j1, k1 in zip(range(normalised_hsi.shape[0]), range(6)):
+            likelihood = pi_k[k1] *torch.exp(dist.MultivariateNormal(loc=RV_sampledata_post["post_sample_data"+ str(k1+1)],covariance_matrix= factor * loc_cov[k1]).log_prob(normalised_hsi[j1])) 
+            log_likelihood += torch.log(likelihood)
+        # for j in range(normalised_hsi.shape[0]):
+        #     likelihood = pi_k[0] *torch.exp(dist.MultivariateNormal(loc=post_sample_data1,covariance_matrix= factor * loc_cov[0]).log_prob(normalised_hsi[j])) +\
+        #                  pi_k[1] *torch.exp(dist.MultivariateNormal(loc=post_sample_data2,covariance_matrix= factor * loc_cov[1]).log_prob(normalised_hsi[j]))+\
+        #                  pi_k[2] *torch.exp(dist.MultivariateNormal(loc=post_sample_data3,covariance_matrix= factor * loc_cov[2]).log_prob(normalised_hsi[j])) +\
+        #                  pi_k[2] *torch.exp(dist.MultivariateNormal(loc=post_sample_data4,covariance_matrix= factor * loc_cov[3]).log_prob(normalised_hsi[j])) +\
+        #                  pi_k[4] *torch.exp(dist.MultivariateNormal(loc=post_sample_data5,covariance_matrix= factor * loc_cov[4]).log_prob(normalised_hsi[j])) +\
+        #                  pi_k[5] *torch.exp(dist.MultivariateNormal(loc=post_sample_data6,covariance_matrix= factor * loc_cov[5]).log_prob(normalised_hsi[j])) 
+        #     log_likelihood += torch.log(likelihood)
         
-    ################################################################################
-    # Prior
-    ################################################################################
-    pyro.set_rng_seed(42)
-    prior = Predictive(model_test, num_samples=10)(normalised_hsi)
-    # Key to avoid
-    avoid_key = ['mu_1 < 0','mu_1 > mu_2','mu_2 > -38.5', 'mu_3 < -38.5','mu_3 > -61.4','mu_4 < -61.5', 'mu_4 > -83']
-    # Create sub-dictionary without the avoid_key
-    prior = dict((key, value) for key, value in prior.items() if key not in avoid_key)
-    data = az.from_pyro(prior=prior)
+        # log_prior_geo_list.append(log_prior_geo)
+        # log_prior_hsi_list.append(log_prior_hsi)
+        # log_likelihood_list.append(log_likelihood)
+        # log_posterior_list.append(log_prior_geo + log_prior_hsi + log_likelihood)
+        unnormalise_posterior_value["log_prior_geo_list"].append(log_prior_geo)
+        unnormalise_posterior_value["log_prior_hsi_list"].append(log_prior_hsi)
+        unnormalise_posterior_value["log_likelihood_list"].append(log_likelihood)
+        unnormalise_posterior_value["log_posterior_list"].append(log_prior_geo + log_prior_hsi + log_likelihood)
     
-    ################################################################################
-    # Posterior 
-    ################################################################################
-    pyro.primitives.enable_validation(is_validate=True)
-    nuts_kernel = NUTS(model_test, step_size=0.0085, adapt_step_size=True, target_accept_prob=0.9, max_tree_depth=10, init_strategy=init_to_mean)
-    mcmc = MCMC(nuts_kernel, num_samples=100, warmup_steps=50, disable_validation=False)
-    mcmc.run(normalised_hsi)
+    MAP_sample_index=torch.argmax(torch.tensor(unnormalise_posterior_value["log_posterior_list"]))
+    plt.figure(figsize=(10,8))
+    plt.plot(torch.arange(len(store_accuracy))+1, torch.tensor(store_accuracy))
+    plt.savefig("./Results/accuracy.png")
     
-    posterior_samples = mcmc.get_samples()
-    posterior_predictive = Predictive(model_test, posterior_samples)(normalised_hsi)
-    data = az.from_pyro(posterior=mcmc, prior=prior, posterior_predictive=posterior_predictive)
+    # Extract acceptance probabilities
+    
+    # # Extract the diagnostics
+    # diagnostics = mcmc.diagnostics()
+    # accept_probs = diagnostics["accept_prob"]
+
+    # # Plot the acceptance probabilities
+    # plt.plot(accept_probs)
+    # plt.xlabel('Iteration')
+    # plt.ylabel('Acceptance Probability')
+    # plt.title('Acceptance Probabilities of NUTS Sampler')
+    # plt.savefig("./Results/Acceptance_Probabilities_of_NUTS_Sampler")
     
     ################################################################################
     #  Try Plot the data and save it as file in output folder
     ################################################################################
-    mu_1_mean = posterior_samples["mu_1"].mean()
-    mu_2_mean = posterior_samples["mu_2"].mean()
-    mu_3_mean = posterior_samples["mu_3"].mean()
-    mu_4_mean = posterior_samples["mu_4"].mean()
+    # mu_1_post = posterior_samples["mu_1"].mean()
+    # mu_2_post = posterior_samples["mu_2"].mean()
+    # mu_3_post = posterior_samples["mu_3"].mean()
+    # mu_4_post = posterior_samples["mu_4"].mean()
+    RV_mu_post2 = {}
+    num_layers=4
+    for i in range(1,num_layers):
+        RV_mu_post2["mu_"+str(i)+"_post"] = posterior_samples["mu_"+str(i)][MAP_sample_index]
+
+    # mu_1_post = posterior_samples["mu_1"][MAP_sample_index]
+    # mu_2_post = posterior_samples["mu_2"][MAP_sample_index]
+    # mu_3_post = posterior_samples["mu_3"][MAP_sample_index]
+    # mu_4_post = posterior_samples["mu_4"][MAP_sample_index]
     
     # # Update the model with the new top layer's location
-    interpolation_input = geo_model_test.interpolation_input
-    interpolation_input.surface_points.sp_coords = torch.index_put(
-        interpolation_input.surface_points.sp_coords,
-        (torch.tensor([11]), torch.tensor([2])),
-        posterior_samples["mu_1"].mean()
-    )
-    interpolation_input.surface_points.sp_coords = torch.index_put(
-        interpolation_input.surface_points.sp_coords,
-        (torch.tensor([14]), torch.tensor([2])),
-        posterior_samples["mu_2"].mean()
-    )
+    counter2=1
+    for interpolation_input_data in test_list[:num_layers]:
+        interpolation_input.surface_points.sp_coords = torch.index_put(interpolation_input.surface_points.sp_coords,(torch.tensor([interpolation_input_data["id"]]), torch.tensor([2])), RV_mu_post2["mu_"+str(counter2)+"_post"])
+        counter2=counter2+1
 
-    interpolation_input.surface_points.sp_coords = torch.index_put(
-            interpolation_input.surface_points.sp_coords,
-            (torch.tensor([5]), torch.tensor([2])),
-            posterior_samples["mu_3"].mean()
-        )
-    interpolation_input.surface_points.sp_coords = torch.index_put(
-            interpolation_input.surface_points.sp_coords,
-            (torch.tensor([0]), torch.tensor([2])),
-            posterior_samples["mu_4"].mean()
-        )
+
+    # interpolation_input = geo_model_test.interpolation_input
+    # interpolation_input.surface_points.sp_coords = torch.index_put(
+    #     interpolation_input.surface_points.sp_coords,
+    #     (torch.tensor([11]), torch.tensor([2])),
+    #     mu_1_post
+    # )
+    # interpolation_input.surface_points.sp_coords = torch.index_put(
+    #     interpolation_input.surface_points.sp_coords,
+    #     (torch.tensor([14]), torch.tensor([2])),
+    #     mu_2_post
+    # )
+
+    # interpolation_input.surface_points.sp_coords = torch.index_put(
+    #         interpolation_input.surface_points.sp_coords,
+    #         (torch.tensor([5]), torch.tensor([2])),
+    #         mu_3_post
+    #     )
+    # interpolation_input.surface_points.sp_coords = torch.index_put(
+    #         interpolation_input.surface_points.sp_coords,
+    #         (torch.tensor([0]), torch.tensor([2])),
+    #         mu_4_post
+    #     )
         
     #print("interpolation_input",interpolation_input.surface_points.sp_coords)
 
@@ -570,14 +723,23 @@ def main(startval,endval,dimred):
 
     gp.set_custom_grid(geo_model_test_post.grid, xyz_coord=xyz_coord)
     gp.compute_model(geo_model_test_post)
+    
+    custom_grid_values_post = geo_model_test_post.solutions.octrees_output[0].last_output_center.custom_grid_values
+    ####################################TODO#################################################
+    #   Try to find the final accuracy to check if it has improved the classification
+    #########################################################################################
+    accuracy_final = torch.sum(torch.round(torch.tensor(custom_grid_values_post)) == y_obs_label) / y_obs_label.shape[0]
+    print("accuracy_init: ", accuracy_init , "accuracy_final: ", accuracy_final)
+    
     picture_test_post = gpv.plot_2d(geo_model_test_post, cell_number=5, legend='force')
     plt.savefig("./Results/Posterior_model.png")
     
-    
+    #TSNE_transformation(data=normalised_data, label=custom_grid_values_post, filename="./Results/tsne_gempy_final_label.png")
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='pass values using command line')
     parser.add_argument('--startval', metavar='startcol', required=True, type=int, help='start x column value')
     parser.add_argument('--endval', metavar='endcol', required=True, type=int, help='end x column value')
     parser.add_argument('--dimred', metavar='dimred', type=str, help='type of dimensionality reduction')
+    parser.add_argument('--numlayers', metavar='numlayers', type=int, help='numbers of layers')
     args = parser.parse_args()
-    main(startval=args.startval,endval=args.endval,dimred=args.dimred)
+    main(startval=args.startval,endval=args.endval,dimred=args.dimred,numlayers=args.numlayers)
