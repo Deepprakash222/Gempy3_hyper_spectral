@@ -305,7 +305,7 @@ def main():
     ###########################################################################
     ## Apply Classical clustering methods to find different cluster information our data
     ###########################################################################
-    gm =gm = BayesianGaussianMixture(n_components=cluster, random_state=42, reg_covar=1e-6 ).fit(normalised_hsi)
+    gm = BayesianGaussianMixture(n_components=cluster, random_state=42, reg_covar=1e-6 ).fit(normalised_hsi)
     
     # make the labels to start with 1 instead of 0
     gmm_label = gm.predict(normalised_hsi) +1 
@@ -740,6 +740,18 @@ def main():
     #     post_mu_2 = posterior_samples[keys_list[1]][i]
     #     post_mu_3 = posterior_samples[keys_list[2]][i]
     #     post_mu_4 = posterior_samples[keys_list[3]][i]
+    #     post_sample_mean1 = posterior_samples[keys_list[4]][i]
+    #     post_sample_mean2 = posterior_samples[keys_list[5]][i]
+    #     post_sample_mean3 = posterior_samples[keys_list[6]][i]
+    #     post_sample_mean4 = posterior_samples[keys_list[7]][i]
+    #     post_sample_mean5 = posterior_samples[keys_list[8]][i]
+    #     post_sample_mean6 = posterior_samples[keys_list[9]][i]
+    #     post_sample_eig_cov1 = posterior_samples[keys_list[10]][i]
+    #     post_sample_eig_cov2 = posterior_samples[keys_list[11]][i]
+    #     post_sample_eig_cov3 = posterior_samples[keys_list[12]][i]
+    #     post_sample_eig_cov4 = posterior_samples[keys_list[13]][i]
+    #     post_sample_eig_cov5 = posterior_samples[keys_list[14]][i]
+    #     post_sample_eig_cov6 = posterior_samples[keys_list[15]][i]
         
     #     # Calculate the log probability of the value
         
@@ -792,33 +804,33 @@ def main():
     #     #print("accuracy_intermediate", accuracy_intermediate)
     #     store_accuracy.append(accuracy_intermediate)
     #     lambda_ = 5.0
-    #     # loc_mean = torch.tensor(mean_init,dtype=torch.float64)
-    #     # loc_cov =  torch.tensor(cov_init, dtype=torch.float64)
-    #     z_nk = F.softmax(-lambda_* (torch.tensor([1,2,3,4,5,6], dtype=torch.float64) - custom_grid_values.reshape(-1,1))**2, dim=1)
-    #     #class_label = torch.mean(F.softmax(-lambda_* (torch.tensor([1,2,3,4,5,6], dtype=torch.float64) - custom_grid_values.reshape(-1,1))**2, dim=1),dim=0)
         
-    #     N_k = torch.sum(z_nk,axis=0)
-    #     N = len(custom_grid_values)
-    #     pi_k = N_k /N
-    #     mean = []
-    #     cov = []
-    #     for i in range(z_nk.shape[1]):
-    #         mean_k = torch.sum( z_nk[:,i][:,None] * normalised_hsi, axis=0)/ N_k[i]
-    #         #cov_k = torch.sum( (normalised_hsi - mean_k.reshape((-1,1))) (normalised_hsi - mean_k).T )
-    #         cov_k = torch.zeros((mean_k.shape[0],mean_k.shape[0]), dtype=torch.float64)
-    #         for j in range(z_nk.shape[0]):
-    #              cov_k +=  z_nk[j,i]* torch.matmul((normalised_hsi[j,:] - mean_k).reshape((-1,1)) ,(normalised_hsi[j,:] - mean_k).reshape((1,-1)))
-    #         mean.append(mean_k)
-    #         cov_k=cov_k/N_k[i] #+ 1e-3 * torch.diag(torch.ones(cov_k.shape[0],dtype=torch.float64))
-    #         cov.append(cov_k)
-    #     mean_tensor = torch.stack(mean, dim=0)
-    #     cov_tensor = torch.stack(cov,dim=0)
+    #     #z_nk = F.softmax(-lambda_* (torch.tensor([1,2,3,4,5,6], dtype=torch.float64) - custom_grid_values.reshape(-1,1))**2, dim=1)
+    #     pi_k = torch.mean(F.softmax(-lambda_* (torch.tensor([1,2,3,4,5,6], dtype=torch.float64) - custom_grid_values.reshape(-1,1))**2, dim=1),dim=0)
         
-    #     # We can also calculate the accuracy using the mean and covariance to see if our GMM model has imroved or not
-    #     gamma_nk = torch.zeros(z_nk.shape)
-
+    #     loc_mean = torch.tensor(mean_init,dtype=torch.float64)
+    #     loc_cov =  torch.tensor(cov_init, dtype=torch.float64)
+    #     D = loc_mean.shape[1]
+    #     log_prior_hsi_mean =torch.tensor(0.0, dtype=torch.float64)
+    #     for j in range(6):
+    #         log_prior_hsi_mean = log_prior_hsi_mean + dist.MultivariateNormal(loc=loc_mean[i],covariance_matrix=loc_cov[i]).log_prob(posterior_samples[keys_list[4+j]][i])
+    #     # log_prior_hsi_mean = dist.MultivariateNormal(loc=loc_mean[0],covariance_matrix=loc_cov[0]).log_prob(post_sample_mean1)+\
+    #     #                 dist.MultivariateNormal(loc=loc_mean[1],covariance_matrix=loc_cov[1]).log_prob(post_sample_mean2)+\
+    #     #                 dist.MultivariateNormal(loc=loc_mean[2],covariance_matrix=loc_cov[2]).log_prob(post_sample_mean3)+\
+    #     #                 dist.MultivariateNormal(loc=loc_mean[3],covariance_matrix=loc_cov[3]).log_prob(post_sample_mean4)+\
+    #     #                 dist.MultivariateNormal(loc=loc_mean[4],covariance_matrix=loc_cov[4]).log_prob(post_sample_mean5)+\
+    #     #                 dist.MultivariateNormal(loc=loc_mean[5],covariance_matrix=loc_cov[5]).log_prob(post_sample_mean6)
+    #     # for covariance
+    #     log_prior_hsi_cov =torch.tensor(0.0, dtype=torch.float64)
+    #     sample_cov = []
+    #     for j in range(6):
+    #         eigen_values_init = torch.tensor(eigen_values_list[j],dtype=torch.float64)
+    #         eigen_vectors_data = torch.tensor(eigen_vector_list[j], dtype=torch.float64)
+    #         log_prior_hsi_cov = log_prior_hsi_cov + log_prior_hsi_mean + dist.MultivariateNormal(loc=torch.sqrt(eigen_values_init),covariance_matrix=torch.eye(D, dtype=torch.float64)).log_prob(posterior_samples[keys_list[10+j]][i])
+    #         sample_cov_data = eigen_vectors_data @ torch.diag(posterior_samples[keys_list[10+j]][i])**2 @ eigen_vectors_data.T
+    #         sample_cov.append(sample_cov_data)
+            
     #     log_likelihood=torch.tensor(0.0, dtype=torch.float64)
-
     #     for j in range(normalised_hsi.shape[0]):
     #         likelihood = pi_k[0] *torch.exp(dist.MultivariateNormal(loc=mean_tensor[0],covariance_matrix= cov_tensor[0]).log_prob(normalised_hsi[j])) +\
     #                      pi_k[1] *torch.exp(dist.MultivariateNormal(loc=mean_tensor[1],covariance_matrix= cov_tensor[1]).log_prob(normalised_hsi[j]))+\
@@ -847,11 +859,11 @@ def main():
     # MAP_sample_index=torch.argmax(torch.tensor(unnormalise_posterior_value["log_posterior_list"]))
     # plt.figure(figsize=(10,8))
     # plt.plot(torch.arange(len(store_accuracy))+1, torch.tensor(store_accuracy))
-    # plt.savefig("./Results_without_prior_gmm/accuracy.png")
+    # plt.savefig("./Result_with_wishart/accuracy.png")
     
     # plt.figure(figsize=(10,8))
     # plt.plot(torch.arange(len(store_accuracy))+1, torch.tensor(store_gmm_accuracy))
-    # plt.savefig("./Results_without_prior_gmm/accuracy_gmm.png")
+    # plt.savefig("./Result_with_wishart/accuracy_gmm.png")
     
     ################################################################################
     #  Try Plot the data and save it as file in output folder
@@ -866,23 +878,23 @@ def main():
     interpolation_input.surface_points.sp_coords = torch.index_put(
         interpolation_input.surface_points.sp_coords,
         (torch.tensor([11]), torch.tensor([2])),
-        posterior_samples["mu_1"].mean()
+        mu_1_mean
     )
     interpolation_input.surface_points.sp_coords = torch.index_put(
         interpolation_input.surface_points.sp_coords,
         (torch.tensor([14]), torch.tensor([2])),
-        posterior_samples["mu_2"].mean()
+        mu_2_mean
     )
 
     interpolation_input.surface_points.sp_coords = torch.index_put(
-            interpolation_input.surface_points.sp_coords,
-            (torch.tensor([5]), torch.tensor([2])),
-            posterior_samples["mu_3"].mean()
+        interpolation_input.surface_points.sp_coords,
+        (torch.tensor([5]), torch.tensor([2])),
+        mu_3_mean
         )
     interpolation_input.surface_points.sp_coords = torch.index_put(
-            interpolation_input.surface_points.sp_coords,
-            (torch.tensor([0]), torch.tensor([2])),
-            posterior_samples["mu_4"].mean()
+        interpolation_input.surface_points.sp_coords,
+        (torch.tensor([0]), torch.tensor([2])),
+        mu_4_mean
         )
         
     #print("interpolation_input",interpolation_input.surface_points.sp_coords)
@@ -1021,8 +1033,9 @@ def main():
     
     picture_test_post = gpv.plot_2d(geo_model_test_post, cell_number=5, legend='force')
     plt.savefig("./Result_with_wishart/Posterior_model.png")
-    
-    TSNE_transformation(data=normalised_data, label=custom_grid_values_post, filename="./Result_with_wishart/tsne_gempy_final_label.png")
+    # Reduced data with final label from gempy
+    if plot_dimred=="tsne":
+        TSNE_transformation(data=normalised_data, label=custom_grid_values_post, filename="./Result_with_wishart/tsne_gempy_final_label.png")
     
 if __name__ == "__main__":
     # Your main script code starts here
