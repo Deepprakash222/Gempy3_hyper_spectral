@@ -718,7 +718,7 @@ def main():
             #print(obs_data.shape, mean_tensor[assignment].shape,cov_tensor[assignment].shape)
             obs = pyro.sample("obs", dist.MultivariateNormal(loc=mean_tensor[assignment],covariance_matrix = cov_tensor[assignment]), obs=obs_data)
     
-    filename_bayes_graph = directory_path + "\Bayesian_graph.png"
+    filename_bayes_graph = directory_path + "/Bayesian_graph.png"
     dot = pyro.render_model(model_test, model_args=(normalised_hsi,),render_distributions=True,filename=filename_bayes_graph)
     
     ################################################################################

@@ -41,7 +41,7 @@ parser.add_argument('--plot_dimred', metavar='plot_dimred', type=str , default="
 parser.add_argument('--prior_number_samples', metavar='prior_number_samples', type=int , default=100, help='number of samples for prior')
 parser.add_argument('--posterior_number_samples', metavar='posterior_number_samples', type=int , default=150, help='number of samples for posterior')
 parser.add_argument('--posterior_warmup_steps', metavar='posterior_warmup_steps', type=int , default=50, help='number of  warmup steps for posterior')
-parser.add_argument('--directory_path', metavar='directory_path', type=str , default="./Results_without_prior_gmm_KSL", help='name of the directory in which result should be stored')
+parser.add_argument('--directory_path', metavar='directory_path', type=str , default="./Results_with_prior_mean_KSL", help='name of the directory in which result should be stored')
 
 def cluster_acc(Y_pred, Y, ignore_label=None):
     """ Rearranging the class labels of prediction so that it maximise the 
@@ -276,7 +276,18 @@ def main():
     ## Obtain the preprocessed data
     ###########################################################################
     normalised_hsi =torch.tensor(df_with_spectral_normalised.to_numpy(), dtype=torch.float64)
-
+    
+    if dimred=="pca":
+        from sklearn.decomposition import PCA
+        pca = PCA(n_components=4)
+        transformed_hsi = pca.fit_transform(normalised_hsi)
+        normalised_hsi = torch.tensor(transformed_hsi, dtype=torch.float64)
+        
+    if dimred =="tsne":
+        #######################TODO#####################
+        ################################################
+        print("TSNE hasn't implemented for dimensionality reduction yet")
+        exit()
     ## It is difficult to work with data in such a high dimensions, because the covariance matrix 
     ## determinant quickly goes to zero even if eigen-values are in the range of 1e-3. Therefore it is advisable 
     ## to fist apply dimensionality reduction to a lower dimensions
@@ -376,7 +387,8 @@ def main():
     # geo_model_test.interpolation_options.mesh_extraction = False
     geo_model_test.interpolation_options.sigmoid_slope = 40
     store_accuracy=[]
-    
+    factor=100 #0.01 , 100
+    alpha = 100
     @config_enumerate
     def model_test(obs_data):
         """
@@ -441,19 +453,17 @@ def main():
         N_k = torch.sum(z_nk,axis=0)
         N = len(custom_grid_values)
         pi_k = N_k /N
-        mean = []
-        cov = []
-        for i in range(z_nk.shape[1]):
-            mean_k = torch.sum( z_nk[:,i][:,None] * obs_data, axis=0)/ N_k[i]
-            #cov_k = torch.sum( (normalised_hsi - mean_k.reshape((-1,1))) (normalised_hsi - mean_k).T )
-            cov_k = torch.zeros((mean_k.shape[0],mean_k.shape[0]),dtype=torch.float64)
-            for j in range(z_nk.shape[0]):
-                 cov_k +=  z_nk[j,i]* torch.matmul((obs_data[j,:] - mean_k).reshape((-1,1)) ,(obs_data[j,:] - mean_k).reshape((1,-1)))
-            mean.append(mean_k)
-            cov_k=cov_k/N_k[i] + 1e-8 * torch.diag(torch.ones(cov_k.shape[0],dtype=torch.float64))
-            cov.append(cov_k)
-        mean_tensor = torch.stack(mean, dim=0)
-        cov_tensor = torch.stack(cov,dim=0)
+        loc_mean = torch.tensor(mean_init,dtype=torch.float64)
+        loc_cov =  torch.tensor(cov_init, dtype=torch.float64)
+        cov_matrix = alpha * torch.eye(loc_mean[0].shape[0],dtype=torch.float64)
+        
+        sample =[]
+        for i in range(loc_mean.shape[0]):
+            #sample_data = pyro.sample("sample_data"+str(i+1), dist.MultivariateNormal(loc=loc_mean[i],covariance_matrix=loc_cov[i]))
+            sample_data = pyro.sample("sample_data"+str(i+1), dist.MultivariateNormal(loc=loc_mean[i],covariance_matrix=cov_matrix))
+            sample.append(sample_data)
+        mean_tensor = torch.stack(sample, dim=0)
+        cov_tensor = loc_cov
         
         #cov_likelihood = 5.0 * torch.eye(loc_cov[0].shape[0], dtype=torch.float64)
         
@@ -467,6 +477,7 @@ def main():
     ################################################################################
     # Prior
     ################################################################################
+    
     pyro.set_rng_seed(42)
     prior = Predictive(model_test, num_samples=prior_number_samples)(normalised_hsi)
     # Key to avoid
@@ -537,6 +548,7 @@ def main():
     
     unnormalise_posterior_value={}
     unnormalise_posterior_value["log_prior_geo_list"]=[]
+    unnormalise_posterior_value["log_prior_hsi_list"]=[]
     unnormalise_posterior_value["log_likelihood_list"]=[]
     unnormalise_posterior_value["log_posterior_list"]=[]
     # log_prior_geo_list=[]
@@ -603,7 +615,7 @@ def main():
         # loc_cov =  torch.tensor(cov_init, dtype=torch.float64)
         z_nk = F.softmax(-lambda_* (torch.linspace(1,cluster,cluster, dtype=torch.float64) - custom_grid_values.reshape(-1,1))**2, dim=1)
         #class_label = torch.mean(F.softmax(-lambda_* (torch.tensor([1,2,3,4,5,6], dtype=torch.float64) - custom_grid_values.reshape(-1,1))**2, dim=1),dim=0)
-        
+        exit()
         N_k = torch.sum(z_nk,axis=0)
         N = len(custom_grid_values)
         pi_k = N_k /N
