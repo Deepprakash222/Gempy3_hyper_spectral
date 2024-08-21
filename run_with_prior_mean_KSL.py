@@ -563,6 +563,7 @@ def main():
    
     
     for i in range(posterior_samples["mu_1"].shape[0]):
+        
         post_mu_1 = posterior_samples[keys_list[0]][i]
         post_mu_2 = posterior_samples[keys_list[1]][i]
         post_mu_3 = posterior_samples[keys_list[2]][i]
