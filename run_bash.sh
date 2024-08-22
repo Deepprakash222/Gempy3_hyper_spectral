@@ -3,13 +3,13 @@
 
 ### File / path where STDOUT will be written, the %J is the job id
 
-#SBATCH --output=./Results/SalinasA_%J.txt
+#SBATCH --output=./Results_with_prior_mean_KSL/KSL_%J.txt
 
 ### Request the time you need for execution. The full format is D-HH:MM:SS
 ### You must at least specify minutes or days and hours and may add or
 ### leave out any other parameters
 
-#SBATCH --time=2:00:00
+#SBATCH --time=3:00:00
 
 ### Request all CPUs on one node
 #SBATCH --nodes=1
@@ -30,4 +30,4 @@
 
 source /home/jt925938/.bashrc
 conda activate gempy_pyro
-python run.py
+python run_with_prior_mean_KSL.py

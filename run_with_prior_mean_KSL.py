@@ -389,6 +389,7 @@ def main():
     store_accuracy=[]
     factor=100 #0.01 , 100
     alpha = 100
+    
     @config_enumerate
     def model_test(obs_data):
         """
@@ -567,7 +568,11 @@ def main():
         post_mu_1 = posterior_samples[keys_list[0]][i]
         post_mu_2 = posterior_samples[keys_list[1]][i]
         post_mu_3 = posterior_samples[keys_list[2]][i]
-        
+        post_sample_data1 = posterior_samples[keys_list[3]][i]
+        post_sample_data2 = posterior_samples[keys_list[4]][i]
+        post_sample_data3 = posterior_samples[keys_list[5]][i]
+        post_sample_data4 = posterior_samples[keys_list[6]][i]
+       
         # Calculate the log probability of the value
         
         log_prior_geo = dist.Normal(prior_mean_surface_1, torch.tensor(0.2, dtype=torch.float64)).log_prob(post_mu_1)+\
@@ -616,23 +621,19 @@ def main():
         # loc_cov =  torch.tensor(cov_init, dtype=torch.float64)
         z_nk = F.softmax(-lambda_* (torch.linspace(1,cluster,cluster, dtype=torch.float64) - custom_grid_values.reshape(-1,1))**2, dim=1)
         #class_label = torch.mean(F.softmax(-lambda_* (torch.tensor([1,2,3,4,5,6], dtype=torch.float64) - custom_grid_values.reshape(-1,1))**2, dim=1),dim=0)
-        exit()
+        
         N_k = torch.sum(z_nk,axis=0)
         N = len(custom_grid_values)
         pi_k = N_k /N
-        mean = []
-        cov = []
-        for i in range(z_nk.shape[1]):
-            mean_k = torch.sum( z_nk[:,i][:,None] * normalised_hsi, axis=0)/ N_k[i]
-            #cov_k = torch.sum( (normalised_hsi - mean_k.reshape((-1,1))) (normalised_hsi - mean_k).T )
-            cov_k = torch.zeros((mean_k.shape[0],mean_k.shape[0]), dtype=torch.float64)
-            for j in range(z_nk.shape[0]):
-                 cov_k +=  z_nk[j,i]* torch.matmul((normalised_hsi[j,:] - mean_k).reshape((-1,1)) ,(normalised_hsi[j,:] - mean_k).reshape((1,-1)))
-            mean.append(mean_k)
-            cov_k=cov_k/N_k[i] + 1e-8 * torch.diag(torch.ones(cov_k.shape[0],dtype=torch.float64))
-            cov.append(cov_k)
-        mean_tensor = torch.stack(mean, dim=0)
-        cov_tensor = torch.stack(cov,dim=0)
+        
+        loc_mean = torch.tensor(mean_init,dtype=torch.float64)
+        loc_cov =  torch.tensor(cov_init, dtype=torch.float64)
+        cov_matrix = alpha * torch.eye(loc_mean[0].shape[0],dtype=torch.float64)
+        
+        log_prior_hsi = dist.MultivariateNormal(loc=loc_mean[0],covariance_matrix=cov_matrix).log_prob(post_sample_data1)+\
+                        dist.MultivariateNormal(loc=loc_mean[1],covariance_matrix=cov_matrix).log_prob(post_sample_data2)+\
+                        dist.MultivariateNormal(loc=loc_mean[2],covariance_matrix=cov_matrix).log_prob(post_sample_data3)+\
+                        dist.MultivariateNormal(loc=loc_mean[3],covariance_matrix=cov_matrix).log_prob(post_sample_data4)
         
         # We can also calculate the accuracy using the mean and covariance to see if our GMM model has imroved or not
         gamma_nk = torch.zeros(z_nk.shape)
@@ -640,12 +641,12 @@ def main():
         log_likelihood=torch.tensor(0.0, dtype=torch.float64)
 
         for j in range(normalised_hsi.shape[0]):
-            likelihood = pi_k[0] *torch.exp(dist.MultivariateNormal(loc=mean_tensor[0],covariance_matrix= cov_tensor[0]).log_prob(normalised_hsi[j])) +\
-                         pi_k[1] *torch.exp(dist.MultivariateNormal(loc=mean_tensor[1],covariance_matrix= cov_tensor[1]).log_prob(normalised_hsi[j]))+\
-                         pi_k[2] *torch.exp(dist.MultivariateNormal(loc=mean_tensor[2],covariance_matrix= cov_tensor[2]).log_prob(normalised_hsi[j])) 
-                        
-            for k in range(gamma_nk.shape[1]):
-                gamma_nk[j][k] = (pi_k[k] * torch.exp(dist.MultivariateNormal(loc=mean_tensor[k],covariance_matrix= cov_tensor[k]).log_prob(normalised_hsi[j]))) / likelihood
+            likelihood = pi_k[0] *torch.exp(dist.MultivariateNormal(loc=post_sample_data1,covariance_matrix= loc_cov[0]).log_prob(normalised_hsi[j])) +\
+                         pi_k[1] *torch.exp(dist.MultivariateNormal(loc=post_sample_data2,covariance_matrix= loc_cov[1]).log_prob(normalised_hsi[j]))+\
+                         pi_k[2] *torch.exp(dist.MultivariateNormal(loc=post_sample_data3,covariance_matrix= loc_cov[2]).log_prob(normalised_hsi[j]))+\
+                         pi_k[3] *torch.exp(dist.MultivariateNormal(loc=post_sample_data4,covariance_matrix= loc_cov[3]).log_prob(normalised_hsi[j]))
+            # for k in range(gamma_nk.shape[1]):
+            #     gamma_nk[j][k] = (pi_k[k] * torch.exp(dist.MultivariateNormal(loc=mean_tensor[k],covariance_matrix= cov_tensor[k]).log_prob(normalised_hsi[j]))) / likelihood
                 
             log_likelihood += torch.log(likelihood)
         
@@ -657,7 +658,7 @@ def main():
         # log_posterior_list.append(log_prior_geo + log_prior_hsi + log_likelihood)
         unnormalise_posterior_value["log_prior_geo_list"].append(log_prior_geo)
         unnormalise_posterior_value["log_likelihood_list"].append(log_likelihood)
-        unnormalise_posterior_value["log_posterior_list"].append(log_prior_geo + log_likelihood)
+        unnormalise_posterior_value["log_posterior_list"].append(log_prior_geo + log_prior_hsi +log_likelihood)
     
     MAP_sample_index=torch.argmax(torch.tensor(unnormalise_posterior_value["log_posterior_list"]))
     
@@ -819,37 +820,37 @@ def main():
     ###################################TODO###################################################
     # store the weights, mean, and covariance of Gaussian mixture model
     ##########################################################################################
-    lambda_ = 20.0
-    # loc_mean = torch.tensor(mean_init,dtype=torch.float64)
-    # loc_cov =  torch.tensor(cov_init, dtype=torch.float64)
-    z_nk = F.softmax(-lambda_* (torch.linspace(1,cluster,cluster, dtype=torch.float64) - torch.tensor(custom_grid_values_post).reshape(-1,1))**2, dim=1)
-    #class_label = torch.mean(F.softmax(-lambda_* (torch.tensor([1,2,3,4,5,6], dtype=torch.float64) - custom_grid_values.reshape(-1,1))**2, dim=1),dim=0)
+    # lambda_ = 20.0
+    # # loc_mean = torch.tensor(mean_init,dtype=torch.float64)
+    # # loc_cov =  torch.tensor(cov_init, dtype=torch.float64)
+    # z_nk = F.softmax(-lambda_* (torch.linspace(1,cluster,cluster, dtype=torch.float64) - torch.tensor(custom_grid_values_post).reshape(-1,1))**2, dim=1)
+    # #class_label = torch.mean(F.softmax(-lambda_* (torch.tensor([1,2,3,4,5,6], dtype=torch.float64) - custom_grid_values.reshape(-1,1))**2, dim=1),dim=0)
     
-    N_k = torch.sum(z_nk,axis=0)
-    N = len(custom_grid_values)
-    pi_k = N_k /N
-    mean = []
-    cov = []
-    for i in range(z_nk.shape[1]):
-        mean_k = torch.sum( z_nk[:,i][:,None] * normalised_hsi, axis=0)/ N_k[i]
-        #cov_k = torch.sum( (normalised_hsi - mean_k.reshape((-1,1))) (normalised_hsi - mean_k).T )
-        cov_k = torch.zeros((mean_k.shape[0],mean_k.shape[0]), dtype=torch.float64)
-        for j in range(z_nk.shape[0]):
-                cov_k +=  z_nk[j,i]* torch.matmul((normalised_hsi[j,:] - mean_k).reshape((-1,1)) ,(normalised_hsi[j,:] - mean_k).reshape((1,-1)))
-        mean.append(mean_k.detach().numpy())
-        cov_k=cov_k/N_k[i] #+ 1e-6 * torch.diag(torch.ones(cov_k.shape[0],dtype=torch.float64))
-        cov.append(cov_k.detach().numpy())
-    mean_tensor = np.stack(mean, axis=0)
-    cov_tensor = np.stack(cov,axis=0)
+    # N_k = torch.sum(z_nk,axis=0)
+    # N = len(custom_grid_values)
+    # pi_k = N_k /N
+    # mean = []
+    # cov = []
+    # for i in range(z_nk.shape[1]):
+    #     mean_k = torch.sum( z_nk[:,i][:,None] * normalised_hsi, axis=0)/ N_k[i]
+    #     #cov_k = torch.sum( (normalised_hsi - mean_k.reshape((-1,1))) (normalised_hsi - mean_k).T )
+    #     cov_k = torch.zeros((mean_k.shape[0],mean_k.shape[0]), dtype=torch.float64)
+    #     for j in range(z_nk.shape[0]):
+    #             cov_k +=  z_nk[j,i]* torch.matmul((normalised_hsi[j,:] - mean_k).reshape((-1,1)) ,(normalised_hsi[j,:] - mean_k).reshape((1,-1)))
+    #     mean.append(mean_k.detach().numpy())
+    #     cov_k=cov_k/N_k[i] #+ 1e-6 * torch.diag(torch.ones(cov_k.shape[0],dtype=torch.float64))
+    #     cov.append(cov_k.detach().numpy())
+    # mean_tensor = np.stack(mean, axis=0)
+    # cov_tensor = np.stack(cov,axis=0)
     
-    gmm_data ={}
-    gmm_data["weights"]=pi_k.detach().numpy().tolist()
-    gmm_data["means"] = mean_tensor.tolist()
-    gmm_data["covariances"] = cov_tensor.tolist()
-    # Save to file
-    filename_gmm_data = directory_path + "/gmm_data.json"
-    with open(filename_gmm_data, "w") as json_file:
-        json.dump(gmm_data, json_file)
+    # gmm_data ={}
+    # gmm_data["weights"]=pi_k.detach().numpy().tolist()
+    # gmm_data["means"] = mean_tensor.tolist()
+    
+    # # Save to file
+    # filename_gmm_data = directory_path + "/gmm_data.json"
+    # with open(filename_gmm_data, "w") as json_file:
+    #     json.dump(gmm_data, json_file)
     ##########################################################################################
     
     picture_test_post = gpv.plot_2d(geo_model_test_post, cell_number=5, legend='force')
