@@ -38,10 +38,12 @@ parser.add_argument('--endval', metavar='endcol', type=int, default=21, help='en
 parser.add_argument('--cluster', metavar='cluster', type=int, default=6, help='total number of cluster')
 parser.add_argument('--dimred', metavar='dimred', type=str , default="pca", help='type of dimensionality reduction')
 parser.add_argument('--plot_dimred', metavar='plot_dimred', type=str , default="tsne", help='type of dimensionality reduction for plotting after data is alread reduced in a smaller dimension')
-parser.add_argument('--prior_number_samples', metavar='prior_number_samples', type=int , default=100, help='number of samples for prior')
-parser.add_argument('--posterior_number_samples', metavar='posterior_number_samples', type=int , default=150, help='number of samples for posterior')
-parser.add_argument('--posterior_warmup_steps', metavar='posterior_warmup_steps', type=int , default=50, help='number of  warmup steps for posterior')
-parser.add_argument('--directory_path', metavar='directory_path', type=str , default="./Results", help='name of the directory in which result should be stored')
+parser.add_argument('--prior_number_samples', metavar='prior_number_samples', type=int , default=5, help='number of samples for prior')
+parser.add_argument('--posterior_number_samples', metavar='posterior_number_samples', type=int , default=4, help='number of samples for posterior')
+parser.add_argument('--posterior_warmup_steps', metavar='posterior_warmup_steps', type=int , default=0, help='number of  warmup steps for posterior')
+parser.add_argument('--directory_path', metavar='directory_path', type=str , default="./Results_test", help='name of the directory in which result should be stored')
+parser.add_argument('--posterior_num_chain', metavar='posterior_num_chain', type=int , default=1, help='number of chain')
+
 def cluster_acc(Y_pred, Y, ignore_label=None):
     """ Rearranging the class labels of prediction so that it maximise the 
         match class labels.
@@ -261,7 +263,7 @@ def main():
     prior_number_samples = args.prior_number_samples
     posterior_number_samples = args.posterior_number_samples
     posterior_warmup_steps = args.posterior_warmup_steps
-    
+    posterior_num_chain = args.posterior_num_chain
     directory_path = args.directory_path
     # Check if the directory exists
     if not os.path.exists(directory_path):
@@ -382,7 +384,8 @@ def main():
     ## Apply different dimentionality reduction techniques and save the plot in Result file
     #######################################################################################
     if plot_dimred =="tsne":
-        TSNE_transformation(data=normalised_data, label=gmm_label_rearranged, filename="./Results/tsne_gmm_label.png")
+        filename_tsne = directory_path + "/tsne_gmm_label.png"
+        TSNE_transformation(data=normalised_data, label=gmm_label_rearranged, filename=filename_tsne)
     
     ######################################################################################
     ## Apply Classical clustering methods to find different cluster information our data
@@ -645,10 +648,8 @@ def main():
             mean_data = pyro.sample("mean_data"+str(i+1), dist.MultivariateNormal(loc=loc_mean[i],covariance_matrix=cov_matrix))
             mean.append(mean_data)
             
-            
         for i in range(loc_mean.shape[0]):
             cov_k = torch.zeros((loc_mean.shape[1],loc_mean.shape[1]),dtype=torch.float64)
-            
             for j in range(z_nk.shape[0]):
                  cov_k +=  z_nk[j,i]* torch.matmul((obs_data[j,:] - mean[i]).reshape((-1,1)) ,(obs_data[j,:] - mean[i]).reshape((1,-1)))
             cov_k=cov_k/N_k[i] #+ 1e-3 * torch.diag(torch.ones(cov_k.shape[0],dtype=torch.float64))
@@ -683,7 +684,7 @@ def main():
     ################################################################################
     pyro.primitives.enable_validation(is_validate=True)
     nuts_kernel = NUTS(model_test, step_size=0.0085, adapt_step_size=True, target_accept_prob=0.9, max_tree_depth=10, init_strategy=init_to_mean)
-    mcmc = MCMC(nuts_kernel, num_samples=posterior_number_samples, warmup_steps=posterior_warmup_steps, disable_validation=False)
+    mcmc = MCMC(nuts_kernel, num_samples=posterior_number_samples, warmup_steps=posterior_warmup_steps,num_chains=posterior_num_chain, disable_validation=False)
     mcmc.run(normalised_hsi)
     
     posterior_samples = mcmc.get_samples()
@@ -761,20 +762,22 @@ def main():
     store_accuracy=[]
     
     for i in range(posterior_samples["mu_1"].shape[0]):
-        post_mu_1 = posterior_samples[keys_list[0]][i]
-        post_mu_2 = posterior_samples[keys_list[1]][i]
-        post_mu_3 = posterior_samples[keys_list[2]][i]
-        post_mu_4 = posterior_samples[keys_list[3]][i]
-        post_sample_data1 = posterior_samples[keys_list[4]][i]
-        post_sample_data2 = posterior_samples[keys_list[5]][i]
-        post_sample_data3 = posterior_samples[keys_list[6]][i]
-        post_sample_data4 = posterior_samples[keys_list[7]][i]
-        post_sample_data5 = posterior_samples[keys_list[8]][i]
-        post_sample_data6 = posterior_samples[keys_list[9]][i]
+        
+        post_mu_1 = posterior_samples[keys_list[6]][i]
+        post_mu_2 = posterior_samples[keys_list[7]][i]
+        post_mu_3 = posterior_samples[keys_list[8]][i]
+        post_mu_4 = posterior_samples[keys_list[9]][i]
+        
+        post_sample_data1 = posterior_samples[keys_list[0]][i]
+        post_sample_data2 = posterior_samples[keys_list[1]][i]
+        post_sample_data3 = posterior_samples[keys_list[2]][i]
+        post_sample_data4 = posterior_samples[keys_list[3]][i]
+        post_sample_data5 = posterior_samples[keys_list[4]][i]
+        post_sample_data6 = posterior_samples[keys_list[5]][i]
         
         cov_tensor = torch.eye(post_sample_data1.shape[0],dtype=torch.float64)
         loc_mean = torch.tensor(mean_init,dtype=torch.float64)
-        loc_cov =  torch.tensor(cov_init, dtype=torch.float64)
+        #loc_cov =  torch.tensor(cov_init, dtype=torch.float64)
         # Calculate the log probability of the value
         
         log_prior_geo = dist.Normal(prior_mean_surface_1, torch.tensor(0.2, dtype=torch.float64)).log_prob(post_mu_1)+\
@@ -832,7 +835,7 @@ def main():
         store_accuracy.append(accuracy_intermediate)
         lambda_ = 15.0
         loc_mean = torch.tensor(mean_init,dtype=torch.float64)
-        loc_cov =  torch.tensor(cov_init, dtype=torch.float64)
+        #loc_cov =  torch.tensor(cov_init, dtype=torch.float64)
         cov_matrix = alpha * torch.eye(loc_mean[0].shape[0],dtype=torch.float64)
         z_nk = F.softmax(-lambda_* (torch.tensor([1,2,3,4,5,6], dtype=torch.float64) - custom_grid_values.reshape(-1,1))**2, dim=1)
         #pi_k = torch.mean(F.softmax(-lambda_* (torch.linspace(1,cluster,cluster, dtype=torch.float64) - custom_grid_values.reshape(-1,1))**2, dim=1),dim=0)
@@ -861,11 +864,10 @@ def main():
         for k in range(loc_mean.shape[0]):
             cov_k = torch.zeros((loc_mean.shape[1],loc_mean.shape[1]),dtype=torch.float64)
             for j in range(z_nk.shape[0]):
-                 cov_k +=  z_nk[j,i]* torch.matmul((normalised_hsi[j,:] - posterior_samples[keys_list[4+k]]).reshape((-1,1)) ,(normalised_hsi[j,:] - posterior_samples[keys_list[4+k]]).reshape((1,-1)))
-            cov_k=cov_k/N_k[i] #+ 1e-3 * torch.diag(torch.ones(cov_k.shape[0],dtype=torch.float64))
+                cov_k +=  z_nk[j,k]* torch.matmul((normalised_hsi[j,:] - posterior_samples[keys_list[k]][i]).reshape((-1,1)) ,(normalised_hsi[j,:] - posterior_samples[keys_list[k]][i]).reshape((1,-1)))
+            cov_k=cov_k/N_k[k] #+ 1e-3 * torch.diag(torch.ones(cov_k.shape[0],dtype=torch.float64))
             cov.append(cov_k)
         cov_tensor = torch.stack(cov,dim=0)
-        
         for j in range(normalised_hsi.shape[0]):
             likelihood = pi_k[0] *torch.exp(dist.MultivariateNormal(loc=post_sample_data1,covariance_matrix= cov_tensor[0]).log_prob(normalised_hsi[j])) +\
                          pi_k[1] *torch.exp(dist.MultivariateNormal(loc=post_sample_data2,covariance_matrix= cov_tensor[1]).log_prob(normalised_hsi[j]))+\
@@ -894,7 +896,8 @@ def main():
     MAP_sample_index=torch.argmax(torch.tensor(unnormalise_posterior_value["log_posterior_list"]))
     plt.figure(figsize=(10,8))
     plt.plot(torch.arange(len(store_accuracy))+1, torch.tensor(store_accuracy))
-    plt.savefig("./Results/accuracy.png")
+    filename_sample_accuracy = directory_path + "/accuracy.png"
+    plt.savefig(filename_sample_accuracy)
     
     # Extract acceptance probabilities
     
