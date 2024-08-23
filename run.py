@@ -42,7 +42,7 @@ parser.add_argument('--prior_number_samples', metavar='prior_number_samples', ty
 parser.add_argument('--posterior_number_samples', metavar='posterior_number_samples', type=int , default=4, help='number of samples for posterior')
 parser.add_argument('--posterior_warmup_steps', metavar='posterior_warmup_steps', type=int , default=0, help='number of  warmup steps for posterior')
 parser.add_argument('--directory_path', metavar='directory_path', type=str , default="./Results_test", help='name of the directory in which result should be stored')
-parser.add_argument('--posterior_num_chain', metavar='posterior_num_chain', type=int , default=1, help='number of chain')
+parser.add_argument('--posterior_num_chain', metavar='posterior_num_chain', type=int , default=2, help='number of chain')
 
 def cluster_acc(Y_pred, Y, ignore_label=None):
     """ Rearranging the class labels of prediction so that it maximise the 
@@ -688,6 +688,10 @@ def main():
     mcmc.run(normalised_hsi)
     
     posterior_samples = mcmc.get_samples()
+    sumarry = mcmc.summary()
+    filename_summarry = directory_path + "/sumarry.csv"
+    mcmc.write_csv(filename_summarry)
+    print(posterior_samples)
     posterior_predictive = Predictive(model_test, posterior_samples)(normalised_hsi)
     plt.figure(figsize=(8,10))
     data = az.from_pyro(posterior=mcmc, prior=prior, posterior_predictive=posterior_predictive)

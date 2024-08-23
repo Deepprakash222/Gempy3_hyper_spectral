@@ -8,3 +8,6 @@
      3. Prior on mean and covariance
 4. Automate the code wherever possible
 5. Add the model with Mean also along with Mode
+6. Add the sumarry report of posterior
+7. Store and plot data for each chain
+
