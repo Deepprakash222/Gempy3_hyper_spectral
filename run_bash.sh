@@ -3,13 +3,13 @@
 
 ### File / path where STDOUT will be written, the %J is the job id
 
-#SBATCH --output=./Results/Salinas_%J.txt
+#SBATCH --output=./Results_test/Salinas_%J.txt
 
 ### Request the time you need for execution. The full format is D-HH:MM:SS
 ### You must at least specify minutes or days and hours and may add or
 ### leave out any other parameters
 
-#SBATCH --time=9:00:00
+#SBATCH --time=0:30:00
 
 ### Request all CPUs on one node
 #SBATCH --nodes=1
@@ -18,7 +18,7 @@
 #SBATCH --ntasks=32
 
 #SBATCH --cpus-per-task=1
-#####RSBATCH --gres=gpu:volta:2
+#SBATCH --gres=gpu:2
 
 ### Specify your mail address
 #SBATCH --mail-user=ravi@aices.rwth-aachen.de

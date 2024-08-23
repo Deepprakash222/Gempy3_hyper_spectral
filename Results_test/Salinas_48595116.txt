@@ -1,0 +1,42 @@
+/home/jt925938/anaconda3/envs/gempy_pyro/lib/python3.10/site-packages/gempy/core/data/geo_model.py:164: UserWarning: You are using refinement and passing a regular grid. The resolution of the regular grid will be overwritten
+  warnings.warn(
+/home/jt925938/anaconda3/envs/gempy_pyro/lib/python3.10/site-packages/gempy/core/data/geo_model.py:164: UserWarning: You are using refinement and passing a regular grid. The resolution of the regular grid will be overwritten
+  warnings.warn(
+/home/jt925938/anaconda3/envs/gempy_pyro/lib/python3.10/site-packages/arviz/stats/density_utils.py:488: UserWarning: Your data appears to have a single value or no finite values
+  warnings.warn("Your data appears to have a single value or no finite values")
+Setting Backend To: AvailableBackends.numpy
+Script started...
+Directory './Results_test' already exists.
+Intial accuracy
+ tensor(0.7667)
+Setting Backend To: AvailableBackends.numpy
+Setting Backend To: AvailableBackends.numpy
+Active grids: ['custom']
+Setting Backend To: AvailableBackends.numpy
+Setting Backend To: AvailableBackends.numpy
+Setting Backend To: AvailableBackends.PYTORCH
+Condition number: 1552.5713177622447.
+Condition number: 1561.0753486386316.
+Condition number: 1528.713522298755.
+Condition number: 1557.4256189434748.
+Condition number: 1550.7614917079773.
+Condition number: 1562.9273026210021.
+Condition number: 1551.1818599007033.
+Warmup [1]:   0%|          | 0/4 [00:00, ?it/s]
+Warmup [2]:   0%|          | 0/4 [00:00, ?it/s][A
+
+Warmup [3]:   0%|          | 0/4 [00:00, ?it/s][A[A
+
+
+Warmup [4]:   0%|          | 0/4 [00:00, ?it/s][A[A[A
+Warmup [2]:  25%|██▌       | 1/4 [00:18, 18.80s/it, step size=2.13e-03, acc. prob=0.714][AWarmup [1]:  25%|██▌       | 1/4 [02:18, 138.51s/it, step size=2.13e-03, acc. prob=0.114]
+
+
+Warmup [4]:  25%|██▌       | 1/4 [03:22, 202.23s/it, step size=2.13e-03, acc. prob=0.487][A[A[A
+Warmup [2]:  50%|█████     | 2/4 [04:51, 168.09s/it, step size=2.13e-03, acc. prob=0.571][A
+
+
+Warmup [4]:  50%|█████     | 2/4 [12:09, 393.26s/it, step size=2.13e-03, acc. prob=0.402][A[A[A
+Warmup [2]:  75%|███████▌  | 3/4 [14:52, 365.90s/it, step size=2.13e-03, acc. prob=0.394][A
+
+Warmup [3]:  25%|██▌       | 1/4 [18:53, 1133.22s/it, step size=1.06e-03, acc. prob=0.599][A[AWarmup [1]:  50%|█████     | 2/4 [21:01, 717.81s/it, step size=2.13e-03, acc. prob=0.206]slurmstepd: error: *** JOB 48595116 ON n23g0015 CANCELLED AT 2024-08-23T15:13:03 DUE TO TIME LIMIT ***

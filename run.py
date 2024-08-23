@@ -265,6 +265,7 @@ def main():
     posterior_warmup_steps = args.posterior_warmup_steps
     posterior_num_chain = args.posterior_num_chain
     directory_path = args.directory_path
+    
     # Check if the directory exists
     if not os.path.exists(directory_path):
         # Create the directory if it does not exist
@@ -687,11 +688,12 @@ def main():
     mcmc = MCMC(nuts_kernel, num_samples=posterior_number_samples, warmup_steps=posterior_warmup_steps,num_chains=posterior_num_chain, disable_validation=False)
     mcmc.run(normalised_hsi)
     
-    posterior_samples = mcmc.get_samples()
-    sumarry = mcmc.summary()
-    filename_summarry = directory_path + "/sumarry.csv"
-    mcmc.write_csv(filename_summarry)
+    posterior_samples = mcmc.get_samples(group_by_chain=True)
+    # sumarry = mcmc.summary()
+    # filename_summarry = directory_path + "/sumarry.csv"
+    # mcmc.write_csv()
     print(posterior_samples)
+    exit()
     posterior_predictive = Predictive(model_test, posterior_samples)(normalised_hsi)
     plt.figure(figsize=(8,10))
     data = az.from_pyro(posterior=mcmc, prior=prior, posterior_predictive=posterior_predictive)
