@@ -1,0 +1,255 @@
+/home/jt925938/anaconda3/envs/gempy_pyro/lib/python3.10/site-packages/gempy/core/data/geo_model.py:164: UserWarning: You are using refinement and passing a regular grid. The resolution of the regular grid will be overwritten
+  warnings.warn(
+/home/jt925938/anaconda3/envs/gempy_pyro/lib/python3.10/site-packages/gempy/core/data/geo_model.py:164: UserWarning: You are using refinement and passing a regular grid. The resolution of the regular grid will be overwritten
+  warnings.warn(
+/home/jt925938/anaconda3/envs/gempy_pyro/lib/python3.10/site-packages/arviz/stats/density_utils.py:488: UserWarning: Your data appears to have a single value or no finite values
+  warnings.warn("Your data appears to have a single value or no finite values")
+Setting Backend To: AvailableBackends.numpy
+Script started...
+Directory './Results_test' already exists.
+Intial accuracy
+ tensor(0.7056)
+Setting Backend To: AvailableBackends.numpy
+Setting Backend To: AvailableBackends.numpy
+Active grids: ['custom']
+Setting Backend To: AvailableBackends.numpy
+Setting Backend To: AvailableBackends.numpy
+Setting Backend To: AvailableBackends.PYTORCH
+Condition number: 1552.5713177622447.
+Condition number: 1564.113927065495.
+Condition number: 1550.328011020355.
+Condition number: 1567.8499577275186.
+Condition number: 1563.8062245523531.
+Condition number: 1530.5071580414829.
+Condition number: 1545.8676262046527.
+Condition number: 1533.4088914188933.
+Condition number: 1564.7148595338806.
+Condition number: 1528.7496277198868.
+Condition number: 1531.349367406809.
+Condition number: 1547.987348038563.
+Condition number: 1542.903811065865.
+Condition number: 1528.771628974383.
+Condition number: 1553.1637777990532.
+Condition number: 1567.6016896262327.
+Condition number: 1544.0784229781946.
+Condition number: 1564.235762031708.
+Condition number: 1549.2137176903611.
+Condition number: 1554.4064161897168.
+Condition number: 1546.2652532924972.
+Condition number: 1564.5442939631014.
+Condition number: 1538.2047847667918.
+Condition number: 1542.9470299005059.
+Condition number: 1559.8482732219115.
+Condition number: 1539.316732832239.
+Condition number: 1543.7768044152167.
+Condition number: 1528.6743431722005.
+Condition number: 1564.0949799750247.
+Condition number: 1555.2447291349647.
+Condition number: 1541.836234475377.
+Condition number: 1550.5315235973583.
+Condition number: 1514.1954245165332.
+Condition number: 1541.6468396775435.
+Condition number: 1527.5338885254919.
+Condition number: 1560.5789169262978.
+Condition number: 1560.879284567425.
+Condition number: 1539.8080325253804.
+Condition number: 1543.9911229344812.
+Condition number: 1535.357535916507.
+Condition number: 1544.9344675679881.
+Condition number: 1559.682878317596.
+Condition number: 1555.822054229497.
+Condition number: 1548.8843292876086.
+Condition number: 1565.416240668822.
+Condition number: 1535.678097219552.
+Condition number: 1538.1831270689115.
+Condition number: 1543.9000292065286.
+Condition number: 1535.5076937364736.
+Condition number: 1555.8230457688626.
+Condition number: 1526.3760228645374.
+Condition number: 1560.3486148092757.
+Condition number: 1534.7124779887204.
+Condition number: 1532.7456655201422.
+Condition number: 1541.8009742025927.
+Condition number: 1572.5550351048203.
+Condition number: 1562.5550719651544.
+Condition number: 1545.9093024628417.
+Condition number: 1559.6700983617814.
+Condition number: 1524.1991804147788.
+Condition number: 1526.526211911871.
+Condition number: 1571.075065299236.
+Condition number: 1565.0124579209821.
+Condition number: 1548.0944414019525.
+Condition number: 1567.9079932754462.
+Condition number: 1534.0689523022447.
+Condition number: 1525.3690099312496.
+Condition number: 1535.3894138931325.
+Condition number: 1528.895083412201.
+Condition number: 1558.8907510886313.
+Condition number: 1554.4056594101924.
+Condition number: 1554.872696501827.
+Condition number: 1578.8117181223292.
+Condition number: 1576.419355689236.
+Condition number: 1539.6798664971097.
+Condition number: 1543.4002384749817.
+Condition number: 1550.0784626466.
+Condition number: 1511.8471753126132.
+Condition number: 1567.911222015543.
+Condition number: 1552.8366832353772.
+Condition number: 1577.5790019477627.
+Condition number: 1567.0041004897043.
+Condition number: 1558.2411736540057.
+Condition number: 1533.7822412083428.
+Condition number: 1566.44590876049.
+Condition number: 1552.055623705351.
+Condition number: 1555.3393399173283.
+Condition number: 1557.3675896645423.
+Condition number: 1531.555814884353.
+Condition number: 1533.6951154750984.
+Condition number: 1530.6230590551688.
+Condition number: 1548.3529749411912.
+Condition number: 1548.9876031871127.
+Condition number: 1537.8150792796368.
+Condition number: 1539.624948509859.
+Condition number: 1553.2998752085778.
+Condition number: 1551.394206333028.
+Condition number: 1535.633474339324.
+Condition number: 1577.8832464495974.
+Condition number: 1510.3788752426944.
+Condition number: 1538.5963738094451.
+Condition number: 1558.4668285635978.
+Warmup [1]:   0%|          | 0/200 [00:00, ?it/s]
+Warmup [2]:   0%|          | 0/200 [00:00, ?it/s][A
+
+Warmup [3]:   0%|          | 0/200 [00:00, ?it/s][A[A
+
+
+Warmup [4]:   0%|          | 0/200 [00:00, ?it/s][A[A[AWarmup [1]:   0%|          | 1/200 [00:44, 44.29s/it, step size=1.10e-02, acc. prob=0.154]Warmup [1]:   1%|          | 2/200 [00:47, 20.17s/it, step size=8.79e-04, acc. prob=0.077]
+
+Warmup [3]:   0%|          | 1/200 [01:55, 115.41s/it, step size=3.63e-03, acc. prob=0.309][A[A
+Warmup [2]:   0%|          | 1/200 [02:21, 141.94s/it, step size=8.65e-03, acc. prob=0.024][A
+Warmup [2]:   1%|          | 2/200 [02:38, 68.43s/it, step size=7.76e-04, acc. prob=0.051] [AWarmup [1]:   2%|▏         | 3/200 [03:29, 84.76s/it, step size=6.81e-04, acc. prob=0.383]
+
+Warmup [3]:   1%|          | 2/200 [03:49, 114.34s/it, step size=5.70e-04, acc. prob=0.279][A[AWarmup [1]:   2%|▏         | 4/200 [08:57, 180.79s/it, step size=6.52e-04, acc. prob=0.535]
+Warmup [2]:   2%|▏         | 3/200 [09:24, 222.23s/it, step size=1.52e-04, acc. prob=0.195][A
+
+
+Warmup [4]:   0%|          | 1/200 [22:06, 1326.46s/it, step size=4.76e-03, acc. prob=0.459][A[A[A
+
+Warmup [3]:   2%|▏         | 3/200 [22:46, 581.42s/it, step size=5.04e-04, acc. prob=0.519][A[A
+
+
+Warmup [4]:   1%|          | 2/200 [23:03, 579.96s/it, step size=5.49e-04, acc. prob=0.271] [A[A[A
+
+
+Warmup [4]:   2%|▏         | 3/200 [28:25, 462.18s/it, step size=4.85e-04, acc. prob=0.514][A[A[AWarmup [1]:   2%|▎         | 5/200 [30:32, 582.80s/it, step size=6.04e-04, acc. prob=0.615]
+Warmup [2]:   2%|▏         | 4/200 [30:44, 639.93s/it, step size=1.34e-04, acc. prob=0.396][A
+
+Warmup [3]:   2%|▏         | 4/200 [43:07, 834.21s/it, step size=5.32e-04, acc. prob=0.638][A[AWarmup [1]:   3%|▎         | 6/200 [44:07, 661.65s/it, step size=7.25e-04, acc. prob=0.678]
+
+
+Warmup [4]:   2%|▏         | 4/200 [47:59, 743.15s/it, step size=5.12e-04, acc. prob=0.635][A[A[A
+Warmup [2]:   2%|▎         | 5/200 [49:40, 818.72s/it, step size=1.40e-04, acc. prob=0.517][A
+
+
+Warmup [4]:   2%|▎         | 5/200 [52:31, 573.14s/it, step size=5.81e-04, acc. prob=0.705][A[A[A
+
+Warmup [3]:   2%|▎         | 5/200 [1:01:05, 922.05s/it, step size=6.26e-04, acc. prob=0.710][A[AWarmup [1]:   4%|▎         | 7/200 [1:01:41, 789.77s/it, step size=9.17e-04, acc. prob=0.724]
+Warmup [2]:   3%|▎         | 6/200 [1:07:12, 898.22s/it, step size=1.63e-04, acc. prob=0.597][A
+
+Warmup [3]:   3%|▎         | 6/200 [1:08:36, 761.89s/it, step size=7.77e-04, acc. prob=0.758][A[AWarmup [1]:   4%|▍         | 8/200 [1:09:53, 695.24s/it, step size=1.07e-03, acc. prob=0.754]
+
+
+Warmup [4]:   3%|▎         | 6/200 [1:10:39, 748.29s/it, step size=7.29e-04, acc. prob=0.754][A[A[AWarmup [1]:   4%|▍         | 9/200 [1:16:57, 610.40s/it, step size=1.26e-03, acc. prob=0.776]Warmup [1]:   5%|▌         | 10/200 [1:20:41, 490.96s/it, step size=1.16e-03, acc. prob=0.786]
+
+
+Warmup [4]:   4%|▎         | 7/200 [1:21:09, 709.56s/it, step size=9.39e-04, acc. prob=0.789][A[A[AWarmup [1]:   6%|▌         | 11/200 [1:22:52, 380.90s/it, step size=1.52e-03, acc. prob=0.804]
+Warmup [2]:   4%|▎         | 7/200 [1:24:41, 947.40s/it, step size=2.03e-04, acc. prob=0.655][A
+
+Warmup [3]:   4%|▎         | 7/200 [1:26:04, 855.50s/it, step size=9.52e-04, acc. prob=0.789][A[AWarmup [1]:   6%|▌         | 12/200 [1:27:12, 344.22s/it, step size=1.41e-03, acc. prob=0.810]
+
+
+Warmup [4]:   4%|▍         | 8/200 [1:34:47, 744.00s/it, step size=1.24e-03, acc. prob=0.815][A[A[A
+
+
+Warmup [4]:   4%|▍         | 9/200 [1:38:29, 580.92s/it, step size=1.44e-03, acc. prob=0.830][A[A[A
+
+
+Warmup [4]:   5%|▌         | 10/200 [1:39:01, 411.46s/it, step size=1.94e-03, acc. prob=0.846][A[A[A
+Warmup [2]:   4%|▍         | 8/200 [1:42:09, 979.59s/it, step size=2.64e-04, acc. prob=0.698][A
+
+Warmup [3]:   4%|▍         | 8/200 [1:43:35, 917.50s/it, step size=1.27e-03, acc. prob=0.815][A[AWarmup [1]:   6%|▋         | 13/200 [1:44:43, 558.10s/it, step size=1.79e-03, acc. prob=0.822]
+
+
+Warmup [4]:   6%|▌         | 11/200 [1:47:44, 445.67s/it, step size=2.44e-03, acc. prob=0.858][A[A[A
+
+
+Warmup [4]:   6%|▌         | 12/200 [1:56:28, 469.50s/it, step size=1.93e-03, acc. prob=0.855][A[A[A
+Warmup [2]:   4%|▍         | 9/200 [1:59:39, 1001.39s/it, step size=3.53e-04, acc. prob=0.731][A
+
+Warmup [3]:   4%|▍         | 9/200 [2:01:03, 958.35s/it, step size=1.63e-03, acc. prob=0.834][A[AWarmup [1]:   7%|▋         | 14/200 [2:02:12, 706.40s/it, step size=2.48e-03, acc. prob=0.835]
+Warmup [2]:   5%|▌         | 10/200 [2:08:23, 853.99s/it, step size=4.78e-04, acc. prob=0.758][A
+
+
+Warmup [4]:   6%|▋         | 13/200 [2:11:15, 595.72s/it, step size=1.35e-03, acc. prob=0.849][A[A[AWarmup [1]:   8%|▊         | 15/200 [2:14:00, 706.97s/it, step size=2.00e-03, acc. prob=0.834]
+Warmup [2]:   6%|▌         | 11/200 [2:17:05, 752.42s/it, step size=6.45e-04, acc. prob=0.779][A
+
+Warmup [3]:   5%|▌         | 10/200 [2:18:31, 986.11s/it, step size=2.04e-03, acc. prob=0.848][A[A
+
+
+Warmup [4]:   7%|▋         | 14/200 [2:19:58, 573.77s/it, step size=1.79e-03, acc. prob=0.859][A[A[AWarmup [1]:   8%|▊         | 16/200 [2:22:41, 651.08s/it, step size=2.76e-03, acc. prob=0.844]Warmup [1]:   8%|▊         | 17/200 [2:27:00, 533.11s/it, step size=2.35e-03, acc. prob=0.844]
+Warmup [2]:   6%|▌         | 12/200 [2:27:26, 712.61s/it, step size=8.87e-04, acc. prob=0.798][AWarmup [1]:   9%|▉         | 18/200 [2:31:44, 458.32s/it, step size=3.07e-03, acc. prob=0.852]
+Warmup [2]:   6%|▋         | 13/200 [2:31:58, 579.07s/it, step size=1.18e-03, acc. prob=0.812][AWarmup [1]:  10%|▉         | 19/200 [2:32:30, 334.41s/it, step size=3.63e-03, acc. prob=0.857]Warmup [1]:  10%|█         | 20/200 [2:34:02, 261.75s/it, step size=3.09e-03, acc. prob=0.856]
+
+Warmup [3]:   6%|▌         | 11/200 [2:35:53, 1003.17s/it, step size=1.39e-03, acc. prob=0.841][A[AWarmup [1]:  10%|█         | 21/200 [2:36:12, 222.00s/it, step size=1.25e-03, acc. prob=0.843]
+
+
+Warmup [4]:   8%|▊         | 15/200 [2:37:19, 714.79s/it, step size=2.13e-03, acc. prob=0.865][A[A[AWarmup [1]:  11%|█         | 22/200 [2:40:54, 239.98s/it, step size=1.39e-03, acc. prob=0.847]Warmup [1]:  12%|█▏        | 23/200 [2:43:03, 206.87s/it, step size=1.88e-03, acc. prob=0.853]Warmup [1]:  12%|█▏        | 24/200 [2:47:15, 220.38s/it, step size=1.29e-03, acc. prob=0.849]Warmup [1]:  12%|█▎        | 25/200 [2:49:22, 192.33s/it, step size=1.69e-03, acc. prob=0.855]
+Warmup [2]:   7%|▋         | 14/200 [2:49:24, 720.10s/it, step size=1.62e-03, acc. prob=0.825][AWarmup [1]:  13%|█▎        | 26/200 [2:49:53, 143.87s/it, step size=2.10e-03, acc. prob=0.859]Warmup [1]:  14%|█▎        | 27/200 [2:50:29, 111.60s/it, step size=1.26e-03, acc. prob=0.854]Warmup [1]:  14%|█▍        | 28/200 [2:51:49, 101.98s/it, step size=1.60e-03, acc. prob=0.858]Warmup [1]:  14%|█▍        | 29/200 [2:52:12, 78.36s/it, step size=1.91e-03, acc. prob=0.861] Warmup [1]:  15%|█▌        | 30/200 [2:52:47, 65.44s/it, step size=1.99e-03, acc. prob=0.863]Warmup [1]:  16%|█▌        | 31/200 [2:53:06, 51.49s/it, step size=2.09e-03, acc. prob=0.864]
+
+Warmup [3]:   6%|▌         | 12/200 [2:53:21, 1016.93s/it, step size=1.91e-03, acc. prob=0.855][A[AWarmup [1]:  16%|█▌        | 32/200 [2:53:51, 49.46s/it, step size=1.34e-03, acc. prob=0.860]
+
+
+Warmup [4]:   8%|▊         | 16/200 [2:54:47, 815.01s/it, step size=2.70e-03, acc. prob=0.872][A[A[AWarmup [1]:  16%|█▋        | 33/200 [2:59:37, 138.44s/it, step size=1.72e-03, acc. prob=0.864]Warmup [1]:  17%|█▋        | 34/200 [3:00:41, 116.22s/it, step size=7.73e-04, acc. prob=0.856]Warmup [1]:  18%|█▊        | 35/200 [3:01:32, 96.45s/it, step size=9.41e-04, acc. prob=0.859] Warmup [1]:  18%|█▊        | 36/200 [3:02:11, 79.37s/it, step size=1.18e-03, acc. prob=0.862]Warmup [1]:  18%|█▊        | 37/200 [3:02:54, 68.31s/it, step size=1.46e-03, acc. prob=0.865]Warmup [1]:  19%|█▉        | 38/200 [3:03:28, 58.19s/it, step size=1.72e-03, acc. prob=0.867]Warmup [1]:  20%|█▉        | 39/200 [3:03:46, 45.98s/it, step size=1.31e-03, acc. prob=0.865]Warmup [1]:  20%|██        | 40/200 [3:04:12, 39.95s/it, step size=1.56e-03, acc. prob=0.867]
+Warmup [2]:   8%|▊         | 15/200 [3:06:46, 817.02s/it, step size=2.18e-03, acc. prob=0.836][AWarmup [1]:  20%|██        | 41/200 [3:10:40, 144.38s/it, step size=1.73e-03, acc. prob=0.869]
+
+Warmup [3]:   6%|▋         | 13/200 [3:10:40, 1023.59s/it, step size=2.59e-03, acc. prob=0.865][A[AWarmup [1]:  21%|██        | 42/200 [3:11:09, 109.76s/it, step size=1.64e-03, acc. prob=0.869]
+
+
+Warmup [4]:   8%|▊         | 17/200 [3:12:05, 882.05s/it, step size=3.61e-03, acc. prob=0.879][A[A[AWarmup [1]:  22%|██▏       | 43/200 [3:12:24, 99.41s/it, step size=2.06e-03, acc. prob=0.872] 
+
+Warmup [3]:   7%|▋         | 14/200 [3:15:00, 792.79s/it, step size=2.01e-03, acc. prob=0.862] [A[AWarmup [1]:  22%|██▏       | 44/200 [3:15:25, 123.87s/it, step size=2.46e-03, acc. prob=0.861]
+
+
+Warmup [4]:   9%|▉         | 18/200 [3:16:26, 695.33s/it, step size=1.91e-03, acc. prob=0.869][A[A[AWarmup [1]:  22%|██▎       | 45/200 [3:17:03, 116.22s/it, step size=6.38e-03, acc. prob=0.845]Warmup [1]:  23%|██▎       | 46/200 [3:17:10, 83.47s/it, step size=5.13e-04, acc. prob=0.827] 
+
+Warmup [3]:   8%|▊         | 15/200 [3:19:22, 632.98s/it, step size=1.48e-03, acc. prob=0.858][A[A
+Warmup [2]:   8%|▊         | 16/200 [3:22:52, 861.89s/it, step size=2.47e-03, acc. prob=0.842][A
+Warmup [2]:   8%|▊         | 17/200 [3:27:29, 686.04s/it, step size=2.28e-03, acc. prob=0.844][AWarmup [1]:  24%|██▎       | 47/200 [3:29:12, 274.91s/it, step size=4.01e-04, acc. prob=0.830]
+
+
+Warmup [4]:  10%|▉         | 19/200 [3:33:56, 801.96s/it, step size=2.55e-03, acc. prob=0.875][A[A[A
+Warmup [2]:   9%|▉         | 18/200 [3:34:28, 605.83s/it, step size=2.46e-03, acc. prob=0.848][A
+
+Warmup [3]:   8%|▊         | 16/200 [3:34:41, 718.98s/it, step size=2.04e-03, acc. prob=0.866][A[A
+Warmup [2]:  10%|▉         | 19/200 [3:36:00, 451.55s/it, step size=2.80e-03, acc. prob=0.852][A
+
+
+Warmup [4]:  10%|█         | 20/200 [3:38:18, 639.99s/it, step size=1.58e-03, acc. prob=0.868][A[A[A
+
+Warmup [3]:   8%|▊         | 17/200 [3:39:02, 581.24s/it, step size=2.78e-03, acc. prob=0.874][A[A
+Warmup [2]:  10%|█         | 20/200 [3:41:47, 420.05s/it, step size=1.67e-03, acc. prob=0.846][AWarmup [1]:  24%|██▍       | 48/200 [3:41:49, 419.60s/it, step size=3.84e-04, acc. prob=0.834]
+
+Warmup [3]:   9%|▉         | 18/200 [3:42:17, 465.23s/it, step size=3.51e-03, acc. prob=0.880][A[A
+
+Warmup [3]:  10%|▉         | 19/200 [3:42:34, 330.40s/it, step size=3.35e-03, acc. prob=0.880][A[A
+
+Warmup [3]:  10%|█         | 20/200 [3:44:44, 270.32s/it, step size=7.67e-04, acc. prob=0.856][A[A
+
+Warmup [3]:  10%|█         | 21/200 [3:49:05, 267.60s/it, step size=1.03e-03, acc. prob=0.862][A[A
+Warmup [2]:  10%|█         | 21/200 [3:49:52, 439.55s/it, step size=2.11e-03, acc. prob=0.852][A
+
+
+Warmup [4]:  10%|█         | 21/200 [3:55:46, 762.36s/it, step size=2.08e-03, acc. prob=0.874][A[A[A
+
+
+Warmup [4]:  11%|█         | 22/200 [3:57:57, 572.98s/it, step size=2.00e-03, acc. prob=0.874][A[A[AWarmup [1]:  24%|██▍       | 49/200 [3:59:13, 606.94s/it, step size=5.55e-04, acc. prob=0.837]slurmstepd: error: *** JOB 48598949 ON w23g0012 CANCELLED AT 2024-08-23T21:39:49 DUE TO TIME LIMIT ***

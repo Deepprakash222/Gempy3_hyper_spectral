@@ -38,11 +38,11 @@ parser.add_argument('--endval', metavar='endcol', type=int, default=21, help='en
 parser.add_argument('--cluster', metavar='cluster', type=int, default=6, help='total number of cluster')
 parser.add_argument('--dimred', metavar='dimred', type=str , default="pca", help='type of dimensionality reduction')
 parser.add_argument('--plot_dimred', metavar='plot_dimred', type=str , default="tsne", help='type of dimensionality reduction for plotting after data is alread reduced in a smaller dimension')
-parser.add_argument('--prior_number_samples', metavar='prior_number_samples', type=int , default=5, help='number of samples for prior')
-parser.add_argument('--posterior_number_samples', metavar='posterior_number_samples', type=int , default=4, help='number of samples for posterior')
-parser.add_argument('--posterior_warmup_steps', metavar='posterior_warmup_steps', type=int , default=0, help='number of  warmup steps for posterior')
+parser.add_argument('--prior_number_samples', metavar='prior_number_samples', type=int , default=100, help='number of samples for prior')
+parser.add_argument('--posterior_number_samples', metavar='posterior_number_samples', type=int , default=150, help='number of samples for posterior')
+parser.add_argument('--posterior_warmup_steps', metavar='posterior_warmup_steps', type=int , default=50, help='number of  warmup steps for posterior')
 parser.add_argument('--directory_path', metavar='directory_path', type=str , default="./Results_test", help='name of the directory in which result should be stored')
-parser.add_argument('--posterior_num_chain', metavar='posterior_num_chain', type=int , default=2, help='number of chain')
+parser.add_argument('--posterior_num_chain', metavar='posterior_num_chain', type=int , default=4, help='number of chain')
 
 def cluster_acc(Y_pred, Y, ignore_label=None):
     """ Rearranging the class labels of prediction so that it maximise the 
@@ -337,7 +337,7 @@ def main():
     ## to fist apply dimensionality reduction to a lower dimensions
     if dimred=="pca":
         from sklearn.decomposition import PCA
-        pca = PCA(n_components=10)
+        pca = PCA(n_components=3)
         transformed_hsi = pca.fit_transform(normalised_hsi)
         normalised_hsi = torch.tensor(transformed_hsi, dtype=torch.float64)
         y_obs_label = torch.tensor(normalised_data.iloc[:,3].to_numpy(), dtype=torch.float64)
@@ -688,12 +688,15 @@ def main():
     mcmc = MCMC(nuts_kernel, num_samples=posterior_number_samples, warmup_steps=posterior_warmup_steps,num_chains=posterior_num_chain, disable_validation=False)
     mcmc.run(normalised_hsi)
     
-    posterior_samples = mcmc.get_samples(group_by_chain=True)
+    #posterior_samples = mcmc.get_samples(group_by_chain=True)
+    posterior_samples = mcmc.get_samples(group_by_chain=False)
+    #diag = mcmc.diagnostics()
+    
     # sumarry = mcmc.summary()
     # filename_summarry = directory_path + "/sumarry.csv"
     # mcmc.write_csv()
     print(posterior_samples)
-    exit()
+    
     posterior_predictive = Predictive(model_test, posterior_samples)(normalised_hsi)
     plt.figure(figsize=(8,10))
     data = az.from_pyro(posterior=mcmc, prior=prior, posterior_predictive=posterior_predictive)
