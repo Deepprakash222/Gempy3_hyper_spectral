@@ -39,10 +39,10 @@ parser.add_argument('--cluster', metavar='cluster', type=int, default=6, help='t
 parser.add_argument('--dimred', metavar='dimred', type=str , default="pca", help='type of dimensionality reduction')
 parser.add_argument('--plot_dimred', metavar='plot_dimred', type=str , default="tsne", help='type of dimensionality reduction for plotting after data is alread reduced in a smaller dimension')
 parser.add_argument('--prior_number_samples', metavar='prior_number_samples', type=int , default=100, help='number of samples for prior')
-parser.add_argument('--posterior_number_samples', metavar='posterior_number_samples', type=int , default=150, help='number of samples for posterior')
+parser.add_argument('--posterior_number_samples', metavar='posterior_number_samples', type=int , default=100, help='number of samples for posterior')
 parser.add_argument('--posterior_warmup_steps', metavar='posterior_warmup_steps', type=int , default=50, help='number of  warmup steps for posterior')
 parser.add_argument('--directory_path', metavar='directory_path', type=str , default="./Results_test", help='name of the directory in which result should be stored')
-parser.add_argument('--posterior_num_chain', metavar='posterior_num_chain', type=int , default=4, help='number of chain')
+parser.add_argument('--posterior_num_chain', metavar='posterior_num_chain', type=int , default=1, help='number of chain')
 
 def cluster_acc(Y_pred, Y, ignore_label=None):
     """ Rearranging the class labels of prediction so that it maximise the 
@@ -242,7 +242,6 @@ def create_initial_gempy_model(refinement,filename, save=True):
     geo_model_test.structural_frame.structural_groups[0].elements[1], geo_model_test.structural_frame.structural_groups[0].elements[0]
     
 
-
     gp.compute_model(geo_model_test)
     picture_test = gpv.plot_2d(geo_model_test, cell_number=5, legend='force')
     if save:
@@ -337,7 +336,7 @@ def main():
     ## to fist apply dimensionality reduction to a lower dimensions
     if dimred=="pca":
         from sklearn.decomposition import PCA
-        pca = PCA(n_components=3)
+        pca = PCA(n_components=10)
         transformed_hsi = pca.fit_transform(normalised_hsi)
         normalised_hsi = torch.tensor(transformed_hsi, dtype=torch.float64)
         y_obs_label = torch.tensor(normalised_data.iloc[:,3].to_numpy(), dtype=torch.float64)
@@ -553,8 +552,8 @@ def main():
     # geo_model_test.interpolation_options.mesh_extraction = False
     geo_model_test.interpolation_options.sigmoid_slope = 40
     
-    factor=1 #0.01 , 100
-    alpha = 100000
+    factor= 1 #0.01 , 100
+    alpha = 1
     @config_enumerate
     def model_test(obs_data):
         """
@@ -657,14 +656,16 @@ def main():
             cov.append(cov_k)
         mean_tesnor = torch.stack(mean, dim=0)
         cov_tensor = torch.stack(cov,dim=0)
+        #print(cov_tensor)
         #cov_likelihood = 5.0 * torch.eye(loc_cov[0].shape[0], dtype=torch.float64)
         
         with pyro.plate('N='+str(obs_data.shape[0]), obs_data.shape[0]):
             assignment = pyro.sample("assignment", dist.Categorical(pi_k))
             obs = pyro.sample("obs", dist.MultivariateNormal(loc=mean_tesnor[assignment],covariance_matrix= cov_tensor[assignment]), obs=obs_data)
             #obs = pyro.sample("obs", dist.MultivariateNormal(loc=sample_tesnor[assignment],covariance_matrix=factor * cov_matrix), obs=obs_data)
-            
-    
+    filename_Bayesian_graph =directory_path +"/Bayesian_graph.png"
+    dot = pyro.render_model(model_test, model_args=(normalised_hsi,),render_distributions=True,filename=filename_Bayesian_graph)    
+   
     ################################################################################
     # Prior
     ################################################################################
@@ -685,7 +686,7 @@ def main():
     ################################################################################
     pyro.primitives.enable_validation(is_validate=True)
     nuts_kernel = NUTS(model_test, step_size=0.0085, adapt_step_size=True, target_accept_prob=0.9, max_tree_depth=10, init_strategy=init_to_mean)
-    mcmc = MCMC(nuts_kernel, num_samples=posterior_number_samples, warmup_steps=posterior_warmup_steps,num_chains=posterior_num_chain, disable_validation=False)
+    mcmc = MCMC(nuts_kernel, num_samples=posterior_number_samples,mp_context="None", warmup_steps=posterior_warmup_steps,num_chains=posterior_num_chain, disable_validation=False)
     mcmc.run(normalised_hsi)
     
     #posterior_samples = mcmc.get_samples(group_by_chain=True)
@@ -750,6 +751,7 @@ def main():
     )
     filename_mu_4 = directory_path + "/mu_4.png"
     plt.savefig(filename_mu_4)
+    
     # Find the MAP value
     
     unnormalise_posterior_value={}
@@ -846,7 +848,7 @@ def main():
         loc_mean = torch.tensor(mean_init,dtype=torch.float64)
         #loc_cov =  torch.tensor(cov_init, dtype=torch.float64)
         cov_matrix = alpha * torch.eye(loc_mean[0].shape[0],dtype=torch.float64)
-        z_nk = F.softmax(-lambda_* (torch.tensor([1,2,3,4,5,6], dtype=torch.float64) - custom_grid_values.reshape(-1,1))**2, dim=1)
+        z_nk = F.softmax(-lambda_* (torch.linspace(1,cluster,cluster, dtype=torch.float64) - custom_grid_values.reshape(-1,1))**2, dim=1)
         #pi_k = torch.mean(F.softmax(-lambda_* (torch.linspace(1,cluster,cluster, dtype=torch.float64) - custom_grid_values.reshape(-1,1))**2, dim=1),dim=0)
         
     
