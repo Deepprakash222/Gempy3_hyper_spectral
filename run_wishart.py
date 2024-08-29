@@ -665,13 +665,13 @@ def main():
             #print(torch.linalg.det(sample_cov_data))
             cov.append(cov_data)
         
-        mean_tesnor = torch.stack(mean, dim=0)
-        cov_tesnor = torch.stack(cov, dim=0)
+        mean_tensor = torch.stack(mean, dim=0)
+        cov_tensor = torch.stack(cov, dim=0)
         
         
         with pyro.plate('N='+str(obs_data.shape[0]), obs_data.shape[0]):
             assignment = pyro.sample("assignment", dist.Categorical(pi_k))
-            obs = pyro.sample("obs", dist.MultivariateNormal(loc=mean_tesnor[assignment],covariance_matrix = cov_tesnor[assignment]), obs=obs_data)
+            obs = pyro.sample("obs", dist.MultivariateNormal(loc=mean_tensor[assignment],covariance_matrix = cov_tensor[assignment]), obs=obs_data)
             #obs = pyro.sample("obs", dist.MultivariateNormal(loc=sample_tesnor[assignment],covariance_matrix=cov_likelihood), obs=obs_data)      
     filename_Bayesian_graph =directory_path +"/Bayesian_graph.png"
     dot = pyro.render_model(model_test, model_args=(normalised_hsi,),render_distributions=True,filename=filename_Bayesian_graph)  
@@ -896,7 +896,7 @@ def main():
         #     for k in range(gamma_nk.shape[1]):
         #         gamma_nk[j][k] = (pi_k[k] * torch.exp(dist.MultivariateNormal(loc=mean_tensor[k],covariance_matrix= cov_tensor[k]).log_prob(normalised_hsi[j]))) / likelihood
                 
-        #     log_likelihood += torch.log(likelihood)
+            log_likelihood += torch.log(likelihood)
         
         # gmm_label_new = torch.argmax(gamma_nk,dim=1) +1
         # gmm_accuracy = torch.sum(gmm_label_new == y_obs_label) / y_obs_label.shape[0]

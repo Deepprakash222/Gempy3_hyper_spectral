@@ -3,13 +3,13 @@
 
 ### File / path where STDOUT will be written, the %J is the job id
 
-#SBATCH --output=./Results_test/Salinas_%J.txt
+#SBATCH --output=./Test_cuda_pyro_%J.txt
 
 ### Request the time you need for execution. The full format is D-HH:MM:SS
 ### You must at least specify minutes or days and hours and may add or
 ### leave out any other parameters
 
-#SBATCH --time=30:00:00
+#SBATCH --time=00:01:00
 
 ### Request all CPUs on one node
 #SBATCH --nodes=1
@@ -30,4 +30,4 @@
 
 source /home/jt925938/.bashrc
 conda activate gempy_pyro
-python run.py
+python Test_cuda_with_pyro.py
