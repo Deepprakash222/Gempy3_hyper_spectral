@@ -11,3 +11,7 @@
 6. Add the sumarry report of posterior
 7. Store and plot data for each chain
 8. Cuda application of our code
+# Date :- 05.09.2024
+1. Finish the plot:- combine all cluster data into a single plot with different colour representing each cluster between two different features
+2. Finish the script of previous task
+3. Check the implementation on cuda
