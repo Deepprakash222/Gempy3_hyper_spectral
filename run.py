@@ -47,7 +47,7 @@ parser.add_argument('--posterior_number_samples', metavar='posterior_number_samp
 parser.add_argument('--posterior_warmup_steps', metavar='posterior_warmup_steps', type=int , default=50, help='number of  warmup steps for posterior')
 parser.add_argument('--directory_path', metavar='directory_path', type=str , default="./Results_test", help='name of the directory in which result should be stored')
 parser.add_argument('--posterior_num_chain', metavar='posterior_num_chain', type=int , default=1, help='number of chain')
-parser.add_argument('--posterior_condition',metavar='posterior_condition', type=int , default=2, help='1-Deterministic for mean and covariance for hsi data, 2-Deterministic for covariance but a prior on mean ,3-Prior on mean and covariance')
+parser.add_argument('--posterior_condition',metavar='posterior_condition', type=int , default=1, help='1-Deterministic for mean and covariance for hsi data, 2-Deterministic for covariance but a prior on mean ,3-Prior on mean and covariance')
 parser.add_argument('--num_layers',metavar='num_layers', type=int , default=4, help='number of points used to model layer information')
 
 def cluster_acc(Y_pred, Y, ignore_label=None):
@@ -231,20 +231,20 @@ def main():
     """
     This function defines a model which uses hyperspectral data, applies clustering methods to find cluster information and then uses Bayesian
     """
-    print("This is comb1 branch")
+    
     args = parser.parse_args()
     startval=args.startval
     endval=args.endval
     dimred=args.dimred
     cluster = args.cluster
     plot_dimred=args.plot_dimred
-    prior_number_samples = 5 #args.prior_number_samples
-    posterior_number_samples = 5 #args.posterior_number_samples
-    posterior_warmup_steps = 2 #args.posterior_warmup_steps
+    prior_number_samples = args.prior_number_samples
+    posterior_number_samples = args.posterior_number_samples
+    posterior_warmup_steps = args.posterior_warmup_steps
     posterior_num_chain = args.posterior_num_chain
     directory_path = args.directory_path
     num_layers = args.num_layers
-    posterior_condition= 2 #args.posterior_condition
+    posterior_condition= args.posterior_condition
     
     # Check if the directory exists
     if not os.path.exists(directory_path):
@@ -432,7 +432,7 @@ def main():
     #posterior_samples = mcmc.get_samples(group_by_chain=True)
     posterior_samples = mcmc.get_samples(group_by_chain=False)
     
-    print("mcmc summary results")
+    print("MCMC summary results")
     
     with io.StringIO() as buf, contextlib.redirect_stdout(buf):
         mcmc.summary()  
