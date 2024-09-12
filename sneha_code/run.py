@@ -33,7 +33,7 @@ from sklearn.cluster import KMeans
 
 import io
 import contextlib
-from model1 import model_test
+from model1 import MyModel
 from map_func import compute_map
 
 parser = argparse.ArgumentParser(description='pass values using command line')
@@ -43,11 +43,12 @@ parser.add_argument('--cluster', metavar='cluster', type=int, default=6, help='t
 parser.add_argument('--dimred', metavar='dimred', type=str , default="pca", help='type of dimensionality reduction')
 parser.add_argument('--plot_dimred', metavar='plot_dimred', type=str , default="tsne", help='type of dimensionality reduction for plotting after data is alread reduced in a smaller dimension')
 parser.add_argument('--prior_number_samples', metavar='prior_number_samples', type=int , default=10, help='number of samples for prior')
-parser.add_argument('--posterior_number_samples', metavar='posterior_number_samples', type=int , default=10, help='number of samples for posterior')
+parser.add_argument('--posterior_number_samples', metavar='posterior_number_samples', type=int , default=5, help='number of samples for posterior')
 parser.add_argument('--posterior_warmup_steps', metavar='posterior_warmup_steps', type=int , default=0, help='number of  warmup steps for posterior')
-parser.add_argument('--directory_path', metavar='directory_path', type=str , default="./Results_test", help='name of the directory in which result should be stored')
-parser.add_argument('--posterior_num_chain', metavar='posterior_num_chain', type=int , default=2, help='number of chain')
-parser.add_argument('--posterior_condition',metavar='posterior_condition', type=int , default=1, help='1-Deterministic for mean and covariance for hsi data, 2-Deterministic for covariance but a prior on mean ,3-Prior on mean and covariance')
+parser.add_argument('--directory_path', metavar='directory_path', type=str , default="./Results", help='name of the directory in which result should be stored')
+parser.add_argument('--dataset', metavar='dataset', type=str , default="Salinas", help='name of the dataset (Salinas, KSL or other)')
+parser.add_argument('--posterior_num_chain', metavar='posterior_num_chain', type=int , default=1, help='number of chain')
+parser.add_argument('--posterior_condition',metavar='posterior_condition', type=int , default=2, help='1-Deterministic for mean and covariance for hsi data, 2-Deterministic for covariance but a prior on mean ,3-Prior on mean and covariance')
 parser.add_argument('--num_layers',metavar='num_layers', type=int , default=4, help='number of points used to model layer information')
 parser.add_argument('--slope_gempy', metavar='slope_gempy', type=float , default=40.0, help='slope for gempy')
 parser.add_argument('--scale', metavar='scale', type=float , default=10.0, help='scaling factor to generate probability for each voxel')
@@ -287,10 +288,14 @@ def main():
     posterior_warmup_steps = args.posterior_warmup_steps
     posterior_num_chain = args.posterior_num_chain
     directory_path = args.directory_path
+    dataset = args.dataset
     num_layers = args.num_layers
     posterior_condition= args.posterior_condition
     slope_gempy = args.slope_gempy
     scale = args.scale
+    
+    
+    directory_path = directory_path + "/" + dataset + "/posterior_condition_" + str(posterior_condition)
     # Check if the directory exists
     if not os.path.exists(directory_path):
         # Create the directory if it does not exist
@@ -299,7 +304,8 @@ def main():
     else:
         print(f"Directory '{directory_path}' already exists.")
     
-    # Load .mat file
+    
+    
     SalinasA= np.array(scipy.io.loadmat('../HSI_Salinas/SalinasA.mat')['salinasA'])
     SalinasA_corrected= np.array(scipy.io.loadmat('../HSI_Salinas/SalinasA_corrected.mat')['salinasA_corrected'])
     SalinasA_gt= np.array(scipy.io.loadmat('../HSI_Salinas/SalinasA_gt.mat')['salinasA_gt'])
@@ -500,14 +506,16 @@ def main():
     factor= 1 
     alpha = 100
     beta  = 100
+    model = MyModel()
     
     filename_Bayesian_graph =directory_path +"/Bayesian_graph.png"
-    dot = pyro.render_model(model_test, model_args=(normalised_hsi,test_list,geo_model_test,mean_init,cov_init,factor,num_layers,posterior_condition, scale, cluster, alpha, beta),render_distributions=True,filename=filename_Bayesian_graph)
+    dot = pyro.render_model(model.model_test, model_args=(normalised_hsi,test_list,geo_model_test,mean_init,cov_init,factor,num_layers,posterior_condition, scale, cluster, alpha, beta),render_distributions=True,filename=filename_Bayesian_graph)
+    exit()
     ################################################################################
     # Prior
     ################################################################################
     pyro.set_rng_seed(42)
-    prior = Predictive(model_test, num_samples=prior_number_samples)(normalised_hsi,test_list,geo_model_test,mean_init,cov_init,factor,num_layers,posterior_condition, scale, cluster, alpha, beta)
+    prior = Predictive(model.model_test, num_samples=prior_number_samples)(normalised_hsi,test_list,geo_model_test,mean_init,cov_init,factor,num_layers,posterior_condition, scale, cluster, alpha, beta)
     # Key to avoid
     avoid_key = ['mu_1 < 0','mu_1 > mu_2','mu_2 > mu_3', 'mu_3 > mu_4' , 'mu_4 > -83']
     # Create sub-dictionary without the avoid_key
@@ -522,7 +530,7 @@ def main():
     # Posterior 
     ################################################################################
     pyro.primitives.enable_validation(is_validate=True)
-    nuts_kernel = NUTS(model_test, step_size=0.0085, adapt_step_size=True, target_accept_prob=0.9, max_tree_depth=10, init_strategy=init_to_mean)
+    nuts_kernel = NUTS(model.model_test, step_size=0.0085, adapt_step_size=True, target_accept_prob=0.9, max_tree_depth=10, init_strategy=init_to_mean)
     mcmc = MCMC(nuts_kernel, num_samples=posterior_number_samples,mp_context="spawn", warmup_steps=posterior_warmup_steps,num_chains=posterior_num_chain, disable_validation=False)
     mcmc.run(normalised_hsi,test_list,geo_model_test,mean_init,cov_init,factor,num_layers,posterior_condition,scale, cluster, alpha, beta)
     
@@ -538,9 +546,10 @@ def main():
     
     print(summary_output)
 
-    with open(f'mcmc_summary_p{posterior_condition}.txt', 'w') as f:
+    with open(f'{directory_path}/mcmc_summary_p{posterior_condition}.txt', 'w') as f:
         f.write(summary_output)
     
+
     #print("these are posterior samples")
     #print(posterior_samples)
     
@@ -567,7 +576,7 @@ def main():
    
     # summary_df.to_csv(f'posterior_summary_p{posterior_condition}.csv', index=True)
     
-    posterior_predictive = Predictive(model_test, posterior_samples)(normalised_hsi,test_list,geo_model_test,mean_init,cov_init,factor,num_layers,posterior_condition)
+    posterior_predictive = Predictive(model.model_test, posterior_samples)(normalised_hsi,test_list,geo_model_test,mean_init,cov_init,factor,num_layers,posterior_condition,scale, cluster, alpha, beta)
     plt.figure(figsize=(8,10))
     data = az.from_pyro(posterior=mcmc, prior=prior, posterior_predictive=posterior_predictive)
     az.plot_trace(data)
@@ -589,69 +598,28 @@ def main():
         filename_mu = directory_path + "/mu_"+str(i+1)+".png"
         plt.savefig(filename_mu)
         plt.close()
-    exit()
-    # plt.figure(figsize=(8,10))
-    # az.plot_density(
-    #     data=[data.posterior, data.prior],
-    #     shade=.9,
-    #     var_names=['mu_1'],
-    #     data_labels=["Posterior Predictive", "Prior Predictive"],
-    #     colors=[default_red, default_blue],
-    # )
-    # filename_mu_1 = directory_path + "/mu_1.png"
-    # plt.savefig(filename_mu_1)
     
-    # plt.figure(figsize=(8,10))
-    # az.plot_density(
-    #     data=[data.posterior, data.prior],
-    #     shade=.9,
-    #     var_names=['mu_2'],
-    #     data_labels=["Posterior Predictive", "Prior Predictive"],
-    #     colors=[default_red, default_blue],
-    # )
-    # filename_mu_2 = directory_path + "/mu_2.png"
-    # plt.savefig(filename_mu_2)
-    
-    # plt.figure(figsize=(8,10))
-    # az.plot_density(
-    #     data=[data.posterior, data.prior],
-    #     shade=.9,
-    #     var_names=['mu_3'],
-    #     data_labels=["Posterior Predictive", "Prior Predictive"],
-    #     colors=[default_red, default_blue],
-    # )
-    # filename_mu_3 = directory_path + "/mu_3.png"
-    # plt.savefig(filename_mu_3)
-    
-    # plt.figure(figsize=(8,10))
-    # az.plot_density(
-    #     data=[data.posterior, data.prior],
-    #     shade=.9,
-    #     var_names=['mu_4'],
-    #     data_labels=["Posterior Predictive", "Prior Predictive"],
-    #     colors=[default_red, default_blue],
-    # )
-    # filename_mu_4 = directory_path + "/mu_4.png"
-    # plt.savefig(filename_mu_4)
     ###########################################################################################
     ######################### Find the MAP value ##############################################
     ###########################################################################################
-    MAP_sample_index = compute_map(posterior_samples,geo_model_test,normalised_hsi,test_list,y_obs_label, mean_init,cov_init,directory_path,cluster,num_layers,posterior_condition)
+    MAP_sample_index = compute_map(posterior_samples,geo_model_test,normalised_hsi,test_list,y_obs_label, mean_init,cov_init,directory_path,num_layers,posterior_condition,scale, cluster, alpha, beta)
+    print("MAP_sample_index\n", MAP_sample_index)
+    directory_path_MAP = directory_path +"/MAP"
     
     ################################################################################
     #  Try Plot the data and save it as file in output folder
     ################################################################################
 
-    RV_mu_post2 = {}
+    RV_mu_post_MAP = {}
     for i in range(num_layers):
-        RV_mu_post2["mu_"+str(i+1)+"_post"] = posterior_samples["mu_"+str(i+1)][MAP_sample_index]
+        RV_mu_post_MAP["mu_"+str(i+1)+"_post"] = posterior_samples["mu_"+str(i+1)][MAP_sample_index]
 
     # # Update the model with the new top layer's location
     interpolation_input = geo_model_test.interpolation_input
-    print(RV_mu_post2)
+    print(RV_mu_post_MAP)
     counter2=1
     for interpolation_input_data in test_list[:num_layers]:
-        interpolation_input.surface_points.sp_coords = torch.index_put(interpolation_input.surface_points.sp_coords,(torch.tensor([interpolation_input_data["id"]]), torch.tensor([2])), RV_mu_post2["mu_"+str(counter2)+"_post"])
+        interpolation_input.surface_points.sp_coords = torch.index_put(interpolation_input.surface_points.sp_coords,(torch.tensor([interpolation_input_data["id"]]), torch.tensor([2])), RV_mu_post_MAP["mu_"+str(counter2)+"_post"])
         counter2=counter2+1
 
     # # Compute the geological model
@@ -661,6 +629,7 @@ def main():
         data_descriptor=geo_model_test.input_data_descriptor,
         geophysics_input=geo_model_test.geophysics_input,
     )
+    custom_grid_values_test = geo_model_test.solutions.octrees_output[0].last_output_center.custom_grid_values
     
     sp_coords_copy_test2 =interpolation_input.surface_points.sp_coords
     sp_cord= geo_model_test.transform.apply_inverse(sp_coords_copy_test2.detach().numpy())
@@ -670,7 +639,7 @@ def main():
     ################################################################################
     df_sp_final = df_sp_init.copy()
     df_sp_final["Z"] = sp_cord[:,2] 
-    filename_final_sp = directory_path + "/Final_sp.csv"
+    filename_final_sp = directory_path_MAP + "/Final_sp.csv"
     df_sp_final.to_csv(filename_final_sp)
     ################################################################################
     
@@ -782,19 +751,378 @@ def main():
     
     custom_grid_values_post = geo_model_test_post.solutions.octrees_output[0].last_output_center.custom_grid_values
     ####################################TODO#################################################
+    #   Store the new weights, mean and covariance
+    #########################################################################################
+    z_nk = F.softmax(-scale* (torch.linspace(1,cluster,cluster, dtype=torch.float64) - torch.tensor(custom_grid_values_test.detach().numpy()).reshape(-1,1))**2, dim=1)
+    N_k = torch.sum(z_nk,axis=0)
+    N = len(custom_grid_values_post)
+    pi_k = N_k /N
+    mean = []
+    cov = []
+    if posterior_condition==1:
+        for k in range(z_nk.shape[1]):
+                mean_k = torch.sum( z_nk[:,k][:,None] * normalised_hsi, axis=0)/ N_k[k]
+                
+                cov_k = torch.zeros((mean_k.shape[0],mean_k.shape[0]), dtype=torch.float64)
+                for j in range(z_nk.shape[0]):
+                    cov_k +=  z_nk[j,k]* torch.matmul((normalised_hsi[j,:] - mean_k).reshape((-1,1)) ,(normalised_hsi[j,:] - mean_k).reshape((1,-1)))
+                mean.append(mean_k)
+                cov_k=cov_k/N_k[k] #+ 1e-3 * torch.diag(torch.ones(cov_k.shape[0],dtype=torch.float64))
+                cov.append(cov_k)
+        mean_tensor = torch.stack(mean, dim=0)
+        cov_tensor = torch.stack(cov,dim=0)
+        
+        gmm_data ={}
+        gmm_data["weights"]=pi_k.detach().numpy().tolist()
+        gmm_data["means"] = mean_tensor.detach().numpy().tolist()
+        gmm_data["cov"] = cov_tensor.detach().numpy().tolist()
+        # We can also calculate the accuracy using the mean and covariance to see if our GMM model has imroved or not
+        gamma_post = torch.zeros(z_nk.shape)
+
+        log_likelihood=torch.tensor(0.0, dtype=torch.float64)
+
+        for j in range(normalised_hsi.shape[0]):
+                
+            likelihood = 0.0  
+
+            for c in range(cluster):
+                likelihood += pi_k[c] * torch.exp(dist.MultivariateNormal(loc=mean_tensor[c], covariance_matrix=cov_tensor[c]).log_prob(normalised_hsi[j]))            
+            for k in range(gamma_post.shape[1]):
+                gamma_post[j][k] = (pi_k[k] * torch.exp(dist.MultivariateNormal(loc=mean_tensor[k],covariance_matrix= cov_tensor[k]).log_prob(normalised_hsi[j]))) / likelihood
+                
+            log_likelihood += torch.log(likelihood)
+        
+    entropy_MAP_gmm = calculate_average_entropy(gamma_post.detach().numpy())
+    entropy_MAP_z_nk = calculate_average_entropy(z_nk.detach().numpy())
+    entropy_MAP_mixing = calculate_entropy(pi_k.detach().numpy())
+    entropy_gmm_per_pixel_post = [calculate_entropy(ele) for ele in gamma_post.detach().numpy()]
+    entropy_z_nk_per_pixel_post =[calculate_entropy(ele) for ele in z_nk.detach().numpy()]
+    # Plot the entropy
+    plt.figure(figsize=(8,10))
+    plt.plot(np.array(entropy_gmm_per_pixel_prior), label=" Responsibility_prior")
+    plt.plot(np.array(entropy_gmm_per_pixel_post), label = 'Responsibility_post')
+    plt.xlabel('pixel')
+    plt.ylabel('Entropy per pixel')
+    plt.title('Entropy vs pixel')
+    plt.legend()
+    filename_entropy_pixel_responsibility = directory_path_MAP + "/entropy_per_pixel_responsibility.png"
+    plt.savefig(filename_entropy_pixel_responsibility)
+    plt.close()
+    
+    plt.figure(figsize=(8,10))
+    plt.plot(np.array(entropy_z_nk_per_pixel_prior), label="z_nk_prior")
+    plt.plot(np.array(entropy_z_nk_per_pixel_post), label="z_nk_post")
+    plt.xlabel('pixel')
+    plt.ylabel('Entropy per pixel')
+    plt.title('Entropy vs pixel')
+    plt.legend()
+    filename_entropy_pixel_z_nk = directory_path_MAP + "/entropy_per_pixel_z_nk.png"
+    plt.savefig(filename_entropy_pixel_z_nk)
+    plt.close()
+    
+    print("MAP index\n", MAP_sample_index)
+    print("entropy_prior_gmm\n",entropy_gmm_prior,"\n", "entropy_MAP_gmm\n", entropy_MAP_gmm)
+    print("entropy_z_nk_prior\n", entropy_z_nk_prior)
+    print("entropy_MAP_z_nk\n", entropy_MAP_z_nk)
+    print("entropy_mixing_prior\n", entropy_mixing_prior)
+    print("entropy_MAP_mixing\n", entropy_MAP_mixing)
+    
+    entropy_data ={}
+    entropy_data["MAP index"] = MAP_sample_index.detach().numpy().tolist()
+    entropy_data["entropy_prior_gmm"] = entropy_gmm_prior.tolist()
+    entropy_data["entropy_MAP_gmm"] = entropy_MAP_gmm.tolist()
+    entropy_data["entropy_z_nk_prior"] = entropy_z_nk_prior.tolist()
+    entropy_data["entropy_MAP_z_nk"] = entropy_MAP_z_nk.tolist()
+    entropy_data["entropy_mixing_prior"] = entropy_mixing_prior.tolist()
+    entropy_data["entropy_MAP_mixing"] = entropy_MAP_mixing.tolist()
+    
+    
+    filename_entropy_data =directory_path_MAP + "/entropy_data.json"
+    with open(filename_entropy_data, "w") as json_file:
+        json.dump(entropy_data, json_file)
+    
+    # Save to file
+    filename_gmm_data = directory_path_MAP + "/gmm_data.json"
+    with open(filename_gmm_data, "w") as json_file:
+        json.dump(gmm_data, json_file)
+    ####################################TODO#################################################
     #   Try to find the final accuracy to check if it has improved the classification
     #########################################################################################
     accuracy_final = torch.sum(torch.round(torch.tensor(custom_grid_values_post)) == y_obs_label) / y_obs_label.shape[0]
     print("accuracy_init: ", accuracy_init , "accuracy_final: ", accuracy_final)
     
     picture_test_post = gpv.plot_2d(geo_model_test_post, cell_number=5, legend='force')
-    filename_posterior_model = directory_path + "/Posterior_model.png"
+    filename_posterior_model = directory_path_MAP + "/Posterior_model.png"
     plt.savefig(filename_posterior_model)
     if plot_dimred=="tsne":
-        #TSNE_transformation(data=normalised_data, label= 7- np.round(custom_grid_values_post), filename="./Results/tsne_gempy_final_label.png")
-        filename_tsne_final_label = directory_path + "/tsne_gempy_final_label.png"
-        TSNE_transformation(data=normalised_data, label= np.round(custom_grid_values_post), filename=filename_tsne_final_label)
+        data = torch.cat([Z_data.reshape((-1,1)), normalised_hsi], dim=1)
+        filename_tsne_final_label = directory_path_MAP + "/tsne_gempy_final_label.png"
+        TSNE_transformation(data=data, label=torch.round(torch.tensor(custom_grid_values_post)), filename=filename_tsne_final_label)
     
+    ###########################################################################################
+    ######################### Find the mean value ##############################################
+    ###########################################################################################
+    directory_path_Mean = directory_path +"/Mean"
+    # Check if the directory exists
+    if not os.path.exists(directory_path_Mean):
+        # Create the directory if it does not exist
+        os.makedirs(directory_path_Mean)
+        print(f"Directory '{directory_path_Mean}' was created.")
+    else:
+        print(f"Directory '{directory_path_Mean}' already exists.")
+    
+    RV_mu_post_Mean = {}
+    for i in range(num_layers):
+        RV_mu_post_Mean["mu_"+str(i+1)+"_post"] = posterior_samples["mu_"+str(i+1)].mean()
+        
+    # Change the backend to PyTorch for probabilistic modeling
+    BackendTensor.change_backend_gempy(engine_backend=gp.data.AvailableBackends.PYTORCH)
+    
+    # # Update the model with the new top layer's location
+    interpolation_input = geo_model_test.interpolation_input
+    print(RV_mu_post_Mean)
+    counter2=1
+    for interpolation_input_data in test_list[:num_layers]:
+        interpolation_input.surface_points.sp_coords = torch.index_put(interpolation_input.surface_points.sp_coords,(interpolation_input_data["id"], torch.tensor([2])), RV_mu_post_Mean["mu_"+str(counter2)+"_post"])
+        counter2=counter2+1
+
+    # # Compute the geological model
+    geo_model_test.solutions = gempy_engine.compute_model(
+        interpolation_input=interpolation_input,
+        options=geo_model_test.interpolation_options,
+        data_descriptor=geo_model_test.input_data_descriptor,
+        geophysics_input=geo_model_test.geophysics_input,
+    )
+    custom_grid_values_test = geo_model_test.solutions.octrees_output[0].last_output_center.custom_grid_values
+    
+    sp_coords_copy_test2 =interpolation_input.surface_points.sp_coords
+    sp_cord= geo_model_test.transform.apply_inverse(sp_coords_copy_test2.detach().numpy())
+    
+    ################################################################################
+    # Store the Initial Interface data and orientation data
+    ################################################################################
+    df_sp_final = df_sp_init.copy()
+    df_sp_final["Z"] = sp_cord[:,2] 
+    filename_final_sp = directory_path_Mean + "/Final_sp.csv"
+    df_sp_final.to_csv(filename_final_sp)
+    ################################################################################
+    
+    geo_model_test_post = gp.create_geomodel(
+    project_name='Gempy_abc_Test_mean',
+    extent=[0, 86, -10, 10, -83, 0],
+    resolution=[86,20,83],
+    refinement=7,
+    structural_frame= gp.data.StructuralFrame.initialize_default_structure()
+    )
+
+    gp.add_surface_points(
+        geo_model=geo_model_test_post,
+        x=[70.0, 80.0],
+        y=[0.0, 0.0],
+        z=[-77.0, -71.0],
+        elements_names=['surface1', 'surface1']
+    )
+
+    gp.add_orientations(
+        geo_model=geo_model_test_post,
+        x=[75],
+        y=[0.0],
+        z=[-74],
+        elements_names=['surface1'],
+        pole_vector=[[-5/3, 0, 1]]
+    )
+    geo_model_test_post.update_transform(gp.data.GlobalAnisotropy.NONE)
+
+    element2 = gp.data.StructuralElement(
+        name='surface2',
+        color=next(geo_model_test_post.structural_frame.color_generator),
+        surface_points=gp.data.SurfacePointsTable.from_arrays(
+            x=np.array([20.0, 60.0]),
+            y=np.array([0.0, 0.0]),
+            z=np.array([sp_cord[12,2], -52]),
+            names='surface2'
+        ),
+        orientations=gp.data.OrientationsTable.initialize_empty()
+    )
+
+    geo_model_test_post.structural_frame.structural_groups[0].append_element(element2)
+
+    element3 = gp.data.StructuralElement(
+        name='surface3',
+        color=next(geo_model_test_post.structural_frame.color_generator),
+        surface_points=gp.data.SurfacePointsTable.from_arrays(
+            x=np.array([0.0, 30.0, 60]),
+            y=np.array([0.0, 0.0,0.0]),
+            z=np.array([-72, -55.5, -39]),
+            names='surface3'
+        ),
+        orientations=gp.data.OrientationsTable.initialize_empty()
+    )
+
+    geo_model_test_post.structural_frame.structural_groups[0].append_element(element3)
+
+    element4 = gp.data.StructuralElement(
+        name='surface4',
+        color=next(geo_model_test_post.structural_frame.color_generator),
+        surface_points=gp.data.SurfacePointsTable.from_arrays(
+            x=np.array([0.0, 20.0, 60]),
+            y=np.array([0.0, 0.0,0.0]),
+            z=np.array([-61, sp_cord[7,2], -27]),
+            names='surface4'
+        ),
+        orientations=gp.data.OrientationsTable.initialize_empty()
+    )
+
+    geo_model_test_post.structural_frame.structural_groups[0].append_element(element4)
+
+    element5 = gp.data.StructuralElement(
+        name='surface5',
+        color=next(geo_model_test_post.structural_frame.color_generator),
+        surface_points=gp.data.SurfacePointsTable.from_arrays(
+            x=np.array([0.0, 20, 40]),
+            y=np.array([0.0, 0.0, 0.0]),
+            z=np.array([-39, sp_cord[4,2], -16]),
+            names='surface5'
+        ),
+        orientations=gp.data.OrientationsTable.initialize_empty()
+    )
+
+    geo_model_test_post.structural_frame.structural_groups[0].append_element(element5)
+
+    element6 = gp.data.StructuralElement(
+        name='surface6',
+        color=next(geo_model_test_post.structural_frame.color_generator),
+        surface_points=gp.data.SurfacePointsTable.from_arrays(
+            x=np.array([0.0, 20.0,30]),
+            y=np.array([0.0, 0.0, 0.0]),
+            z=np.array([-21, sp_cord[1,2], -1]),
+            names='surface6'
+        ),
+        orientations=gp.data.OrientationsTable.initialize_empty()
+    )
+
+    geo_model_test_post.structural_frame.structural_groups[0].append_element(element6)
+
+    num_elements = len(geo_model_test_post.structural_frame.structural_groups[0].elements) - 1  # Number of elements - 1 for zero-based index
+    for swap_length in range(num_elements, 0, -1):  
+        for i in range(swap_length):
+            # Perform the swap for each pair (i, i+1)
+            geo_model_test_post.structural_frame.structural_groups[0].elements[i], geo_model_test_post.structural_frame.structural_groups[0].elements[i + 1] = \
+            geo_model_test_post.structural_frame.structural_groups[0].elements[i + 1], geo_model_test_post.structural_frame.structural_groups[0].elements[i]
+
+    gp.set_custom_grid(geo_model_test_post.grid, xyz_coord=xyz_coord)
+    gp.compute_model(geo_model_test_post)
+    
+    custom_grid_values_post = geo_model_test_post.solutions.octrees_output[0].last_output_center.custom_grid_values
+    
+    ####################################TODO#################################################
+    #   Store the new weights, mean and covariance
+    #########################################################################################
+    z_nk = F.softmax(-scale* (torch.linspace(1,cluster,cluster, dtype=torch.float64) - torch.tensor(custom_grid_values_test.detach().numpy()).reshape(-1,1))**2, dim=1)
+    N_k = torch.sum(z_nk,axis=0)
+    N = len(custom_grid_values_post)
+    pi_k = N_k /N
+    mean = []
+    cov = []
+    if posterior_condition==1:
+        for k in range(z_nk.shape[1]):
+                mean_k = torch.sum( z_nk[:,k][:,None] * normalised_hsi, axis=0)/ N_k[k]
+                
+                cov_k = torch.zeros((mean_k.shape[0],mean_k.shape[0]), dtype=torch.float64)
+                for j in range(z_nk.shape[0]):
+                    cov_k +=  z_nk[j,k]* torch.matmul((normalised_hsi[j,:] - mean_k).reshape((-1,1)) ,(normalised_hsi[j,:] - mean_k).reshape((1,-1)))
+                mean.append(mean_k)
+                cov_k=cov_k/N_k[k] #+ 1e-3 * torch.diag(torch.ones(cov_k.shape[0],dtype=torch.float64))
+                cov.append(cov_k)
+        mean_tensor = torch.stack(mean, dim=0)
+        cov_tensor = torch.stack(cov,dim=0)
+        
+        gmm_data ={}
+        gmm_data["weights"]=pi_k.detach().numpy().tolist()
+        gmm_data["means"] = mean_tensor.detach().numpy().tolist()
+        gmm_data["cov"] = cov_tensor.detach().numpy().tolist()
+        # We can also calculate the accuracy using the mean and covariance to see if our GMM model has imroved or not
+        gamma_post = torch.zeros(z_nk.shape)
+
+        log_likelihood=torch.tensor(0.0, dtype=torch.float64)
+
+        for j in range(normalised_hsi.shape[0]):
+                
+            likelihood = 0.0  
+
+            for c in range(cluster):
+                likelihood += pi_k[c] * torch.exp(dist.MultivariateNormal(loc=mean_tensor[c], covariance_matrix=cov_tensor[c]).log_prob(normalised_hsi[j]))            
+            for k in range(gamma_post.shape[1]):
+                gamma_post[j][k] = (pi_k[k] * torch.exp(dist.MultivariateNormal(loc=mean_tensor[k],covariance_matrix= cov_tensor[k]).log_prob(normalised_hsi[j]))) / likelihood
+                
+            log_likelihood += torch.log(likelihood)
+        
+    entropy_MAP_gmm = calculate_average_entropy(gamma_post.detach().numpy())
+    entropy_MAP_z_nk = calculate_average_entropy(z_nk.detach().numpy())
+    entropy_MAP_mixing = calculate_entropy(pi_k.detach().numpy())
+    entropy_gmm_per_pixel_post = [calculate_entropy(ele) for ele in gamma_post.detach().numpy()]
+    entropy_z_nk_per_pixel_post =[calculate_entropy(ele) for ele in z_nk.detach().numpy()]
+    # Plot the entropy
+    plt.figure(figsize=(8,10))
+    plt.plot(np.array(entropy_gmm_per_pixel_prior), label=" Responsibility_prior")
+    plt.plot(np.array(entropy_gmm_per_pixel_post), label = 'Responsibility_post')
+    plt.xlabel('pixel')
+    plt.ylabel('Entropy per pixel')
+    plt.title('Entropy vs pixel')
+    plt.legend()
+    filename_entropy_pixel_responsibility = directory_path_Mean + "/entropy_per_pixel_responsibility.png"
+    plt.savefig(filename_entropy_pixel_responsibility)
+    plt.close()
+    
+    plt.figure(figsize=(8,10))
+    plt.plot(np.array(entropy_z_nk_per_pixel_prior), label="z_nk_prior")
+    plt.plot(np.array(entropy_z_nk_per_pixel_post), label="z_nk_post")
+    plt.xlabel('pixel')
+    plt.ylabel('Entropy per pixel')
+    plt.title('Entropy vs pixel')
+    plt.legend()
+    filename_entropy_pixel_z_nk = directory_path_Mean + "/entropy_per_pixel_z_nk.png"
+    plt.savefig(filename_entropy_pixel_z_nk)
+    plt.close()
+    
+
+    print("entropy_prior_gmm\n",entropy_gmm_prior,"\n", "entropy_MAP_gmm\n", entropy_MAP_gmm)
+    print("entropy_z_nk_prior\n", entropy_z_nk_prior)
+    print("entropy_MAP_z_nk\n", entropy_MAP_z_nk)
+    print("entropy_mixing_prior\n", entropy_mixing_prior)
+    print("entropy_MAP_mixing\n", entropy_MAP_mixing)
+    
+    entropy_data ={}
+    
+    entropy_data["entropy_prior_gmm"] = entropy_gmm_prior.tolist()
+    entropy_data["entropy_MAP_gmm"] = entropy_MAP_gmm.tolist()
+    entropy_data["entropy_z_nk_prior"] = entropy_z_nk_prior.tolist()
+    entropy_data["entropy_MAP_z_nk"] = entropy_MAP_z_nk.tolist()
+    entropy_data["entropy_mixing_prior"] = entropy_mixing_prior.tolist()
+    entropy_data["entropy_MAP_mixing"] = entropy_MAP_mixing.tolist()
+    
+    
+    filename_entropy_data =directory_path_Mean + "/entropy_data.json"
+    with open(filename_entropy_data, "w") as json_file:
+        json.dump(entropy_data, json_file)
+    
+    # Save to file
+    filename_gmm_data = directory_path_Mean + "/gmm_data.json"
+    with open(filename_gmm_data, "w") as json_file:
+        json.dump(gmm_data, json_file)
+    ####################################TODO#################################################
+    #   Try to find the final accuracy to check if it has improved the classification
+    #########################################################################################
+    accuracy_final = torch.sum(torch.round(torch.tensor(custom_grid_values_post)) == y_obs_label) / y_obs_label.shape[0]
+    print("accuracy_init: ", accuracy_init , "accuracy_final_mean: ", accuracy_final)
+    
+    picture_test_post = gpv.plot_2d(geo_model_test_post, cell_number=5, legend='force')
+    filename_posterior_model = directory_path_Mean + "/Posterior_model.png"
+    plt.savefig(filename_posterior_model)
+    if plot_dimred=="tsne":
+        data = torch.cat([Z_data.reshape((-1,1)), normalised_hsi], dim=1)
+        filename_tsne_final_label = directory_path_Mean + "/tsne_gempy_final_label.png"
+        TSNE_transformation(data=data, label=torch.round(torch.tensor(custom_grid_values_post)), filename=filename_tsne_final_label)
 if __name__ == "__main__":
     
     # Your main script code starts here
