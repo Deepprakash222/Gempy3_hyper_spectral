@@ -1016,6 +1016,213 @@ def main():
         #TSNE_transformation(data=normalised_data, label= 7- np.round(custom_grid_values_post), filename="./Results_without_prior_gmm/tsne_gempy_final_label.png")
         filename_tsne_final_label = directory_path + "/tsne_gempy_final_label.png"
         TSNE_transformation(data=data, label= np.round(custom_grid_values_post), filename=filename_tsne_final_label)
+    ##########################################################################################
+    #  Mean 
+    ##########################################################################################
+    # mu_1_mean = posterior_samples["mu_1"].mean()
+    # mu_2_mean = posterior_samples["mu_2"].mean()
+    # mu_3_mean = posterior_samples["mu_3"].mean()
+    # mu_4_mean = posterior_samples["mu_4"].mean()
+
+    
+    mu_1_mean = posterior_samples["mu_1"].mean()
+    mu_2_mean = posterior_samples["mu_2"].mean()
+
+    # # Update the model with the new top layer's location
+    BackendTensor.change_backend_gempy(engine_backend=gp.data.AvailableBackends.PYTORCH)
+    
+    interpolation_input = geo_model_test.interpolation_input
+    interpolation_input.surface_points.sp_coords = torch.index_put(
+        interpolation_input.surface_points.sp_coords,
+        (torch.tensor([1]), torch.tensor([2])),
+        mu_1_mean
+    )
+    interpolation_input.surface_points.sp_coords = torch.index_put(
+        interpolation_input.surface_points.sp_coords,
+        (torch.tensor([4]), torch.tensor([2])),
+        mu_2_mean
+    )
+    
+    #print("interpolation_input",interpolation_input.surface_points.sp_coords)
+
+    # # Compute the geological model
+    geo_model_test.solutions = gempy_engine.compute_model(
+        interpolation_input=interpolation_input,
+        options=geo_model_test.interpolation_options,
+        data_descriptor=geo_model_test.input_data_descriptor,
+        geophysics_input=geo_model_test.geophysics_input,
+    )
+    # Compute and observe the thickness of the geological layer
+     
+    custom_grid_values_test = geo_model_test.solutions.octrees_output[0].last_output_center.custom_grid_values
+
+    sp_coords_copy_test2 =interpolation_input.surface_points.sp_coords
+    sp_cord= geo_model_test.transform.apply_inverse(sp_coords_copy_test2.detach().numpy())
+
+    ################################################################################
+    # Store the Initial Interface data and orientation data
+    ################################################################################
+    df_sp_final = df_sp_init.copy()
+    df_sp_final["Z"] = sp_cord[:,2] 
+    filename_final_sp = directory_path + "/Final_sp_mean.csv"
+    df_sp_final.to_csv(filename_final_sp)
+    ################################################################################
+        
+    geo_model_test_mean = gp.create_geomodel(
+    project_name='Gempy_abc_Test_mean',
+    extent=[0, 1000, -10, 10, -900, -700],
+    resolution=[100,10,100],
+    refinement=7,
+    structural_frame= gp.data.StructuralFrame.initialize_default_structure()
+    )
+    
+    brk1 = -845 
+    brk2 = -825 
+    
+
+    gp.add_surface_points(
+        geo_model=geo_model_test_mean,
+        x=[100.0,300, 900.0],
+        y=[0.0,0.0, 0.0],
+        z=[brk1,sp_cord[4,2], brk1],
+        elements_names=['surface1','surface1', 'surface1']
+    )
+
+    gp.add_orientations(
+        geo_model=geo_model_test_mean,
+        x=[800],
+        y=[0.0],
+        z=[brk1],
+        elements_names=['surface1'],
+        pole_vector=[[0, 0, 1]]
+    )
+    geo_model_test_mean.update_transform(gp.data.GlobalAnisotropy.NONE)
+
+    element2 = gp.data.StructuralElement(
+        name='surface2',
+        color=next(geo_model_test_mean.structural_frame.color_generator),
+        surface_points=gp.data.SurfacePointsTable.from_arrays(
+            x=np.array([100.0,300, 900.0]),
+            y=np.array([0.0,0.0, 0.0]),
+            z=np.array([brk2, sp_cord[1,2], brk2]),
+            names='surface2'
+        ),
+        orientations=gp.data.OrientationsTable.initialize_empty()
+    )
+
+    geo_model_test_mean.structural_frame.structural_groups[0].append_element(element2)
+
+    
+    
+    geo_model_test_mean.structural_frame.structural_groups[0].elements[0], geo_model_test_mean.structural_frame.structural_groups[0].elements[1] = \
+    geo_model_test_mean.structural_frame.structural_groups[0].elements[1], geo_model_test_mean.structural_frame.structural_groups[0].elements[0]
+
+    
+
+    gp.set_custom_grid(geo_model_test_mean.grid, xyz_coord=xyz_coord)
+    gp.compute_model(geo_model_test_mean)
+    
+    custom_grid_values_mean = geo_model_test_post.solutions.octrees_output[0].last_output_center.custom_grid_values
+    ###################################################################################
+    # loc_mean = torch.tensor(mean_init,dtype=torch.float64)
+    # loc_cov =  torch.tensor(cov_init, dtype=torch.float64)
+    z_nk = F.softmax(-scale* (torch.linspace(1,cluster,cluster, dtype=torch.float64) - torch.tensor(custom_grid_values_test.detach().numpy()).reshape(-1,1))**2, dim=1)
+    #class_label = torch.mean(F.softmax(-scale* (torch.tensor([1,2,3,4,5,6], dtype=torch.float64) - custom_grid_values.reshape(-1,1))**2, dim=1),dim=0)
+    
+    N_k = torch.sum(z_nk,axis=0)
+    N = len(custom_grid_values)
+    pi_k = N_k /N
+    mean = []
+    cov = []
+    
+    for i in range(z_nk.shape[1]):
+        mean_k = torch.mean(posterior_samples[keys_list[3+i]], dim=0)
+        #cov_k = torch.sum( (normalised_hsi - mean_k.reshape((-1,1))) (normalised_hsi - mean_k).T )
+        cov_eig_k = torch.mean(posterior_samples[keys_list[i]],dim=0)
+        eigen_vectors_data = torch.tensor(eigen_vector_list[i], dtype=torch.float64)
+        cov_k = eigen_vectors_data @ torch.diag(cov_eig_k)**2 @ eigen_vectors_data.T
+        mean.append(mean_k)
+        cov.append(cov_k)
+    mean_tensor = torch.stack(mean, dim=0)
+    cov_tensor = torch.stack(cov,dim=0)
+    
+    gmm_data ={}
+    gmm_data["weights"]=pi_k.detach().numpy().tolist()
+    gmm_data["means"] = mean_tensor.detach().numpy().tolist()
+    gmm_data["cov"] = cov_tensor.detach().numpy().tolist()
+    
+    gamma_post =torch.zeros(z_nk.shape, dtype=torch.float64)
+    for j in range(normalised_hsi.shape[0]):
+            likelihood = pi_k[0] *torch.exp(dist.MultivariateNormal(loc=mean_tensor[0],covariance_matrix= cov_tensor[0]).log_prob(normalised_hsi[j])) +\
+                         pi_k[1] *torch.exp(dist.MultivariateNormal(loc=mean_tensor[1],covariance_matrix= cov_tensor[1]).log_prob(normalised_hsi[j]))+\
+                         pi_k[2] *torch.exp(dist.MultivariateNormal(loc=mean_tensor[2],covariance_matrix= cov_tensor[2]).log_prob(normalised_hsi[j])) 
+                         
+            for k in range(loc_mean.shape[0]):    
+                gamma_post[j][k] = (pi_k[k] * torch.exp(dist.MultivariateNormal(loc=mean_tensor[k],covariance_matrix= cov_tensor[k]).log_prob(normalised_hsi[j]))) / likelihood
+    
+    entropy_MAP_gmm = calculate_average_entropy(gamma_post.detach().numpy())
+    entropy_MAP_z_nk = calculate_average_entropy(z_nk.detach().numpy())
+    entropy_MAP_mixing = calculate_entropy(pi_k.detach().numpy())
+    entropy_gmm_per_pixel_post = [calculate_entropy(ele) for ele in gamma_post.detach().numpy()]
+    entropy_z_nk_per_pixel_post =[calculate_entropy(ele) for ele in z_nk.detach().numpy()]
+    # Plot the entropy
+    plt.figure(figsize=(8,10))
+    plt.plot(np.array(df_spectral_normalised.iloc[:,3]), np.array(entropy_gmm_per_pixel_prior), label=" Responsibility_prior")
+    plt.plot(np.array(df_spectral_normalised.iloc[:,3]),np.array(entropy_gmm_per_pixel_post), label = 'Responsibility_post')
+    plt.xlabel('pixel')
+    plt.ylabel('Entropy per pixel')
+    plt.title('Entropy vs pixel')
+    plt.legend()
+    filename_entropy_pixel_responsibility = directory_path + "/entropy_per_pixel_responsibility_mean.png"
+    plt.savefig(filename_entropy_pixel_responsibility)
+    
+    plt.figure(figsize=(8,10))
+    plt.plot(np.array(df_spectral_normalised.iloc[:,3]),np.array(entropy_z_nk_per_pixel_prior), label="z_nk_prior")
+    plt.plot(np.array(df_spectral_normalised.iloc[:,3]),np.array(entropy_z_nk_per_pixel_post), label="z_nk_post")
+    plt.xlabel('pixel')
+    plt.ylabel('Entropy per pixel')
+    plt.title('Entropy vs pixel')
+    plt.legend()
+    filename_entropy_pixel_z_nk = directory_path + "/entropy_per_pixel_z_nk_mean.png"
+    plt.savefig(filename_entropy_pixel_z_nk)
+    plt.close()
+    
+    
+    print("entropy_prior_gmm\n",entropy_gmm_prior,"\n", "entropy_MAP_gmm\n", entropy_MAP_gmm)
+    print("entropy_z_nk_prior\n", entropy_z_nk_prior)
+    print("entropy_MAP_z_nk\n", entropy_MAP_z_nk)
+    print("entropy_mixing_prior\n", entropy_mixing_prior)
+    print("entropy_MAP_mixing\n", entropy_MAP_mixing)
+    
+    entropy_data ={}
+    entropy_data["entropy_prior_gmm"] = entropy_gmm_prior.tolist()
+    entropy_data["entropy_MAP_gmm"] = entropy_MAP_gmm.tolist()
+    entropy_data["entropy_z_nk_prior"] = entropy_z_nk_prior.tolist()
+    entropy_data["entropy_MAP_z_nk"] = entropy_MAP_z_nk.tolist()
+    entropy_data["entropy_mixing_prior"] = entropy_mixing_prior.tolist()
+    entropy_data["entropy_MAP_mixing"] = entropy_MAP_mixing.tolist()
+    
+    
+    filename_entropy_data =directory_path + "/entropy_data_mean.json"
+    with open(filename_entropy_data, "w") as json_file:
+        json.dump(entropy_data, json_file)
+    # Save to file
+    filename_gmm_data = directory_path + "/gmm_data_mean.json"
+    with open(filename_gmm_data, "w") as json_file:
+        json.dump(gmm_data, json_file)
+        
+    ##########################################################################################
+    
+    picture_test_post = gpv.plot_2d(geo_model_test_post, cell_number=5, legend='force')
+    filename_posterior_model = directory_path + "/mean_model.png"
+    plt.savefig(filename_posterior_model)
+    # Reduced data with final label from gempy
+    if plot_dimred=="tsne":
+        data = torch.cat([Z_data.reshape((-1,1)), normalised_hsi], dim=1)
+        #TSNE_transformation(data=normalised_data, label= 7- np.round(custom_grid_values_post), filename="./Results_without_prior_gmm/tsne_gempy_final_label.png")
+        filename_tsne_final_label = directory_path + "/tsne_gempy_final_label_mean.png"
+        TSNE_transformation(data=data, label= np.round(custom_grid_values_mean), filename=filename_tsne_final_label)
+    
 if __name__ == "__main__":
     
     # Your main script code starts here
@@ -1024,8 +1231,6 @@ if __name__ == "__main__":
     # Record the start time
     start_time = datetime.now()
     # 
-
-    
     # Run the main function
     #main()
     main()
