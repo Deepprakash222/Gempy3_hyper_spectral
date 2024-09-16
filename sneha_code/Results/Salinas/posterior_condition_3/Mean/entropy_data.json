@@ -1,1 +1,1 @@
-{"entropy_prior_gmm": 0.000702234177800009, "entropy_MAP_gmm": 0.00031203089747577906, "entropy_z_nk_prior": 0.0011754161606678571, "entropy_MAP_z_nk": 0.005272713689642739, "entropy_mixing_prior": 53.75278407684164, "entropy_MAP_mixing": 1.7140042399773976}
+{"entropy_prior_gmm": 0.000702234177800009, "entropy_Mean_gmm": 0.00014699427993036807, "entropy_z_nk_prior": 0.0011754161606678571, "entropy_Mean_z_nk": 0.007630159400484213, "entropy_mixing_prior": 53.75278407684164, "entropy_Mean_mixing": 1.6799024811053576}

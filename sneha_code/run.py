@@ -42,9 +42,9 @@ parser.add_argument('--endval', metavar='endcol', type=int, default=21, help='en
 parser.add_argument('--cluster', metavar='cluster', type=int, default=6, help='total number of cluster')
 parser.add_argument('--dimred', metavar='dimred', type=str , default="pca", help='type of dimensionality reduction')
 parser.add_argument('--plot_dimred', metavar='plot_dimred', type=str , default="tsne", help='type of dimensionality reduction for plotting after data is alread reduced in a smaller dimension')
-parser.add_argument('--prior_number_samples', metavar='prior_number_samples', type=int , default=10, help='number of samples for prior')
-parser.add_argument('--posterior_number_samples', metavar='posterior_number_samples', type=int , default=5, help='number of samples for posterior')
-parser.add_argument('--posterior_warmup_steps', metavar='posterior_warmup_steps', type=int , default=0, help='number of  warmup steps for posterior')
+parser.add_argument('--prior_number_samples', metavar='prior_number_samples', type=int , default=100, help='number of samples for prior')
+parser.add_argument('--posterior_number_samples', metavar='posterior_number_samples', type=int , default=150, help='number of samples for posterior')
+parser.add_argument('--posterior_warmup_steps', metavar='posterior_warmup_steps', type=int , default=50, help='number of  warmup steps for posterior')
 parser.add_argument('--directory_path', metavar='directory_path', type=str , default="./Results", help='name of the directory in which result should be stored')
 parser.add_argument('--dataset', metavar='dataset', type=str , default="Salinas", help='name of the dataset (Salinas, KSL or other)')
 parser.add_argument('--posterior_num_chain', metavar='posterior_num_chain', type=int , default=1, help='number of chain')
@@ -304,7 +304,9 @@ def main():
     else:
         print(f"Directory '{directory_path}' already exists.")
     
-    
+    ###########################################################################
+    # 
+    ###########################################################################
     
     SalinasA= np.array(scipy.io.loadmat('../HSI_Salinas/SalinasA.mat')['salinasA'])
     SalinasA_corrected= np.array(scipy.io.loadmat('../HSI_Salinas/SalinasA_corrected.mat')['salinasA_corrected'])
@@ -497,11 +499,16 @@ def main():
     
     geo_model_test.interpolation_options.sigmoid_slope = slope_gempy
     test_list=[]
-    test_list.append({"update":"interface_data","id":torch.tensor([1]), "direction":"Z", "prior_distribution":"normal","normal":{"mean":torch.tensor(sp_coords_copy_test[1,2],dtype=torch.float64), "std":torch.tensor(0.2,dtype=torch.float64)}})
-    test_list.append({"update":"interface_data","id":torch.tensor([4]), "direction":"Z", "prior_distribution":"normal","normal":{"mean":torch.tensor(sp_coords_copy_test[4,2],dtype=torch.float64), "std":torch.tensor(0.2,dtype=torch.float64)}})
-    test_list.append({"update":"interface_data","id":torch.tensor([7]), "direction":"Z", "prior_distribution":"normal","normal":{"mean":torch.tensor(sp_coords_copy_test[7,2],dtype=torch.float64), "std":torch.tensor(0.2,dtype=torch.float64)}})
-    test_list.append({"update":"interface_data","id":torch.tensor([12]), "direction":"Z", "prior_distribution":"normal","normal":{"mean":torch.tensor(sp_coords_copy_test[12,2],dtype=torch.float64), "std":torch.tensor(0.2,dtype=torch.float64)}})
-
+    if dataset=="Salinas":
+        test_list.append({"update":"interface_data","id":torch.tensor([1]), "direction":"Z", "prior_distribution":"normal","normal":{"mean":torch.tensor(sp_coords_copy_test[1,2],dtype=torch.float64), "std":torch.tensor(0.2,dtype=torch.float64)}})
+        test_list.append({"update":"interface_data","id":torch.tensor([4]), "direction":"Z", "prior_distribution":"normal","normal":{"mean":torch.tensor(sp_coords_copy_test[4,2],dtype=torch.float64), "std":torch.tensor(0.2,dtype=torch.float64)}})
+        test_list.append({"update":"interface_data","id":torch.tensor([7]), "direction":"Z", "prior_distribution":"normal","normal":{"mean":torch.tensor(sp_coords_copy_test[7,2],dtype=torch.float64), "std":torch.tensor(0.2,dtype=torch.float64)}})
+        test_list.append({"update":"interface_data","id":torch.tensor([12]), "direction":"Z", "prior_distribution":"normal","normal":{"mean":torch.tensor(sp_coords_copy_test[12,2],dtype=torch.float64), "std":torch.tensor(0.2,dtype=torch.float64)}})
+    elif dataset =="KSL":
+        test_list.append({"update":"interface_data","id":torch.tensor([1]), "direction":"Z", "prior_distribution":"normal","normal":{"mean":torch.tensor(sp_coords_copy_test[1,2],dtype=torch.float64), "std":torch.tensor(0.2,dtype=torch.float64)}})
+        test_list.append({"update":"interface_data","id":torch.tensor([4]), "direction":"Z", "prior_distribution":"normal","normal":{"mean":torch.tensor(sp_coords_copy_test[4,2],dtype=torch.float64), "std":torch.tensor(0.2,dtype=torch.float64)}})
+        test_list.append({"update":"interface_data","id":torch.tensor([7]), "direction":"Z", "prior_distribution":"normal","normal":{"mean":torch.tensor(sp_coords_copy_test[7,2],dtype=torch.float64), "std":torch.tensor(0.2,dtype=torch.float64)}})
+        test_list.append({"update":"interface_data","id":torch.tensor([12]), "direction":"Z", "prior_distribution":"normal","normal":{"mean":torch.tensor(sp_coords_copy_test[12,2],dtype=torch.float64), "std":torch.tensor(0.2,dtype=torch.float64)}})
 
     factor= 1 
     alpha = 100
@@ -549,32 +556,6 @@ def main():
     with open(f'{directory_path}/mcmc_summary_p{posterior_condition}.txt', 'w') as f:
         f.write(summary_output)
     
-
-    #print("these are posterior samples")
-    #print(posterior_samples)
-    
-    ### Saving the mean and std ######################################### 
-    # summary_statistics = {}
-
-    
-    # for key, samples in posterior_samples.items():
-        
-    #     mean_value = torch.mean(samples, dim=0)
-    #     std_value = torch.std(samples, dim=0)
-    #     mode_value, _ = torch.mode(samples, dim=0)
-
-        
-    #     summary_statistics[key] = {
-    #         "mean": mean_value,
-    #         "std": std_value,
-    #         "mode": mode_value
-    #     }
-
-    
-    # summary_df = pd.DataFrame({k: v for k, v in summary_statistics.items()})
-
-   
-    # summary_df.to_csv(f'posterior_summary_p{posterior_condition}.csv', index=True)
     
     posterior_predictive = Predictive(model.model_test, posterior_samples)(normalised_hsi,test_list,geo_model_test,mean_init,cov_init,factor,num_layers,posterior_condition,scale, cluster, alpha, beta)
     plt.figure(figsize=(8,10))
@@ -1202,7 +1183,7 @@ def main():
             cov.append(cov_k)
         mean_tensor =torch.stack(mean,dim=0)
         cov_tensor = torch.stack(cov,dim=0)
-        exit()
+        
         gmm_data ={}
         gmm_data["weights"]=pi_k.detach().numpy().tolist()
         gmm_data["means"] = mean_tensor.detach().numpy().tolist()
@@ -1280,9 +1261,9 @@ def main():
     #########################################################################################
         
         
-    entropy_MAP_gmm = calculate_average_entropy(gamma_post.detach().numpy())
-    entropy_MAP_z_nk = calculate_average_entropy(z_nk.detach().numpy())
-    entropy_MAP_mixing = calculate_entropy(pi_k.detach().numpy())
+    entropy_Mean_gmm = calculate_average_entropy(gamma_post.detach().numpy())
+    entropy_Mean_z_nk = calculate_average_entropy(z_nk.detach().numpy())
+    entropy_Mean_mixing = calculate_entropy(pi_k.detach().numpy())
     entropy_gmm_per_pixel_post = [calculate_entropy(ele) for ele in gamma_post.detach().numpy()]
     entropy_z_nk_per_pixel_post =[calculate_entropy(ele) for ele in z_nk.detach().numpy()]
     # Plot the entropy
@@ -1309,20 +1290,20 @@ def main():
     plt.close()
     
 
-    print("entropy_prior_gmm\n",entropy_gmm_prior,"\n", "entropy_MAP_gmm\n", entropy_MAP_gmm)
+    print("entropy_prior_gmm\n",entropy_gmm_prior,"\n", "entropy_Mean_gmm\n", entropy_Mean_gmm)
     print("entropy_z_nk_prior\n", entropy_z_nk_prior)
-    print("entropy_MAP_z_nk\n", entropy_MAP_z_nk)
+    print("entropy_Mean_z_nk\n", entropy_Mean_z_nk)
     print("entropy_mixing_prior\n", entropy_mixing_prior)
-    print("entropy_MAP_mixing\n", entropy_MAP_mixing)
+    print("entropy_Mean_mixing\n", entropy_Mean_mixing)
     
     entropy_data ={}
     
     entropy_data["entropy_prior_gmm"] = entropy_gmm_prior.tolist()
-    entropy_data["entropy_MAP_gmm"] = entropy_MAP_gmm.tolist()
+    entropy_data["entropy_Mean_gmm"] = entropy_Mean_gmm.tolist()
     entropy_data["entropy_z_nk_prior"] = entropy_z_nk_prior.tolist()
-    entropy_data["entropy_MAP_z_nk"] = entropy_MAP_z_nk.tolist()
+    entropy_data["entropy_Mean_z_nk"] = entropy_Mean_z_nk.tolist()
     entropy_data["entropy_mixing_prior"] = entropy_mixing_prior.tolist()
-    entropy_data["entropy_MAP_mixing"] = entropy_MAP_mixing.tolist()
+    entropy_data["entropy_Mean_mixing"] = entropy_Mean_mixing.tolist()
     
     
     filename_entropy_data =directory_path_Mean + "/entropy_data.json"
