@@ -106,11 +106,20 @@ class MyModel(PyroModule):
             #Ensuring layer order
             #print("Random_variable\n", Random_variable)
             
-            pyro.sample('mu_1 < 0', dist.Delta(torch.tensor(1.0, dtype=torch.float64)), obs=(Random_variable["mu_1"] < 3.7))
-            pyro.sample('mu_1 > mu_2', dist.Delta(torch.tensor(1.0, dtype=torch.float64)), obs=(Random_variable["mu_1"] > Random_variable["mu_2"]))
-            pyro.sample('mu_2 > mu_3', dist.Delta(torch.tensor(1.0, dtype=torch.float64)), obs=(Random_variable["mu_2"] > Random_variable["mu_3"]))
-            pyro.sample('mu_3 > mu_4', dist.Delta(torch.tensor(1.0, dtype=torch.float64)), obs=(Random_variable["mu_3"] > Random_variable["mu_4"]))
-            pyro.sample('mu_4 > -83', dist.Delta(torch.tensor(1.0, dtype=torch.float64)), obs=(Random_variable["mu_4"] > - 0.2 ))
+            # pyro.sample('mu_1 < 0', dist.Delta(torch.tensor(1.0, dtype=torch.float64)), obs=(Random_variable["mu_1"] < 3.7))
+            # pyro.sample('mu_1 > mu_2', dist.Delta(torch.tensor(1.0, dtype=torch.float64)), obs=(Random_variable["mu_1"] > Random_variable["mu_2"]))
+            # pyro.sample('mu_2 > mu_3', dist.Delta(torch.tensor(1.0, dtype=torch.float64)), obs=(Random_variable["mu_2"] > Random_variable["mu_3"]))
+            # pyro.sample('mu_3 > mu_4', dist.Delta(torch.tensor(1.0, dtype=torch.float64)), obs=(Random_variable["mu_3"] > Random_variable["mu_4"]))
+            # pyro.sample('mu_4 > -83', dist.Delta(torch.tensor(1.0, dtype=torch.float64)), obs=(Random_variable["mu_4"] > - 0.2 ))
+            
+            for i in range(len(interpolation_input_)+1):
+                if i==0:
+                    pyro.sample(f'mu_{i+1} < mu_{i+1} + 2 * std', dist.Delta(torch.tensor(1.0, dtype=torch.float64)), obs=(Random_variable[f'mu_{i+1}'] < interpolation_input_[0]["normal"]["mean"] + 2 * interpolation_input_[0]["normal"]["std"]))
+                elif i==len(interpolation_input_):
+                    pyro.sample(f'mu_{i} > mu_{i} - 2 * std', dist.Delta(torch.tensor(1.0, dtype=torch.float64)), obs=(Random_variable[f"mu_{i}"] > interpolation_input_[-1]["normal"]["mean"] - 2 * interpolation_input_[-1]["normal"]["std"]))
+                else:
+                    pyro.sample(f'mu_{i} > mu_{i+1} ', dist.Delta(torch.tensor(1.0, dtype=torch.float64)), obs=(Random_variable[f"mu_{i}"] > Random_variable[f"mu_{i+1}"]))
+                
             
             # Update the model with the new top layer's location
             

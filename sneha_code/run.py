@@ -35,23 +35,27 @@ import io
 import contextlib
 from model1 import MyModel
 from map_func import compute_map
+from initial_gempy_model import *
+from final_gempy_model import *
 
 parser = argparse.ArgumentParser(description='pass values using command line')
 parser.add_argument('--startval', metavar='startcol', type=int, default=19,  help='start x column value')
 parser.add_argument('--endval', metavar='endcol', type=int, default=21, help='end x column value')
-parser.add_argument('--cluster', metavar='cluster', type=int, default=6, help='total number of cluster')
+parser.add_argument('--cluster', metavar='cluster', type=int, default=4, help='total number of cluster')
 parser.add_argument('--dimred', metavar='dimred', type=str , default="pca", help='type of dimensionality reduction')
 parser.add_argument('--plot_dimred', metavar='plot_dimred', type=str , default="tsne", help='type of dimensionality reduction for plotting after data is alread reduced in a smaller dimension')
 parser.add_argument('--prior_number_samples', metavar='prior_number_samples', type=int , default=100, help='number of samples for prior')
 parser.add_argument('--posterior_number_samples', metavar='posterior_number_samples', type=int , default=150, help='number of samples for posterior')
 parser.add_argument('--posterior_warmup_steps', metavar='posterior_warmup_steps', type=int , default=50, help='number of  warmup steps for posterior')
 parser.add_argument('--directory_path', metavar='directory_path', type=str , default="./Results", help='name of the directory in which result should be stored')
-parser.add_argument('--dataset', metavar='dataset', type=str , default="Salinas", help='name of the dataset (Salinas, KSL or other)')
+parser.add_argument('--dataset', metavar='dataset', type=str , default="KSL", help='name of the dataset (Salinas, KSL or other)')
 parser.add_argument('--posterior_num_chain', metavar='posterior_num_chain', type=int , default=1, help='number of chain')
-parser.add_argument('--posterior_condition',metavar='posterior_condition', type=int , default=3, help='1-Deterministic for mean and covariance for hsi data, 2-Deterministic for covariance but a prior on mean ,3-Prior on mean and covariance')
-parser.add_argument('--num_layers',metavar='num_layers', type=int , default=4, help='number of points used to model layer information')
+parser.add_argument('--posterior_condition',metavar='posterior_condition', type=int , default=2, help='1-Deterministic for mean and covariance for hsi data, 2-Deterministic for covariance but a prior on mean ,3-Prior on mean and covariance')
+parser.add_argument('--num_layers',metavar='num_layers', type=int , default=3, help='number of points used to model layer information')
 parser.add_argument('--slope_gempy', metavar='slope_gempy', type=float , default=40.0, help='slope for gempy')
 parser.add_argument('--scale', metavar='scale', type=float , default=10.0, help='scaling factor to generate probability for each voxel')
+parser.add_argument('--alpha', metavar='alpha', type=float , default=100.0, help='scaling parameter for the mean')
+parser.add_argument('--beta', metavar='beta', type=float , default=100.0, help='scaling parameter for the covariance')
 
 def cluster_acc(Y_pred, Y, ignore_label=None):
     """ Rearranging the class labels of prediction so that it maximise the 
@@ -293,7 +297,8 @@ def main():
     posterior_condition= args.posterior_condition
     slope_gempy = args.slope_gempy
     scale = args.scale
-    
+    alpha = args.alpha
+    beta  = args.beta
     
     directory_path = directory_path + "/" + dataset + "/posterior_condition_" + str(posterior_condition)
     # Check if the directory exists
@@ -307,56 +312,112 @@ def main():
     ###########################################################################
     # 
     ###########################################################################
-    
-    SalinasA= np.array(scipy.io.loadmat('../HSI_Salinas/SalinasA.mat')['salinasA'])
-    SalinasA_corrected= np.array(scipy.io.loadmat('../HSI_Salinas/SalinasA_corrected.mat')['salinasA_corrected'])
-    SalinasA_gt= np.array(scipy.io.loadmat('../HSI_Salinas/SalinasA_gt.mat')['salinasA_gt'])
-    
-    # Arrange the label in groundtruth
-    i=0
-    label_data = [0,6,1,5,4,3,2]
-    
-    for ele in np.unique(SalinasA_gt):
-        mask = SalinasA_gt==ele
-        SalinasA_gt[mask] = label_data[i]
-        i=i+1
-    SalinasA_gt = 7 - SalinasA_gt
-    
-    ######################################################################
-    ## Arrange Data as concatationation of spacial co-ordinate and pixel values
-    ###########################################################################
-    H, W = SalinasA_gt.shape # get the shape of groud truth
-    n_features = SalinasA_corrected.shape[2]+4 # get the number of features including co-ordinates and label
-    
-    # Create a dataset which has "X","Y","Z", "Label", and spectral channel information
-    data_hsi = torch.zeros((H*W, n_features ))
-    for i in range(H):
-        for j in range(W):
-            data_hsi[i*W+j,0] = j
-            data_hsi[i*W +j,2] = - i
-            data_hsi[i*W +j,3] = SalinasA_gt[i,j]
-            data_hsi[i*W +j,4:] = torch.tensor(SalinasA_corrected[i,j,:])
-            
-    # Create a list of column name
-    column_name=["X","Y","Z", "Label"]
-    for i in range(SalinasA_corrected.shape[2]):
-        column_name.append("feature_"+str(i+1))
+    if dataset=="Salinas":
+        SalinasA= np.array(scipy.io.loadmat('../HSI_Salinas/SalinasA.mat')['salinasA'])
+        SalinasA_corrected= np.array(scipy.io.loadmat('../HSI_Salinas/SalinasA_corrected.mat')['salinasA_corrected'])
+        SalinasA_gt= np.array(scipy.io.loadmat('../HSI_Salinas/SalinasA_gt.mat')['salinasA_gt'])
         
-    # Create a pandas dataframe to store the database
-    df_hsi = pd.DataFrame(data_hsi,columns=column_name)
-    # Create a database by removing the non labelled pixel information 
-    df_with_non_labelled_pixel = df_hsi.loc[(df_hsi['Label']!=7)]
+        # Arrange the label in groundtruth
+        i=0
+        label_data = [0,6,1,5,4,3,2]
+        
+        for ele in np.unique(SalinasA_gt):
+            mask = SalinasA_gt==ele
+            SalinasA_gt[mask] = label_data[i]
+            i=i+1
+        SalinasA_gt = 7 - SalinasA_gt
+        
+        ######################################################################
+        ## Arrange Data as concatationation of spacial co-ordinate and pixel values
+        ###########################################################################
+        H, W = SalinasA_gt.shape # get the shape of groud truth
+        n_features = SalinasA_corrected.shape[2]+4 # get the number of features including co-ordinates and label
+        
+        # Create a dataset which has "X","Y","Z", "Label", and spectral channel information
+        data_hsi = torch.zeros((H*W, n_features ))
+        for i in range(H):
+            for j in range(W):
+                data_hsi[i*W+j,0] = j
+                data_hsi[i*W +j,2] = - i
+                data_hsi[i*W +j,3] = SalinasA_gt[i,j]
+                data_hsi[i*W +j,4:] = torch.tensor(SalinasA_corrected[i,j,:])
+                
+        # Create a list of column name
+        column_name=["X","Y","Z", "Label"]
+        for i in range(SalinasA_corrected.shape[2]):
+            column_name.append("feature_"+str(i+1))
+            
+        # Create a pandas dataframe to store the database
+        df_hsi = pd.DataFrame(data_hsi,columns=column_name)
+        # Create a database by removing the non labelled pixel information 
+        df_with_non_labelled_pixel = df_hsi.loc[(df_hsi['Label']!=7)]
+        
+        # Normalise along the spectral lines 
+        df_with_spectral_normalised = df_with_non_labelled_pixel.copy()
+        df_with_spectral_normalised.iloc[:, 4:] = df_with_spectral_normalised.iloc[:, 4:].apply(zscore,axis=1)
+        
+        ###########################################################################
+        ## Obtain the preprocessed data
+        ###########################################################################
+        normalised_data = df_with_spectral_normalised.loc[(df_with_spectral_normalised["X"]>=startval)&(df_with_spectral_normalised["X"]<=endval)]
+        normalised_hsi =torch.tensor(normalised_data.iloc[:,4:].to_numpy(), dtype=torch.float64)
+        y_obs_label = torch.tensor(normalised_data.iloc[:,3].to_numpy(), dtype=torch.float64)
     
-    # Normalise along the spectral lines 
-    df_with_spectral_normalised = df_with_non_labelled_pixel.copy()
-    df_with_spectral_normalised.iloc[:, 4:] = df_with_spectral_normalised.iloc[:, 4:].apply(zscore,axis=1)
-    
-    ###########################################################################
-    ## Obtain the preprocessed data
-    ###########################################################################
-    normalised_data = df_with_spectral_normalised.loc[(df_with_spectral_normalised["X"]>=startval)&(df_with_spectral_normalised["X"]<=endval)]
-    normalised_hsi =torch.tensor(normalised_data.iloc[:,4:].to_numpy(), dtype=torch.float64)
-    
+    elif dataset=="KSL":
+        # Load KSL_file file
+        import joblib
+        filename_a = '../Fw__Hyperspectral_datasets_from_the_KSL_cores/CuSp131.pkl'
+        with open(filename_a, 'rb') as myfile:
+            a =joblib.load(myfile)
+        column_name =[]
+        
+        for keys, _ in a.items():
+            if keys=='XYZ':
+                column_name.append("Borehole_id")
+                column_name.append("X")
+                column_name.append("Y")
+                column_name.append("Z")
+            else:
+                column_name.append(keys+"_R")
+                column_name.append(keys+"_G")
+                column_name.append(keys+"_B")
+        data_a =[]
+        for keys, values in a.items():
+            if keys=='XYZ':
+                label_a = np.ones((235,1))
+                data_a.append(label_a)
+                data_a.append(values)
+            else:
+                data_a.append(values)
+
+        # Concatenate the arrays horizontally to create an array of size 5x30
+        concatenated_array_a = np.hstack(data_a)
+        # sort the data based on the depth
+        sorted_indices = np.argsort(-concatenated_array_a[:, 3])
+        concatenated_array_a = concatenated_array_a[sorted_indices]
+        concatenated_array_a.shape
+        
+        import pandas as pd
+        dataframe_KSL = pd.DataFrame(concatenated_array_a,columns=column_name)
+        ######################################################################
+        ## Arrange Data as concatationation of spacial co-ordinate and pixel values
+        ###########################################################################
+        dataframe_KSL = dataframe_KSL[(dataframe_KSL["Z"]<=-700)]
+        
+        df_spectral_normalised = dataframe_KSL.copy()
+        df_spectral_normalised.iloc[:,4:] =df_spectral_normalised.iloc[:,4:].apply(zscore,axis=1)
+        
+        data_hsi = df_spectral_normalised.iloc[:,4:]
+        
+        # Normalise along the spectral lines 
+        df_with_spectral_normalised = data_hsi.copy()
+        
+        
+        ###########################################################################
+        ## Obtain the preprocessed data
+        ###########################################################################
+        normalised_hsi =torch.tensor(df_with_spectral_normalised.to_numpy(), dtype=torch.float64)
+        
     ## It is difficult to work with data in such a high dimensions, because the covariance matrix 
     ## determinant quickly goes to zero even if eigen-values are in the range of 1e-3. Therefore it is advisable 
     ## to fist apply dimensionality reduction to a lower dimensions
@@ -365,66 +426,48 @@ def main():
         pca = PCA(n_components=10)
         transformed_hsi = pca.fit_transform(normalised_hsi)
         normalised_hsi = torch.tensor(transformed_hsi, dtype=torch.float64)
-        y_obs_label = torch.tensor(normalised_data.iloc[:,3].to_numpy(), dtype=torch.float64)
+        
     if dimred =="tsne":
         #######################TODO#####################
         ################################################
         raise Exception("TSNE hasn't implemented for dimensionality reduction yet")
     
-    ###########################################################################
-    ## Apply Classical clustering methods to find different cluster information our data
-    ###########################################################################
-    gm = BayesianGaussianMixture(n_components=cluster, random_state=42).fit(normalised_hsi)
-    
-    # make the labels to start with 1 instead of 0
-    gmm_label = gm.predict(normalised_hsi) +1 
-    
-    gamma_prior = gm.predict_proba(normalised_hsi)
-    entropy_gmm_prior = calculate_average_entropy(gamma_prior)
-    print("entropy_gmm_prior\n", entropy_gmm_prior)
-    entropy_gmm_per_pixel_prior = [calculate_entropy(ele) for ele in gamma_prior]
-    
-    gmm_label_order, y_obs_label_order, accuracy_init, _ = cluster_acc( gmm_label, y_obs_label)
-    
-    
-    # reaarange the label information so it is would be consistent with ground truth label
-    gmm_label_rearranged = torch.tensor([y_obs_label_order[x-1] +1  for x in gmm_label], dtype=torch.float64)
-
-    rearrange_list = y_obs_label_order
-    mean_init, cov_init = gm.means_[rearrange_list], gm.covariances_[rearrange_list]
-    ####################################TODO#################################################
-    #   Try to find the initial accuracy of classification
-    #########################################################################################
-    print("Intial accuracy\n", accuracy_init)
-    Z_data = torch.tensor(normalised_data.iloc[:,2].to_numpy(), dtype=torch.float64)
-    
-    #################################TODO##################################################
-    ## Apply different dimentionality reduction techniques and save the plot in Result file
-    #######################################################################################
-    if plot_dimred =="tsne":
-        data = torch.cat([Z_data.reshape((-1,1)), normalised_hsi], dim=1)
-        filename_tsne = directory_path + "/tsne_gmm_label.png"
-        TSNE_transformation(data=data, label=gmm_label_rearranged, filename=filename_tsne)
     
     ######################################################################################
     ## Apply Classical clustering methods to find different cluster information our data
     ######################################################################################
 
-    
-    # Create initial model with higher refinement for better resolution and save it
-    prior_filename= directory_path + "/prior_model.png"
-    geo_model_test = create_initial_gempy_model(refinement=7,filename=prior_filename, save=True)
-    # We can initialize again but with lower refinement because gempy solution are inddependent
-    geo_model_test = create_initial_gempy_model(refinement=3,filename=prior_filename, save=False)
-    
-    
+    if dataset =="Salinas":
+        # Create initial model with higher refinement for better resolution and save it
+        prior_filename= directory_path + "/prior_model.png"
+        geo_model_test = create_initial_gempy_model(refinement=7,filename=prior_filename, save=True)
+        # We can initialize again but with lower refinement because gempy solution are inddependent
+        geo_model_test = create_initial_gempy_model(refinement=3,filename=prior_filename, save=False)
+        
+        
+        ################################################################################
+        # Custom grid
+        ################################################################################
+        xyz_coord = normalised_data.iloc[:,:3].to_numpy()
+        gp.set_custom_grid(geo_model_test.grid, xyz_coord=xyz_coord)
     ################################################################################
-    # Custom grid
+    elif dataset=="KSL":
+         # Create initial model with higher refinement for better resolution and save it
+        prior_filename= directory_path + "/prior_model.png"
+        geo_model_test = create_initial_gempy_model_KSL_4_layer(refinement=7,filename=prior_filename, save=True)
+        # We can initialize again but with lower refinement because gempy solution are inddependent
+        geo_model_test = create_initial_gempy_model_KSL_4_layer(refinement=3,filename=prior_filename, save=False)
+        
     ################################################################################
-    xyz_coord = normalised_data.iloc[:,:3].to_numpy()
-    gp.set_custom_grid(geo_model_test.grid, xyz_coord=xyz_coord)
-    ################################################################################
-    
+        # Custom grid
+        ################################################################################
+        x_loc = 300
+        y_loc = 0
+        z_loc = dataframe_KSL.iloc[:,3].to_numpy()
+        xyz_coord = np.array([[x_loc, y_loc, z] for z in z_loc])
+        # xyz_coord = dataframe_KSL.iloc[:,:3].to_numpy()
+        gp.set_custom_grid(geo_model_test.grid, xyz_coord=xyz_coord)
+        
     geo_model_test.interpolation_options.mesh_extraction = False
     sol = gp.compute_model(geo_model_test)
     
@@ -454,6 +497,47 @@ def main():
     df_or_init.to_csv(filename_initial_op)
     
     ################################################################################
+    ###########################################################################
+    ## Apply Classical clustering methods to find different cluster information our data
+    ###########################################################################
+    if dataset=="KSL":
+        y_obs_label = torch.round(torch.tensor(geo_model_test.solutions.octrees_output[0].last_output_center.custom_grid_values, dtype=torch.float64))
+    gm = BayesianGaussianMixture(n_components=cluster, random_state=42).fit(normalised_hsi)
+    
+    # make the labels to start with 1 instead of 0
+    gmm_label = gm.predict(normalised_hsi) +1 
+    
+    gamma_prior = gm.predict_proba(normalised_hsi)
+    entropy_gmm_prior = calculate_average_entropy(gamma_prior)
+    print("entropy_gmm_prior\n", entropy_gmm_prior)
+    entropy_gmm_per_pixel_prior = [calculate_entropy(ele) for ele in gamma_prior]
+    
+    gmm_label_order, y_obs_label_order, accuracy_init, _ = cluster_acc( gmm_label, y_obs_label)
+    
+    
+    # reaarange the label information so it is would be consistent with ground truth label
+    gmm_label_rearranged = torch.tensor([y_obs_label_order[x-1] +1  for x in gmm_label], dtype=torch.float64)
+
+    rearrange_list = y_obs_label_order
+    mean_init, cov_init = gm.means_[rearrange_list], gm.covariances_[rearrange_list]
+    ####################################TODO#################################################
+    #   Try to find the initial accuracy of classification
+    #########################################################################################
+    print("Intial accuracy\n", accuracy_init)
+    
+    if dataset=="Salinas":
+        Z_data = torch.tensor(normalised_data.iloc[:,2].to_numpy(), dtype=torch.float64)
+    elif dataset=="KSL":
+        Z_data = torch.tensor(dataframe_KSL.iloc[:,3].to_numpy(), dtype=torch.float64)
+    #################################TODO##################################################
+    ## Apply different dimentionality reduction techniques and save the plot in Result file
+    #######################################################################################
+    if plot_dimred =="tsne":
+        data = torch.cat([Z_data.reshape((-1,1)), normalised_hsi], dim=1)
+        filename_tsne = directory_path + "/tsne_gmm_label.png"
+        TSNE_transformation(data=data, label=gmm_label_rearranged, filename=filename_tsne)
+    
+   
     
     geo_model_test.transform.apply_inverse(sp_coords_copy_test)
     
@@ -508,11 +592,10 @@ def main():
         test_list.append({"update":"interface_data","id":torch.tensor([1]), "direction":"Z", "prior_distribution":"normal","normal":{"mean":torch.tensor(sp_coords_copy_test[1,2],dtype=torch.float64), "std":torch.tensor(0.2,dtype=torch.float64)}})
         test_list.append({"update":"interface_data","id":torch.tensor([4]), "direction":"Z", "prior_distribution":"normal","normal":{"mean":torch.tensor(sp_coords_copy_test[4,2],dtype=torch.float64), "std":torch.tensor(0.2,dtype=torch.float64)}})
         test_list.append({"update":"interface_data","id":torch.tensor([7]), "direction":"Z", "prior_distribution":"normal","normal":{"mean":torch.tensor(sp_coords_copy_test[7,2],dtype=torch.float64), "std":torch.tensor(0.2,dtype=torch.float64)}})
-        test_list.append({"update":"interface_data","id":torch.tensor([12]), "direction":"Z", "prior_distribution":"normal","normal":{"mean":torch.tensor(sp_coords_copy_test[12,2],dtype=torch.float64), "std":torch.tensor(0.2,dtype=torch.float64)}})
+        
 
     factor= 1 
-    alpha = 100
-    beta  = 100
+    
     model = MyModel()
     
     filename_Bayesian_graph =directory_path +"/Bayesian_graph.png"
@@ -524,7 +607,17 @@ def main():
     pyro.set_rng_seed(42)
     prior = Predictive(model.model_test, num_samples=prior_number_samples)(normalised_hsi,test_list,geo_model_test,mean_init,cov_init,factor,num_layers,posterior_condition, scale, cluster, alpha, beta)
     # Key to avoid
-    avoid_key = ['mu_1 < 0','mu_1 > mu_2','mu_2 > mu_3', 'mu_3 > mu_4' , 'mu_4 > -83']
+    avoid_key =[]
+    for i in range(len(test_list)+1):
+                if i==0:
+                    avoid_key.append(f'mu_{i+1} < mu_{i+1} + 2 * std')
+                elif i==len(test_list):
+                    avoid_key.append(f'mu_{i} > mu_{i} - 2 * std')
+                else:
+                    avoid_key.append(f'mu_{i} > mu_{i+1} ')
+                    
+    
+    #avoid_key = ['mu_1 < 0','mu_1 > mu_2','mu_2 > mu_3', 'mu_3 > mu_4' , 'mu_4 > -83']
     # Create sub-dictionary without the avoid_key
     prior = dict((key, value) for key, value in prior.items() if key not in avoid_key)
     plt.figure(figsize=(8,10))
@@ -533,6 +626,7 @@ def main():
     filename_prior_plot = directory_path + "/prior.png"
     plt.savefig(filename_prior_plot)
     plt.close()
+    
     ################################################################################
     # Posterior 
     ################################################################################
@@ -584,6 +678,7 @@ def main():
     ###########################################################################################
     ######################### Find the MAP value ##############################################
     ###########################################################################################
+   
     MAP_sample_index = compute_map(posterior_samples,geo_model_test,normalised_hsi,test_list,y_obs_label, mean_init,cov_init,directory_path,num_layers,posterior_condition,scale, cluster, alpha, beta)
     print("MAP_sample_index\n", MAP_sample_index)
     directory_path_MAP = directory_path +"/MAP"
@@ -633,109 +728,113 @@ def main():
     df_sp_final.to_csv(filename_final_sp)
     ################################################################################
     
-    geo_model_test_post = gp.create_geomodel(
-    project_name='Gempy_abc_Test_post',
-    extent=[0, 86, -10, 10, -83, 0],
-    resolution=[86,20,83],
-    refinement=7,
-    structural_frame= gp.data.StructuralFrame.initialize_default_structure()
-    )
+    # geo_model_test_post = gp.create_geomodel(
+    # project_name='Gempy_abc_Test_post',
+    # extent=[0, 86, -10, 10, -83, 0],
+    # resolution=[86,20,83],
+    # refinement=7,
+    # structural_frame= gp.data.StructuralFrame.initialize_default_structure()
+    # )
 
-    gp.add_surface_points(
-        geo_model=geo_model_test_post,
-        x=[70.0, 80.0],
-        y=[0.0, 0.0],
-        z=[-77.0, -71.0],
-        elements_names=['surface1', 'surface1']
-    )
+    # gp.add_surface_points(
+    #     geo_model=geo_model_test_post,
+    #     x=[70.0, 80.0],
+    #     y=[0.0, 0.0],
+    #     z=[-77.0, -71.0],
+    #     elements_names=['surface1', 'surface1']
+    # )
 
-    gp.add_orientations(
-        geo_model=geo_model_test_post,
-        x=[75],
-        y=[0.0],
-        z=[-74],
-        elements_names=['surface1'],
-        pole_vector=[[-5/3, 0, 1]]
-    )
-    geo_model_test_post.update_transform(gp.data.GlobalAnisotropy.NONE)
+    # gp.add_orientations(
+    #     geo_model=geo_model_test_post,
+    #     x=[75],
+    #     y=[0.0],
+    #     z=[-74],
+    #     elements_names=['surface1'],
+    #     pole_vector=[[-5/3, 0, 1]]
+    # )
+    # geo_model_test_post.update_transform(gp.data.GlobalAnisotropy.NONE)
 
-    element2 = gp.data.StructuralElement(
-        name='surface2',
-        color=next(geo_model_test_post.structural_frame.color_generator),
-        surface_points=gp.data.SurfacePointsTable.from_arrays(
-            x=np.array([20.0, 60.0]),
-            y=np.array([0.0, 0.0]),
-            z=np.array([sp_cord[12,2], -52]),
-            names='surface2'
-        ),
-        orientations=gp.data.OrientationsTable.initialize_empty()
-    )
+    # element2 = gp.data.StructuralElement(
+    #     name='surface2',
+    #     color=next(geo_model_test_post.structural_frame.color_generator),
+    #     surface_points=gp.data.SurfacePointsTable.from_arrays(
+    #         x=np.array([20.0, 60.0]),
+    #         y=np.array([0.0, 0.0]),
+    #         z=np.array([sp_cord[12,2], -52]),
+    #         names='surface2'
+    #     ),
+    #     orientations=gp.data.OrientationsTable.initialize_empty()
+    # )
 
-    geo_model_test_post.structural_frame.structural_groups[0].append_element(element2)
+    # geo_model_test_post.structural_frame.structural_groups[0].append_element(element2)
 
-    element3 = gp.data.StructuralElement(
-        name='surface3',
-        color=next(geo_model_test_post.structural_frame.color_generator),
-        surface_points=gp.data.SurfacePointsTable.from_arrays(
-            x=np.array([0.0, 30.0, 60]),
-            y=np.array([0.0, 0.0,0.0]),
-            z=np.array([-72, -55.5, -39]),
-            names='surface3'
-        ),
-        orientations=gp.data.OrientationsTable.initialize_empty()
-    )
+    # element3 = gp.data.StructuralElement(
+    #     name='surface3',
+    #     color=next(geo_model_test_post.structural_frame.color_generator),
+    #     surface_points=gp.data.SurfacePointsTable.from_arrays(
+    #         x=np.array([0.0, 30.0, 60]),
+    #         y=np.array([0.0, 0.0,0.0]),
+    #         z=np.array([-72, -55.5, -39]),
+    #         names='surface3'
+    #     ),
+    #     orientations=gp.data.OrientationsTable.initialize_empty()
+    # )
 
-    geo_model_test_post.structural_frame.structural_groups[0].append_element(element3)
+    # geo_model_test_post.structural_frame.structural_groups[0].append_element(element3)
 
-    element4 = gp.data.StructuralElement(
-        name='surface4',
-        color=next(geo_model_test_post.structural_frame.color_generator),
-        surface_points=gp.data.SurfacePointsTable.from_arrays(
-            x=np.array([0.0, 20.0, 60]),
-            y=np.array([0.0, 0.0,0.0]),
-            z=np.array([-61, sp_cord[7,2], -27]),
-            names='surface4'
-        ),
-        orientations=gp.data.OrientationsTable.initialize_empty()
-    )
+    # element4 = gp.data.StructuralElement(
+    #     name='surface4',
+    #     color=next(geo_model_test_post.structural_frame.color_generator),
+    #     surface_points=gp.data.SurfacePointsTable.from_arrays(
+    #         x=np.array([0.0, 20.0, 60]),
+    #         y=np.array([0.0, 0.0,0.0]),
+    #         z=np.array([-61, sp_cord[7,2], -27]),
+    #         names='surface4'
+    #     ),
+    #     orientations=gp.data.OrientationsTable.initialize_empty()
+    # )
 
-    geo_model_test_post.structural_frame.structural_groups[0].append_element(element4)
+    # geo_model_test_post.structural_frame.structural_groups[0].append_element(element4)
 
-    element5 = gp.data.StructuralElement(
-        name='surface5',
-        color=next(geo_model_test_post.structural_frame.color_generator),
-        surface_points=gp.data.SurfacePointsTable.from_arrays(
-            x=np.array([0.0, 20, 40]),
-            y=np.array([0.0, 0.0, 0.0]),
-            z=np.array([-39, sp_cord[4,2], -16]),
-            names='surface5'
-        ),
-        orientations=gp.data.OrientationsTable.initialize_empty()
-    )
+    # element5 = gp.data.StructuralElement(
+    #     name='surface5',
+    #     color=next(geo_model_test_post.structural_frame.color_generator),
+    #     surface_points=gp.data.SurfacePointsTable.from_arrays(
+    #         x=np.array([0.0, 20, 40]),
+    #         y=np.array([0.0, 0.0, 0.0]),
+    #         z=np.array([-39, sp_cord[4,2], -16]),
+    #         names='surface5'
+    #     ),
+    #     orientations=gp.data.OrientationsTable.initialize_empty()
+    # )
 
-    geo_model_test_post.structural_frame.structural_groups[0].append_element(element5)
+    # geo_model_test_post.structural_frame.structural_groups[0].append_element(element5)
 
-    element6 = gp.data.StructuralElement(
-        name='surface6',
-        color=next(geo_model_test_post.structural_frame.color_generator),
-        surface_points=gp.data.SurfacePointsTable.from_arrays(
-            x=np.array([0.0, 20.0,30]),
-            y=np.array([0.0, 0.0, 0.0]),
-            z=np.array([-21, sp_cord[1,2], -1]),
-            names='surface6'
-        ),
-        orientations=gp.data.OrientationsTable.initialize_empty()
-    )
+    # element6 = gp.data.StructuralElement(
+    #     name='surface6',
+    #     color=next(geo_model_test_post.structural_frame.color_generator),
+    #     surface_points=gp.data.SurfacePointsTable.from_arrays(
+    #         x=np.array([0.0, 20.0,30]),
+    #         y=np.array([0.0, 0.0, 0.0]),
+    #         z=np.array([-21, sp_cord[1,2], -1]),
+    #         names='surface6'
+    #     ),
+    #     orientations=gp.data.OrientationsTable.initialize_empty()
+    # )
 
-    geo_model_test_post.structural_frame.structural_groups[0].append_element(element6)
+    # geo_model_test_post.structural_frame.structural_groups[0].append_element(element6)
 
-    num_elements = len(geo_model_test_post.structural_frame.structural_groups[0].elements) - 1  # Number of elements - 1 for zero-based index
-    for swap_length in range(num_elements, 0, -1):  
-        for i in range(swap_length):
-            # Perform the swap for each pair (i, i+1)
-            geo_model_test_post.structural_frame.structural_groups[0].elements[i], geo_model_test_post.structural_frame.structural_groups[0].elements[i + 1] = \
-            geo_model_test_post.structural_frame.structural_groups[0].elements[i + 1], geo_model_test_post.structural_frame.structural_groups[0].elements[i]
-
+    # num_elements = len(geo_model_test_post.structural_frame.structural_groups[0].elements) - 1  # Number of elements - 1 for zero-based index
+    # for swap_length in range(num_elements, 0, -1):  
+    #     for i in range(swap_length):
+    #         # Perform the swap for each pair (i, i+1)
+    #         geo_model_test_post.structural_frame.structural_groups[0].elements[i], geo_model_test_post.structural_frame.structural_groups[0].elements[i + 1] = \
+    #         geo_model_test_post.structural_frame.structural_groups[0].elements[i + 1], geo_model_test_post.structural_frame.structural_groups[0].elements[i]
+    if dataset =="Salinas":
+        geo_model_test_post = create_final_gempy_model_Salinas_6_layer(refinement=7,filename=directory_path_MAP,sp_cord=sp_cord, save=False)
+    elif dataset =="KSL":
+        filename_posterior_model = directory_path_MAP + "/Posterior_model.png"
+        geo_model_test_post = create_final_gempy_model_KSL_4_layer(refinement=7,filename=filename_posterior_model,sp_cord=sp_cord, save=False)
     gp.set_custom_grid(geo_model_test_post.grid, xyz_coord=xyz_coord)
     gp.compute_model(geo_model_test_post)
     
@@ -1009,109 +1108,114 @@ def main():
     df_sp_final.to_csv(filename_final_sp)
     ################################################################################
     
-    geo_model_test_post = gp.create_geomodel(
-    project_name='Gempy_abc_Test_mean',
-    extent=[0, 86, -10, 10, -83, 0],
-    resolution=[86,20,83],
-    refinement=7,
-    structural_frame= gp.data.StructuralFrame.initialize_default_structure()
-    )
+    # geo_model_test_post = gp.create_geomodel(
+    # project_name='Gempy_abc_Test_mean',
+    # extent=[0, 86, -10, 10, -83, 0],
+    # resolution=[86,20,83],
+    # refinement=7,
+    # structural_frame= gp.data.StructuralFrame.initialize_default_structure()
+    # )
 
-    gp.add_surface_points(
-        geo_model=geo_model_test_post,
-        x=[70.0, 80.0],
-        y=[0.0, 0.0],
-        z=[-77.0, -71.0],
-        elements_names=['surface1', 'surface1']
-    )
+    # gp.add_surface_points(
+    #     geo_model=geo_model_test_post,
+    #     x=[70.0, 80.0],
+    #     y=[0.0, 0.0],
+    #     z=[-77.0, -71.0],
+    #     elements_names=['surface1', 'surface1']
+    # )
 
-    gp.add_orientations(
-        geo_model=geo_model_test_post,
-        x=[75],
-        y=[0.0],
-        z=[-74],
-        elements_names=['surface1'],
-        pole_vector=[[-5/3, 0, 1]]
-    )
-    geo_model_test_post.update_transform(gp.data.GlobalAnisotropy.NONE)
+    # gp.add_orientations(
+    #     geo_model=geo_model_test_post,
+    #     x=[75],
+    #     y=[0.0],
+    #     z=[-74],
+    #     elements_names=['surface1'],
+    #     pole_vector=[[-5/3, 0, 1]]
+    # )
+    # geo_model_test_post.update_transform(gp.data.GlobalAnisotropy.NONE)
 
-    element2 = gp.data.StructuralElement(
-        name='surface2',
-        color=next(geo_model_test_post.structural_frame.color_generator),
-        surface_points=gp.data.SurfacePointsTable.from_arrays(
-            x=np.array([20.0, 60.0]),
-            y=np.array([0.0, 0.0]),
-            z=np.array([sp_cord[12,2], -52]),
-            names='surface2'
-        ),
-        orientations=gp.data.OrientationsTable.initialize_empty()
-    )
+    # element2 = gp.data.StructuralElement(
+    #     name='surface2',
+    #     color=next(geo_model_test_post.structural_frame.color_generator),
+    #     surface_points=gp.data.SurfacePointsTable.from_arrays(
+    #         x=np.array([20.0, 60.0]),
+    #         y=np.array([0.0, 0.0]),
+    #         z=np.array([sp_cord[12,2], -52]),
+    #         names='surface2'
+    #     ),
+    #     orientations=gp.data.OrientationsTable.initialize_empty()
+    # )
 
-    geo_model_test_post.structural_frame.structural_groups[0].append_element(element2)
+    # geo_model_test_post.structural_frame.structural_groups[0].append_element(element2)
 
-    element3 = gp.data.StructuralElement(
-        name='surface3',
-        color=next(geo_model_test_post.structural_frame.color_generator),
-        surface_points=gp.data.SurfacePointsTable.from_arrays(
-            x=np.array([0.0, 30.0, 60]),
-            y=np.array([0.0, 0.0,0.0]),
-            z=np.array([-72, -55.5, -39]),
-            names='surface3'
-        ),
-        orientations=gp.data.OrientationsTable.initialize_empty()
-    )
+    # element3 = gp.data.StructuralElement(
+    #     name='surface3',
+    #     color=next(geo_model_test_post.structural_frame.color_generator),
+    #     surface_points=gp.data.SurfacePointsTable.from_arrays(
+    #         x=np.array([0.0, 30.0, 60]),
+    #         y=np.array([0.0, 0.0,0.0]),
+    #         z=np.array([-72, -55.5, -39]),
+    #         names='surface3'
+    #     ),
+    #     orientations=gp.data.OrientationsTable.initialize_empty()
+    # )
 
-    geo_model_test_post.structural_frame.structural_groups[0].append_element(element3)
+    # geo_model_test_post.structural_frame.structural_groups[0].append_element(element3)
 
-    element4 = gp.data.StructuralElement(
-        name='surface4',
-        color=next(geo_model_test_post.structural_frame.color_generator),
-        surface_points=gp.data.SurfacePointsTable.from_arrays(
-            x=np.array([0.0, 20.0, 60]),
-            y=np.array([0.0, 0.0,0.0]),
-            z=np.array([-61, sp_cord[7,2], -27]),
-            names='surface4'
-        ),
-        orientations=gp.data.OrientationsTable.initialize_empty()
-    )
+    # element4 = gp.data.StructuralElement(
+    #     name='surface4',
+    #     color=next(geo_model_test_post.structural_frame.color_generator),
+    #     surface_points=gp.data.SurfacePointsTable.from_arrays(
+    #         x=np.array([0.0, 20.0, 60]),
+    #         y=np.array([0.0, 0.0,0.0]),
+    #         z=np.array([-61, sp_cord[7,2], -27]),
+    #         names='surface4'
+    #     ),
+    #     orientations=gp.data.OrientationsTable.initialize_empty()
+    # )
 
-    geo_model_test_post.structural_frame.structural_groups[0].append_element(element4)
+    # geo_model_test_post.structural_frame.structural_groups[0].append_element(element4)
 
-    element5 = gp.data.StructuralElement(
-        name='surface5',
-        color=next(geo_model_test_post.structural_frame.color_generator),
-        surface_points=gp.data.SurfacePointsTable.from_arrays(
-            x=np.array([0.0, 20, 40]),
-            y=np.array([0.0, 0.0, 0.0]),
-            z=np.array([-39, sp_cord[4,2], -16]),
-            names='surface5'
-        ),
-        orientations=gp.data.OrientationsTable.initialize_empty()
-    )
+    # element5 = gp.data.StructuralElement(
+    #     name='surface5',
+    #     color=next(geo_model_test_post.structural_frame.color_generator),
+    #     surface_points=gp.data.SurfacePointsTable.from_arrays(
+    #         x=np.array([0.0, 20, 40]),
+    #         y=np.array([0.0, 0.0, 0.0]),
+    #         z=np.array([-39, sp_cord[4,2], -16]),
+    #         names='surface5'
+    #     ),
+    #     orientations=gp.data.OrientationsTable.initialize_empty()
+    # )
 
-    geo_model_test_post.structural_frame.structural_groups[0].append_element(element5)
+    # geo_model_test_post.structural_frame.structural_groups[0].append_element(element5)
 
-    element6 = gp.data.StructuralElement(
-        name='surface6',
-        color=next(geo_model_test_post.structural_frame.color_generator),
-        surface_points=gp.data.SurfacePointsTable.from_arrays(
-            x=np.array([0.0, 20.0,30]),
-            y=np.array([0.0, 0.0, 0.0]),
-            z=np.array([-21, sp_cord[1,2], -1]),
-            names='surface6'
-        ),
-        orientations=gp.data.OrientationsTable.initialize_empty()
-    )
+    # element6 = gp.data.StructuralElement(
+    #     name='surface6',
+    #     color=next(geo_model_test_post.structural_frame.color_generator),
+    #     surface_points=gp.data.SurfacePointsTable.from_arrays(
+    #         x=np.array([0.0, 20.0,30]),
+    #         y=np.array([0.0, 0.0, 0.0]),
+    #         z=np.array([-21, sp_cord[1,2], -1]),
+    #         names='surface6'
+    #     ),
+    #     orientations=gp.data.OrientationsTable.initialize_empty()
+    # )
 
-    geo_model_test_post.structural_frame.structural_groups[0].append_element(element6)
+    # geo_model_test_post.structural_frame.structural_groups[0].append_element(element6)
 
-    num_elements = len(geo_model_test_post.structural_frame.structural_groups[0].elements) - 1  # Number of elements - 1 for zero-based index
-    for swap_length in range(num_elements, 0, -1):  
-        for i in range(swap_length):
-            # Perform the swap for each pair (i, i+1)
-            geo_model_test_post.structural_frame.structural_groups[0].elements[i], geo_model_test_post.structural_frame.structural_groups[0].elements[i + 1] = \
-            geo_model_test_post.structural_frame.structural_groups[0].elements[i + 1], geo_model_test_post.structural_frame.structural_groups[0].elements[i]
-
+    # num_elements = len(geo_model_test_post.structural_frame.structural_groups[0].elements) - 1  # Number of elements - 1 for zero-based index
+    # for swap_length in range(num_elements, 0, -1):  
+    #     for i in range(swap_length):
+    #         # Perform the swap for each pair (i, i+1)
+    #         geo_model_test_post.structural_frame.structural_groups[0].elements[i], geo_model_test_post.structural_frame.structural_groups[0].elements[i + 1] = \
+    #         geo_model_test_post.structural_frame.structural_groups[0].elements[i + 1], geo_model_test_post.structural_frame.structural_groups[0].elements[i]
+    if dataset =="Salinas":
+        geo_model_test_post = create_final_gempy_model_Salinas_6_layer(refinement=7,filename=directory_path_MAP,sp_cord=sp_cord, save=False)
+    elif dataset =="KSL":
+        filename_posterior_model = directory_path_Mean + "/Posterior_model.png"
+        geo_model_test_post = create_final_gempy_model_KSL_4_layer(refinement=7,filename=filename_posterior_model,sp_cord=sp_cord, save=False)
+        
     gp.set_custom_grid(geo_model_test_post.grid, xyz_coord=xyz_coord)
     gp.compute_model(geo_model_test_post)
     
