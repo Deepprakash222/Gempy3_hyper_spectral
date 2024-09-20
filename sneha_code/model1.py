@@ -197,7 +197,42 @@ class MyModel(PyroModule):
                     cov_eigen_values = pyro.sample("cov_eigen_values_"+str(i+1), dist.MultivariateNormal(loc=torch.sqrt(eigen_values_init),covariance_matrix=cov_matrix_cov))
                     cov_data = eigen_vectors_data @ torch.diag(cov_eigen_values)**2 @ eigen_vectors_data.T #+ 1e-6 * torch.eye(loc_mean[0].shape[0], dtype=torch.float64)
                     cov.append(cov_data)
+                    
+            if posterior_condition==4:
+                ################# Condition 3:Prior on mean and covariance ###########################
+                # Assume cov = e^ A
+                loc_mean = torch.tensor(mean_init,dtype=torch.float64)
+                #loc_cov =  torch.tensor(cov_init, dtype=torch.float64)
+                cov_matrix_mean = alpha * torch.eye(loc_mean[0].shape[0], dtype=torch.float64)
+                n = loc_mean.shape[1]
+                # Number of elements in the upper triangular part (including diagonal)
+                num_upper_tri_elements = n * (n + 1) // 2
+                cov_matrix_cov = beta * torch.eye(num_upper_tri_elements, dtype=torch.float64)
                 
+                D = loc_mean.shape[1]
+                
+            
+                for i in range(loc_mean.shape[0]):
+                    mean_data= pyro.sample("mean_data_"+str(i+1), dist.MultivariateNormal(loc=loc_mean[i],covariance_matrix=cov_matrix_mean))
+                    mean.append(mean_data)
+                    A = torch.zeros((n,n), dtype=torch.float64)
+                    
+                    upper_tri_cov = pyro.sample("upper_tri_cov_"+str(i+1), dist.MultivariateNormal(loc=torch.zeros(num_upper_tri_elements, dtype=torch.float64), covariance_matrix=cov_matrix_cov))
+                    
+                    # Get the upper triangular indices
+                    upper_tri_indices = torch.triu_indices(n, n)
+                    
+                    # Assign the sampled elements to the upper triangular positions
+                    A = A.index_put((upper_tri_indices[0], upper_tri_indices[1]),upper_tri_cov)
+                    # Symmetrize the matrix A
+                    A = A + A.T - torch.diag(A.diagonal())
+                    
+                    cov_data = torch.matrix_exp(A) + 1e-8 * torch.eye(A.shape[0])
+                    
+                    cov.append(cov_data)
+                    
+                    
+                    
             mean_tensor = torch.stack(mean, dim=0)
             cov_tensor = torch.stack(cov, dim=0)
             

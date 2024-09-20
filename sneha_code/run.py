@@ -41,21 +41,21 @@ from final_gempy_model import *
 parser = argparse.ArgumentParser(description='pass values using command line')
 parser.add_argument('--startval', metavar='startcol', type=int, default=19,  help='start x column value')
 parser.add_argument('--endval', metavar='endcol', type=int, default=21, help='end x column value')
-parser.add_argument('--cluster', metavar='cluster', type=int, default=4, help='total number of cluster')
+parser.add_argument('--cluster', metavar='cluster', type=int, default=6, help='total number of cluster')
 parser.add_argument('--dimred', metavar='dimred', type=str , default="pca", help='type of dimensionality reduction')
 parser.add_argument('--plot_dimred', metavar='plot_dimred', type=str , default="tsne", help='type of dimensionality reduction for plotting after data is alread reduced in a smaller dimension')
 parser.add_argument('--prior_number_samples', metavar='prior_number_samples', type=int , default=100, help='number of samples for prior')
 parser.add_argument('--posterior_number_samples', metavar='posterior_number_samples', type=int , default=150, help='number of samples for posterior')
 parser.add_argument('--posterior_warmup_steps', metavar='posterior_warmup_steps', type=int , default=50, help='number of  warmup steps for posterior')
 parser.add_argument('--directory_path', metavar='directory_path', type=str , default="./Results", help='name of the directory in which result should be stored')
-parser.add_argument('--dataset', metavar='dataset', type=str , default="KSL", help='name of the dataset (Salinas, KSL or other)')
+parser.add_argument('--dataset', metavar='dataset', type=str , default="Salinas", help='name of the dataset (Salinas, KSL, KSL_layer3 or other)')
 parser.add_argument('--posterior_num_chain', metavar='posterior_num_chain', type=int , default=1, help='number of chain')
-parser.add_argument('--posterior_condition',metavar='posterior_condition', type=int , default=2, help='1-Deterministic for mean and covariance for hsi data, 2-Deterministic for covariance but a prior on mean ,3-Prior on mean and covariance')
-parser.add_argument('--num_layers',metavar='num_layers', type=int , default=3, help='number of points used to model layer information')
+parser.add_argument('--posterior_condition',metavar='posterior_condition', type=int , default=3, help='1-Deterministic for mean and covariance for hsi data, 2-Deterministic for covariance but a prior on mean ,3-Prior on mean and covariance')
+parser.add_argument('--num_layers',metavar='num_layers', type=int , default=4, help='number of points used to model layer information')
 parser.add_argument('--slope_gempy', metavar='slope_gempy', type=float , default=40.0, help='slope for gempy')
 parser.add_argument('--scale', metavar='scale', type=float , default=10.0, help='scaling factor to generate probability for each voxel')
 parser.add_argument('--alpha', metavar='alpha', type=float , default=100.0, help='scaling parameter for the mean')
-parser.add_argument('--beta', metavar='beta', type=float , default=100.0, help='scaling parameter for the covariance')
+parser.add_argument('--beta', metavar='beta', type=float , default=100, help='scaling parameter for the covariance')
 
 def cluster_acc(Y_pred, Y, ignore_label=None):
     """ Rearranging the class labels of prediction so that it maximise the 
@@ -300,6 +300,15 @@ def main():
     alpha = args.alpha
     beta  = args.beta
     
+    ## seed numpy and pytorch
+    seed = 42
+    np.random.seed(seed)
+    torch.manual_seed(seed)
+    # Ensure deterministic behavior
+    torch.backends.cudnn.deterministic = True
+    torch.backends.cudnn.benchmark = False
+    # Setting the seed for Pyro sampling
+    pyro.set_rng_seed(42)
     directory_path = directory_path + "/" + dataset + "/posterior_condition_" + str(posterior_condition)
     # Check if the directory exists
     if not os.path.exists(directory_path):
@@ -360,10 +369,11 @@ def main():
         ## Obtain the preprocessed data
         ###########################################################################
         normalised_data = df_with_spectral_normalised.loc[(df_with_spectral_normalised["X"]>=startval)&(df_with_spectral_normalised["X"]<=endval)]
+        
         normalised_hsi =torch.tensor(normalised_data.iloc[:,4:].to_numpy(), dtype=torch.float64)
         y_obs_label = torch.tensor(normalised_data.iloc[:,3].to_numpy(), dtype=torch.float64)
     
-    elif dataset=="KSL":
+    elif dataset=="KSL" or dataset=="KSL_layer3" :
         # Load KSL_file file
         import joblib
         filename_a = '../Fw__Hyperspectral_datasets_from_the_KSL_cores/CuSp131.pkl'
@@ -397,7 +407,7 @@ def main():
         concatenated_array_a = concatenated_array_a[sorted_indices]
         concatenated_array_a.shape
         
-        import pandas as pd
+        
         dataframe_KSL = pd.DataFrame(concatenated_array_a,columns=column_name)
         ######################################################################
         ## Arrange Data as concatationation of spacial co-ordinate and pixel values
@@ -423,7 +433,7 @@ def main():
     ## to fist apply dimensionality reduction to a lower dimensions
     if dimred=="pca":
         from sklearn.decomposition import PCA
-        pca = PCA(n_components=10)
+        pca = PCA(n_components=8)
         transformed_hsi = pca.fit_transform(normalised_hsi)
         normalised_hsi = torch.tensor(transformed_hsi, dtype=torch.float64)
         
@@ -457,7 +467,12 @@ def main():
         geo_model_test = create_initial_gempy_model_KSL_4_layer(refinement=7,filename=prior_filename, save=True)
         # We can initialize again but with lower refinement because gempy solution are inddependent
         geo_model_test = create_initial_gempy_model_KSL_4_layer(refinement=3,filename=prior_filename, save=False)
-        
+    elif dataset =="KSL_layer3":
+        # Create initial model with higher refinement for better resolution and save it
+        prior_filename= directory_path + "/prior_model.png"
+        geo_model_test = create_initial_gempy_model_KSL_3_layer(refinement=7,filename=prior_filename, save=True)
+        # We can initialize again but with lower refinement because gempy solution are inddependent
+        geo_model_test = create_initial_gempy_model_KSL_3_layer(refinement=3,filename=prior_filename, save=False)
     ################################################################################
         # Custom grid
         ################################################################################
@@ -500,7 +515,7 @@ def main():
     ###########################################################################
     ## Apply Classical clustering methods to find different cluster information our data
     ###########################################################################
-    if dataset=="KSL":
+    if dataset=="KSL" or dataset=="KSL_layer3":
         y_obs_label = torch.round(torch.tensor(geo_model_test.solutions.octrees_output[0].last_output_center.custom_grid_values, dtype=torch.float64))
     gm = BayesianGaussianMixture(n_components=cluster, random_state=42).fit(normalised_hsi)
     
@@ -527,7 +542,7 @@ def main():
     
     if dataset=="Salinas":
         Z_data = torch.tensor(normalised_data.iloc[:,2].to_numpy(), dtype=torch.float64)
-    elif dataset=="KSL":
+    elif dataset=="KSL" or dataset=="KSL_layer3":
         Z_data = torch.tensor(dataframe_KSL.iloc[:,3].to_numpy(), dtype=torch.float64)
     #################################TODO##################################################
     ## Apply different dimentionality reduction techniques and save the plot in Result file
@@ -592,15 +607,17 @@ def main():
         test_list.append({"update":"interface_data","id":torch.tensor([1]), "direction":"Z", "prior_distribution":"normal","normal":{"mean":torch.tensor(sp_coords_copy_test[1,2],dtype=torch.float64), "std":torch.tensor(0.2,dtype=torch.float64)}})
         test_list.append({"update":"interface_data","id":torch.tensor([4]), "direction":"Z", "prior_distribution":"normal","normal":{"mean":torch.tensor(sp_coords_copy_test[4,2],dtype=torch.float64), "std":torch.tensor(0.2,dtype=torch.float64)}})
         test_list.append({"update":"interface_data","id":torch.tensor([7]), "direction":"Z", "prior_distribution":"normal","normal":{"mean":torch.tensor(sp_coords_copy_test[7,2],dtype=torch.float64), "std":torch.tensor(0.2,dtype=torch.float64)}})
-        
-
+    elif dataset=="KSL_layer3":
+        test_list.append({"update":"interface_data","id":torch.tensor([1]), "direction":"Z", "prior_distribution":"normal","normal":{"mean":torch.tensor(sp_coords_copy_test[1,2],dtype=torch.float64), "std":torch.tensor(0.2,dtype=torch.float64)}})
+        test_list.append({"update":"interface_data","id":torch.tensor([4]), "direction":"Z", "prior_distribution":"normal","normal":{"mean":torch.tensor(sp_coords_copy_test[4,2],dtype=torch.float64), "std":torch.tensor(0.2,dtype=torch.float64)}})
+    
     factor= 1 
     
     model = MyModel()
     
     filename_Bayesian_graph =directory_path +"/Bayesian_graph.png"
     dot = pyro.render_model(model.model_test, model_args=(normalised_hsi,test_list,geo_model_test,mean_init,cov_init,factor,num_layers,posterior_condition, scale, cluster, alpha, beta),render_distributions=True,filename=filename_Bayesian_graph)
-    
+  
     ################################################################################
     # Prior
     ################################################################################
@@ -678,7 +695,7 @@ def main():
     ###########################################################################################
     ######################### Find the MAP value ##############################################
     ###########################################################################################
-   
+    
     MAP_sample_index = compute_map(posterior_samples,geo_model_test,normalised_hsi,test_list,y_obs_label, mean_init,cov_init,directory_path,num_layers,posterior_condition,scale, cluster, alpha, beta)
     print("MAP_sample_index\n", MAP_sample_index)
     directory_path_MAP = directory_path +"/MAP"
@@ -695,6 +712,9 @@ def main():
             for i in range(num_layers):
                 RV_mu_post_MAP["mu_"+str(i+1)+"_post"] = posterior_samples["mu_"+str(i+1)][MAP_sample_index]
     elif posterior_condition ==3:
+            for i in range(num_layers):
+                RV_mu_post_MAP["mu_"+str(i+1)+"_post"] = posterior_samples["mu_"+str(i+1)][MAP_sample_index]
+    elif posterior_condition ==4:
             for i in range(num_layers):
                 RV_mu_post_MAP["mu_"+str(i+1)+"_post"] = posterior_samples["mu_"+str(i+1)][MAP_sample_index]
     else:
@@ -832,9 +852,13 @@ def main():
     #         geo_model_test_post.structural_frame.structural_groups[0].elements[i + 1], geo_model_test_post.structural_frame.structural_groups[0].elements[i]
     if dataset =="Salinas":
         geo_model_test_post = create_final_gempy_model_Salinas_6_layer(refinement=7,filename=directory_path_MAP,sp_cord=sp_cord, save=False)
-    elif dataset =="KSL":
+    elif dataset =="KSL" :
         filename_posterior_model = directory_path_MAP + "/Posterior_model.png"
         geo_model_test_post = create_final_gempy_model_KSL_4_layer(refinement=7,filename=filename_posterior_model,sp_cord=sp_cord, save=False)
+    elif dataset=="KSL_layer3":
+        filename_posterior_model = directory_path_MAP + "/Posterior_model.png"
+        geo_model_test_post = create_final_gempy_model_KSL_3_layer(refinement=7,filename=filename_posterior_model,sp_cord=sp_cord, save=False)
+        
     gp.set_custom_grid(geo_model_test_post.grid, xyz_coord=xyz_coord)
     gp.compute_model(geo_model_test_post)
     
@@ -973,6 +997,59 @@ def main():
                 
             log_likelihood += torch.log(likelihood)
     #########################################################################################
+    # Posertior 4
+    #########################################################################################
+    elif posterior_condition ==4:
+        
+        RV_mean_data_post_MAP ={}
+        RV_post_cov_upper_MAP ={}
+
+        loc_mean = torch.tensor(mean_init,dtype=torch.float64)
+    
+        n = loc_mean.shape[1]
+        # Number of elements in the upper triangular part (including diagonal)
+        num_upper_tri_elements = n * (n + 1) // 2
+        
+        for j in range(cluster):  
+                RV_mean_data_post_MAP[f"mean_data{j+1}"+"_post"] = posterior_samples["mean_data_"+str(j+1)][MAP_sample_index]
+                RV_post_cov_upper_MAP[f"upper_tri_cov_{j+1}"+"_post"] = posterior_samples["upper_tri_cov_"+str(j+1)][MAP_sample_index]
+        for idx, (key, value) in enumerate(RV_mean_data_post_MAP.items()):
+            mean_k = value
+            A = torch.zeros((n,n), dtype=torch.float64)
+            # Get the upper triangular indices
+            upper_tri_indices = torch.triu_indices(n, n)
+            # Assign the sampled elements to the upper triangular positions
+            A = A.index_put((upper_tri_indices[0], upper_tri_indices[1]),RV_post_cov_upper_MAP[f"upper_tri_cov_{idx+1}"+"_post"])
+            # Symmetrize the matrix A
+            A = A + A.T - torch.diag(A.diagonal())
+            cov_data = torch.matrix_exp(A)
+            
+            mean.append(mean_k)
+            cov.append(cov_data)
+            
+        mean_tensor =torch.stack(mean,dim=0)
+        cov_tensor = torch.stack(cov,dim=0)
+        
+        gmm_data ={}
+        gmm_data["weights"]=pi_k.detach().numpy().tolist()
+        gmm_data["means"] = mean_tensor.detach().numpy().tolist()
+        gmm_data["cov"] = cov_tensor.detach().numpy().tolist()
+        
+        # We can also calculate the accuracy using the mean and covariance to see if our GMM model has imroved or not
+        gamma_post = torch.zeros(z_nk.shape) 
+        
+        log_likelihood=torch.tensor(0.0, dtype=torch.float64)
+        for j in range(normalised_hsi.shape[0]):
+                
+            likelihood = 0.0  
+
+            for c in range(cluster):
+                likelihood += pi_k[c] * torch.exp(dist.MultivariateNormal(loc=mean_tensor[c], covariance_matrix=cov_tensor[c]).log_prob(normalised_hsi[j]))            
+            for k in range(gamma_post.shape[1]):
+                gamma_post[j][k] = (pi_k[k] * torch.exp(dist.MultivariateNormal(loc=mean_tensor[k],covariance_matrix= cov_tensor[k]).log_prob(normalised_hsi[j]))) / likelihood
+                
+            log_likelihood += torch.log(likelihood)
+    #########################################################################################
     # Other posterior
     #########################################################################################
     else:
@@ -1075,6 +1152,9 @@ def main():
             for i in range(num_layers):
                 RV_mu_post_Mean["mu_"+str(i+1)+"_post"] = posterior_samples["mu_"+str(i+1)].mean()
     elif posterior_condition ==3:
+            for i in range(num_layers):
+                RV_mu_post_Mean["mu_"+str(i+1)+"_post"] = posterior_samples["mu_"+str(i+1)].mean()
+    elif posterior_condition ==4:
             for i in range(num_layers):
                 RV_mu_post_Mean["mu_"+str(i+1)+"_post"] = posterior_samples["mu_"+str(i+1)].mean()
     else:
@@ -1212,9 +1292,12 @@ def main():
     #         geo_model_test_post.structural_frame.structural_groups[0].elements[i + 1], geo_model_test_post.structural_frame.structural_groups[0].elements[i]
     if dataset =="Salinas":
         geo_model_test_post = create_final_gempy_model_Salinas_6_layer(refinement=7,filename=directory_path_MAP,sp_cord=sp_cord, save=False)
-    elif dataset =="KSL":
+    elif dataset =="KSL" :
         filename_posterior_model = directory_path_Mean + "/Posterior_model.png"
         geo_model_test_post = create_final_gempy_model_KSL_4_layer(refinement=7,filename=filename_posterior_model,sp_cord=sp_cord, save=False)
+    elif dataset =="KSl_layer3":
+        filename_posterior_model = directory_path_Mean + "/Posterior_model.png"
+        geo_model_test_post = create_final_gempy_model_KSL_3_layer(refinement=7,filename=filename_posterior_model,sp_cord=sp_cord, save=False)
         
     gp.set_custom_grid(geo_model_test_post.grid, xyz_coord=xyz_coord)
     gp.compute_model(geo_model_test_post)
@@ -1330,6 +1413,59 @@ def main():
             mean_k = value
             eigen_vectors_data = torch.tensor(eigen_vector_list[idx], dtype=torch.float64)
             cov_data = eigen_vectors_data @ torch.diag(RV_post_cov_eigen_Mean[f"cov_eigen_values_{idx+1}"+"_post"])**2 @ eigen_vectors_data.T
+            mean.append(mean_k)
+            cov.append(cov_data)
+            
+        mean_tensor =torch.stack(mean,dim=0)
+        cov_tensor = torch.stack(cov,dim=0)
+        
+        gmm_data ={}
+        gmm_data["weights"]=pi_k.detach().numpy().tolist()
+        gmm_data["means"] = mean_tensor.detach().numpy().tolist()
+        gmm_data["cov"] = cov_tensor.detach().numpy().tolist()
+        
+        # We can also calculate the accuracy using the mean and covariance to see if our GMM model has imroved or not
+        gamma_post = torch.zeros(z_nk.shape) 
+        
+        log_likelihood=torch.tensor(0.0, dtype=torch.float64)
+        for j in range(normalised_hsi.shape[0]):
+                
+            likelihood = 0.0  
+
+            for c in range(cluster):
+                likelihood += pi_k[c] * torch.exp(dist.MultivariateNormal(loc=mean_tensor[c], covariance_matrix=cov_tensor[c]).log_prob(normalised_hsi[j]))            
+            for k in range(gamma_post.shape[1]):
+                gamma_post[j][k] = (pi_k[k] * torch.exp(dist.MultivariateNormal(loc=mean_tensor[k],covariance_matrix= cov_tensor[k]).log_prob(normalised_hsi[j]))) / likelihood
+                
+            log_likelihood += torch.log(likelihood)
+    #########################################################################################
+    # Posertior 4
+    #########################################################################################
+    elif posterior_condition ==4:
+        
+        RV_mean_data_post_Mean ={}
+        RV_post_cov_upper_Mean ={}
+
+        loc_mean = torch.tensor(mean_init,dtype=torch.float64)
+        
+        n = loc_mean.shape[1]
+        # Number of elements in the upper triangular part (including diagonal)
+        num_upper_tri_elements = n * (n + 1) // 2
+        
+        for j in range(cluster):  
+                RV_mean_data_post_Mean[f"mean_data{j+1}"+"_post"] = posterior_samples["mean_data_"+str(j+1)].mean(dim=0)
+                RV_post_cov_upper_Mean[f"upper_tri_cov_{j+1}"+"_post"] = posterior_samples["upper_tri_cov_"+str(j+1)].mean(dim=0)
+        for idx, (key, value) in enumerate(RV_mean_data_post_Mean.items()):
+            mean_k = value
+            A = torch.zeros((n,n), dtype=torch.float64)
+            # Get the upper triangular indices
+            upper_tri_indices = torch.triu_indices(n, n)
+            # Assign the sampled elements to the upper triangular positions
+            A = A.index_put((upper_tri_indices[0], upper_tri_indices[1]),RV_post_cov_upper_Mean[f"upper_tri_cov_{idx+1}"+"_post"])
+            # Symmetrize the matrix A
+            A = A + A.T - torch.diag(A.diagonal())
+            cov_data = torch.matrix_exp(A)
+            
             mean.append(mean_k)
             cov.append(cov_data)
             

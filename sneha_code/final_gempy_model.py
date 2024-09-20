@@ -119,7 +119,7 @@ def create_final_gempy_model_Salinas_6_layer(refinement,filename, sp_cord, save=
    
     return geo_model_test_post
 
-def create_initial_gempy_model_KSL_3_layer(refinement,filename,sp_cord, save=True):
+def create_final_gempy_model_KSL_3_layer(refinement,filename,sp_cord, save=True):
     """ Create an initial gempy model objet
 
     Args:

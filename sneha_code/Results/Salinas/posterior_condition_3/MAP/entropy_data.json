@@ -1,1 +1,1 @@
-{"MAP index": 0, "entropy_prior_gmm": 0.000702234177800009, "entropy_MAP_gmm": 9.530255192657933e-05, "entropy_z_nk_prior": 0.0011754161606678571, "entropy_MAP_z_nk": 0.018344403423418962, "entropy_mixing_prior": 53.75278407684164, "entropy_MAP_mixing": 1.6735022514000184}
+{"MAP index": 0, "entropy_prior_gmm": 0.0018708267258372385, "entropy_MAP_gmm": 0.003767083864659071, "entropy_z_nk_prior": 0.0011754161606685348, "entropy_MAP_z_nk": 0.009637521566205925, "entropy_mixing_prior": 53.75278407684164, "entropy_MAP_mixing": 1.694069002873832}
