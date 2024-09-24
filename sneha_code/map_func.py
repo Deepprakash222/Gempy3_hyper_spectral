@@ -351,6 +351,7 @@ def compute_map(posterior_samples,geo_model_test,normalised_hsi,test_list,y_obs_
     
     
     if(posterior_condition==3):
+        
         print("Posterior 3 reached")
         
         unnormalise_posterior_value["log_prior_geo_list"]=[]
@@ -452,7 +453,7 @@ def compute_map(posterior_samples,geo_model_test,normalised_hsi,test_list,y_obs_
             eigen_values_init = torch.tensor(eigen_values_list[j],dtype=torch.float64)
             eigen_vectors_data = torch.tensor(eigen_vector_list[j], dtype=torch.float64)
             log_prior_hsi_cov = log_prior_hsi_cov + dist.MultivariateNormal(loc=torch.sqrt(eigen_values_init),covariance_matrix=cov_matrix_cov).log_prob(posterior_samples[keys_list[j]][i])
-            cov_data = eigen_vectors_data @ torch.diag(posterior_samples[keys_list[j]][i])**2 @ eigen_vectors_data.T
+            cov_data = eigen_vectors_data @ (torch.diag(posterior_samples[keys_list[j]][i])**2 + 1e-8 * torch.eye(eigen_values_init.shape[0], dtype=torch.float64)) @ eigen_vectors_data.T
             cov.append(cov_data)
         cov_tensor = torch.stack(cov, dim=0)
         
@@ -497,6 +498,7 @@ def compute_map(posterior_samples,geo_model_test,normalised_hsi,test_list,y_obs_
         unnormalise_posterior_value["log_posterior_list"].append(log_prior_geo +log_prior_hsi_mean + log_prior_hsi_cov +log_likelihood)
     
     if(posterior_condition==4):
+        
         print("Posterior 4 reached")
         
         unnormalise_posterior_value["log_prior_geo_list"]=[]

@@ -195,7 +195,7 @@ class MyModel(PyroModule):
                     eigen_values_init = torch.tensor(eigen_values_list[i],dtype=torch.float64)
                     eigen_vectors_data = torch.tensor(eigen_vector_list[i], dtype=torch.float64)
                     cov_eigen_values = pyro.sample("cov_eigen_values_"+str(i+1), dist.MultivariateNormal(loc=torch.sqrt(eigen_values_init),covariance_matrix=cov_matrix_cov))
-                    cov_data = eigen_vectors_data @ torch.diag(cov_eigen_values)**2 @ eigen_vectors_data.T #+ 1e-6 * torch.eye(loc_mean[0].shape[0], dtype=torch.float64)
+                    cov_data = eigen_vectors_data @ (torch.diag(cov_eigen_values)**2 + 1e-8 * torch.eye(cov_eigen_values.shape[0], dtype=torch.float64)) @ eigen_vectors_data.T #+ 1e-6 * torch.eye(loc_mean[0].shape[0], dtype=torch.float64)
                     cov.append(cov_data)
                     
             if posterior_condition==4:
@@ -227,7 +227,7 @@ class MyModel(PyroModule):
                     # Symmetrize the matrix A
                     A = A + A.T - torch.diag(A.diagonal())
                     
-                    cov_data = torch.matrix_exp(A) + 1e-8 * torch.eye(A.shape[0])
+                    cov_data = torch.matrix_exp(A) #+ 1e-8 * torch.eye(A.shape[0])
                     
                     cov.append(cov_data)
                     

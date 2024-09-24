@@ -41,21 +41,21 @@ from final_gempy_model import *
 parser = argparse.ArgumentParser(description='pass values using command line')
 parser.add_argument('--startval', metavar='startcol', type=int, default=19,  help='start x column value')
 parser.add_argument('--endval', metavar='endcol', type=int, default=21, help='end x column value')
-parser.add_argument('--cluster', metavar='cluster', type=int, default=6, help='total number of cluster')
+parser.add_argument('--cluster', metavar='cluster', type=int, default=3, help='total number of cluster')
 parser.add_argument('--dimred', metavar='dimred', type=str , default="pca", help='type of dimensionality reduction')
 parser.add_argument('--plot_dimred', metavar='plot_dimred', type=str , default="tsne", help='type of dimensionality reduction for plotting after data is alread reduced in a smaller dimension')
 parser.add_argument('--prior_number_samples', metavar='prior_number_samples', type=int , default=100, help='number of samples for prior')
 parser.add_argument('--posterior_number_samples', metavar='posterior_number_samples', type=int , default=150, help='number of samples for posterior')
 parser.add_argument('--posterior_warmup_steps', metavar='posterior_warmup_steps', type=int , default=50, help='number of  warmup steps for posterior')
 parser.add_argument('--directory_path', metavar='directory_path', type=str , default="./Results", help='name of the directory in which result should be stored')
-parser.add_argument('--dataset', metavar='dataset', type=str , default="Salinas", help='name of the dataset (Salinas, KSL, KSL_layer3 or other)')
+parser.add_argument('--dataset', metavar='dataset', type=str , default="KSL_layer3", help='name of the dataset (Salinas, KSL, KSL_layer3 or other)')
 parser.add_argument('--posterior_num_chain', metavar='posterior_num_chain', type=int , default=1, help='number of chain')
 parser.add_argument('--posterior_condition',metavar='posterior_condition', type=int , default=3, help='1-Deterministic for mean and covariance for hsi data, 2-Deterministic for covariance but a prior on mean ,3-Prior on mean and covariance')
-parser.add_argument('--num_layers',metavar='num_layers', type=int , default=4, help='number of points used to model layer information')
+parser.add_argument('--num_layers',metavar='num_layers', type=int , default=2, help='number of points used to model layer information')
 parser.add_argument('--slope_gempy', metavar='slope_gempy', type=float , default=40.0, help='slope for gempy')
 parser.add_argument('--scale', metavar='scale', type=float , default=10.0, help='scaling factor to generate probability for each voxel')
-parser.add_argument('--alpha', metavar='alpha', type=float , default=100.0, help='scaling parameter for the mean')
-parser.add_argument('--beta', metavar='beta', type=float , default=100, help='scaling parameter for the covariance')
+parser.add_argument('--alpha', metavar='alpha', type=float , default=0.1, help='scaling parameter for the mean, 0.1')
+parser.add_argument('--beta', metavar='beta', type=float , default=20, help='scaling parameter for the covariance, 20')
 
 def cluster_acc(Y_pred, Y, ignore_label=None):
     """ Rearranging the class labels of prediction so that it maximise the 
@@ -153,128 +153,6 @@ def calculate_entropy(mixing_coefficient):
     # Return the average entropy
     return entropy_per_point
 
-def create_initial_gempy_model(refinement,filename, save=True):
-    """ Create an initial gempy model objet
-
-    Args:
-        refinement (int): Refinement of grid
-        save (bool, optional): Whether you want to save the image
-
-    """
-    geo_model_test = gp.create_geomodel(
-    project_name='Gempy_abc_Test',
-    extent=[0, 86, -10, 10, -83, 0],
-    resolution=[86,20,83],
-    refinement=refinement,
-    structural_frame= gp.data.StructuralFrame.initialize_default_structure()
-    )
-
-    gp.add_surface_points(
-        geo_model=geo_model_test,
-        x=[70.0, 80.0],
-        y=[0.0, 0.0],
-        z=[-77.0, -71.0],
-        elements_names=['surface1', 'surface1']
-    )
-
-    gp.add_orientations(
-        geo_model=geo_model_test,
-        x=[75],
-        y=[0.0],
-        z=[-74],
-        elements_names=['surface1'],
-        pole_vector=[[-5/3, 0, 1]]
-    )
-    geo_model_test.update_transform(gp.data.GlobalAnisotropy.NONE)
-
-    element2 = gp.data.StructuralElement(
-        name='surface2',
-        color=next(geo_model_test.structural_frame.color_generator),
-        surface_points=gp.data.SurfacePointsTable.from_arrays(
-            x=np.array([20.0, 60.0]),
-            y=np.array([0.0, 0.0]),
-            z=np.array([-74, -52]),
-            names='surface2'
-        ),
-        orientations=gp.data.OrientationsTable.initialize_empty()
-    )
-
-    geo_model_test.structural_frame.structural_groups[0].append_element(element2)
-
-    element3 = gp.data.StructuralElement(
-        name='surface3',
-        color=next(geo_model_test.structural_frame.color_generator),
-        surface_points=gp.data.SurfacePointsTable.from_arrays(
-            x=np.array([0.0, 30.0, 60]),
-            y=np.array([0.0, 0.0,0.0]),
-            z=np.array([-72, -55.5, -39]),
-            names='surface3'
-        ),
-        orientations=gp.data.OrientationsTable.initialize_empty()
-    )
-
-    geo_model_test.structural_frame.structural_groups[0].append_element(element3)
-
-    element4 = gp.data.StructuralElement(
-        name='surface4',
-        color=next(geo_model_test.structural_frame.color_generator),
-        surface_points=gp.data.SurfacePointsTable.from_arrays(
-            x=np.array([0.0, 20.0, 60]),
-            y=np.array([0.0, 0.0,0.0]),
-            z=np.array([-61, -49, -27]),
-            names='surface4'
-        ),
-        orientations=gp.data.OrientationsTable.initialize_empty()
-    )
-
-    geo_model_test.structural_frame.structural_groups[0].append_element(element4)
-
-    element5 = gp.data.StructuralElement(
-        name='surface5',
-        color=next(geo_model_test.structural_frame.color_generator),
-        surface_points=gp.data.SurfacePointsTable.from_arrays(
-            x=np.array([0.0, 20.0, 40]),
-            y=np.array([0.0, 0.0, 0.0]),
-            z=np.array([-39, -28, -16]),
-            names='surface5'
-        ),
-        orientations=gp.data.OrientationsTable.initialize_empty()
-    )
-
-    geo_model_test.structural_frame.structural_groups[0].append_element(element5)
-
-    element6 = gp.data.StructuralElement(
-        name='surface6',
-        color=next(geo_model_test.structural_frame.color_generator),
-        surface_points=gp.data.SurfacePointsTable.from_arrays(
-            x=np.array([0.0, 20.0,30]),
-            y=np.array([0.0, 0.0, 0.0]),
-            z=np.array([-21, -10, -1]),
-            names='surface6'
-        ),
-        orientations=gp.data.OrientationsTable.initialize_empty()
-    )
-
-    geo_model_test.structural_frame.structural_groups[0].append_element(element6)
-
-    
-    
-    num_elements = len(geo_model_test.structural_frame.structural_groups[0].elements) - 1  # Number of elements - 1 for zero-based index
-    
-    for swap_length in range(num_elements, 0, -1):  
-        for i in range(swap_length):
-            # Perform the swap for each pair (i, i+1)
-            geo_model_test.structural_frame.structural_groups[0].elements[i], geo_model_test.structural_frame.structural_groups[0].elements[i + 1] = \
-            geo_model_test.structural_frame.structural_groups[0].elements[i + 1], geo_model_test.structural_frame.structural_groups[0].elements[i]
-
-
-
-    gp.compute_model(geo_model_test)
-    picture_test = gpv.plot_2d(geo_model_test, cell_number=5, legend='force')
-    if save:
-        plt.savefig(filename)
-        plt.close()
-    return geo_model_test
 
 def main():
     """
@@ -309,7 +187,7 @@ def main():
     torch.backends.cudnn.benchmark = False
     # Setting the seed for Pyro sampling
     pyro.set_rng_seed(42)
-    directory_path = directory_path + "/" + dataset + "/posterior_condition_" + str(posterior_condition)
+    directory_path = directory_path + "/" + dataset + "/posterior_condition_" + str(posterior_condition) + "alpha_" + str(alpha) + "beta_"+str(beta)
     # Check if the directory exists
     if not os.path.exists(directory_path):
         # Create the directory if it does not exist
@@ -450,9 +328,9 @@ def main():
     if dataset =="Salinas":
         # Create initial model with higher refinement for better resolution and save it
         prior_filename= directory_path + "/prior_model.png"
-        geo_model_test = create_initial_gempy_model(refinement=7,filename=prior_filename, save=True)
+        geo_model_test = create_initial_gempy_model_Salinas_6_layer(refinement=7,filename=prior_filename, save=True)
         # We can initialize again but with lower refinement because gempy solution are inddependent
-        geo_model_test = create_initial_gempy_model(refinement=3,filename=prior_filename, save=False)
+        geo_model_test = create_initial_gempy_model_Salinas_6_layer(refinement=3,filename=prior_filename, save=False)
         
         
         ################################################################################
@@ -517,8 +395,8 @@ def main():
     ###########################################################################
     if dataset=="KSL" or dataset=="KSL_layer3":
         y_obs_label = torch.round(torch.tensor(geo_model_test.solutions.octrees_output[0].last_output_center.custom_grid_values, dtype=torch.float64))
-    gm = BayesianGaussianMixture(n_components=cluster, random_state=42).fit(normalised_hsi)
-    
+    #gm = BayesianGaussianMixture(n_components=cluster, random_state=42).fit(normalised_hsi)
+    gm = GaussianMixture(n_components=cluster, random_state=42).fit(normalised_hsi)
     # make the labels to start with 1 instead of 0
     gmm_label = gm.predict(normalised_hsi) +1 
     
@@ -748,108 +626,6 @@ def main():
     df_sp_final.to_csv(filename_final_sp)
     ################################################################################
     
-    # geo_model_test_post = gp.create_geomodel(
-    # project_name='Gempy_abc_Test_post',
-    # extent=[0, 86, -10, 10, -83, 0],
-    # resolution=[86,20,83],
-    # refinement=7,
-    # structural_frame= gp.data.StructuralFrame.initialize_default_structure()
-    # )
-
-    # gp.add_surface_points(
-    #     geo_model=geo_model_test_post,
-    #     x=[70.0, 80.0],
-    #     y=[0.0, 0.0],
-    #     z=[-77.0, -71.0],
-    #     elements_names=['surface1', 'surface1']
-    # )
-
-    # gp.add_orientations(
-    #     geo_model=geo_model_test_post,
-    #     x=[75],
-    #     y=[0.0],
-    #     z=[-74],
-    #     elements_names=['surface1'],
-    #     pole_vector=[[-5/3, 0, 1]]
-    # )
-    # geo_model_test_post.update_transform(gp.data.GlobalAnisotropy.NONE)
-
-    # element2 = gp.data.StructuralElement(
-    #     name='surface2',
-    #     color=next(geo_model_test_post.structural_frame.color_generator),
-    #     surface_points=gp.data.SurfacePointsTable.from_arrays(
-    #         x=np.array([20.0, 60.0]),
-    #         y=np.array([0.0, 0.0]),
-    #         z=np.array([sp_cord[12,2], -52]),
-    #         names='surface2'
-    #     ),
-    #     orientations=gp.data.OrientationsTable.initialize_empty()
-    # )
-
-    # geo_model_test_post.structural_frame.structural_groups[0].append_element(element2)
-
-    # element3 = gp.data.StructuralElement(
-    #     name='surface3',
-    #     color=next(geo_model_test_post.structural_frame.color_generator),
-    #     surface_points=gp.data.SurfacePointsTable.from_arrays(
-    #         x=np.array([0.0, 30.0, 60]),
-    #         y=np.array([0.0, 0.0,0.0]),
-    #         z=np.array([-72, -55.5, -39]),
-    #         names='surface3'
-    #     ),
-    #     orientations=gp.data.OrientationsTable.initialize_empty()
-    # )
-
-    # geo_model_test_post.structural_frame.structural_groups[0].append_element(element3)
-
-    # element4 = gp.data.StructuralElement(
-    #     name='surface4',
-    #     color=next(geo_model_test_post.structural_frame.color_generator),
-    #     surface_points=gp.data.SurfacePointsTable.from_arrays(
-    #         x=np.array([0.0, 20.0, 60]),
-    #         y=np.array([0.0, 0.0,0.0]),
-    #         z=np.array([-61, sp_cord[7,2], -27]),
-    #         names='surface4'
-    #     ),
-    #     orientations=gp.data.OrientationsTable.initialize_empty()
-    # )
-
-    # geo_model_test_post.structural_frame.structural_groups[0].append_element(element4)
-
-    # element5 = gp.data.StructuralElement(
-    #     name='surface5',
-    #     color=next(geo_model_test_post.structural_frame.color_generator),
-    #     surface_points=gp.data.SurfacePointsTable.from_arrays(
-    #         x=np.array([0.0, 20, 40]),
-    #         y=np.array([0.0, 0.0, 0.0]),
-    #         z=np.array([-39, sp_cord[4,2], -16]),
-    #         names='surface5'
-    #     ),
-    #     orientations=gp.data.OrientationsTable.initialize_empty()
-    # )
-
-    # geo_model_test_post.structural_frame.structural_groups[0].append_element(element5)
-
-    # element6 = gp.data.StructuralElement(
-    #     name='surface6',
-    #     color=next(geo_model_test_post.structural_frame.color_generator),
-    #     surface_points=gp.data.SurfacePointsTable.from_arrays(
-    #         x=np.array([0.0, 20.0,30]),
-    #         y=np.array([0.0, 0.0, 0.0]),
-    #         z=np.array([-21, sp_cord[1,2], -1]),
-    #         names='surface6'
-    #     ),
-    #     orientations=gp.data.OrientationsTable.initialize_empty()
-    # )
-
-    # geo_model_test_post.structural_frame.structural_groups[0].append_element(element6)
-
-    # num_elements = len(geo_model_test_post.structural_frame.structural_groups[0].elements) - 1  # Number of elements - 1 for zero-based index
-    # for swap_length in range(num_elements, 0, -1):  
-    #     for i in range(swap_length):
-    #         # Perform the swap for each pair (i, i+1)
-    #         geo_model_test_post.structural_frame.structural_groups[0].elements[i], geo_model_test_post.structural_frame.structural_groups[0].elements[i + 1] = \
-    #         geo_model_test_post.structural_frame.structural_groups[0].elements[i + 1], geo_model_test_post.structural_frame.structural_groups[0].elements[i]
     if dataset =="Salinas":
         geo_model_test_post = create_final_gempy_model_Salinas_6_layer(refinement=7,filename=directory_path_MAP,sp_cord=sp_cord, save=False)
     elif dataset =="KSL" :
@@ -970,7 +746,7 @@ def main():
         for idx, (key, value) in enumerate(RV_mean_data_post_MAP.items()):
             mean_k = value
             eigen_vectors_data = torch.tensor(eigen_vector_list[idx], dtype=torch.float64)
-            cov_data = eigen_vectors_data @ torch.diag(RV_post_cov_eigen_MAP[f"cov_eigen_values_{idx+1}"+"_post"])**2 @ eigen_vectors_data.T
+            cov_data = eigen_vectors_data @ (torch.diag(RV_post_cov_eigen_MAP[f"cov_eigen_values_{idx+1}"+"_post"])**2 +1e-8 * torch.eye(eigen_values_list[0].shape[0], dtype=torch.float64)) @ eigen_vectors_data.T
             mean.append(mean_k)
             cov.append(cov_data)
             
@@ -1188,108 +964,7 @@ def main():
     df_sp_final.to_csv(filename_final_sp)
     ################################################################################
     
-    # geo_model_test_post = gp.create_geomodel(
-    # project_name='Gempy_abc_Test_mean',
-    # extent=[0, 86, -10, 10, -83, 0],
-    # resolution=[86,20,83],
-    # refinement=7,
-    # structural_frame= gp.data.StructuralFrame.initialize_default_structure()
-    # )
-
-    # gp.add_surface_points(
-    #     geo_model=geo_model_test_post,
-    #     x=[70.0, 80.0],
-    #     y=[0.0, 0.0],
-    #     z=[-77.0, -71.0],
-    #     elements_names=['surface1', 'surface1']
-    # )
-
-    # gp.add_orientations(
-    #     geo_model=geo_model_test_post,
-    #     x=[75],
-    #     y=[0.0],
-    #     z=[-74],
-    #     elements_names=['surface1'],
-    #     pole_vector=[[-5/3, 0, 1]]
-    # )
-    # geo_model_test_post.update_transform(gp.data.GlobalAnisotropy.NONE)
-
-    # element2 = gp.data.StructuralElement(
-    #     name='surface2',
-    #     color=next(geo_model_test_post.structural_frame.color_generator),
-    #     surface_points=gp.data.SurfacePointsTable.from_arrays(
-    #         x=np.array([20.0, 60.0]),
-    #         y=np.array([0.0, 0.0]),
-    #         z=np.array([sp_cord[12,2], -52]),
-    #         names='surface2'
-    #     ),
-    #     orientations=gp.data.OrientationsTable.initialize_empty()
-    # )
-
-    # geo_model_test_post.structural_frame.structural_groups[0].append_element(element2)
-
-    # element3 = gp.data.StructuralElement(
-    #     name='surface3',
-    #     color=next(geo_model_test_post.structural_frame.color_generator),
-    #     surface_points=gp.data.SurfacePointsTable.from_arrays(
-    #         x=np.array([0.0, 30.0, 60]),
-    #         y=np.array([0.0, 0.0,0.0]),
-    #         z=np.array([-72, -55.5, -39]),
-    #         names='surface3'
-    #     ),
-    #     orientations=gp.data.OrientationsTable.initialize_empty()
-    # )
-
-    # geo_model_test_post.structural_frame.structural_groups[0].append_element(element3)
-
-    # element4 = gp.data.StructuralElement(
-    #     name='surface4',
-    #     color=next(geo_model_test_post.structural_frame.color_generator),
-    #     surface_points=gp.data.SurfacePointsTable.from_arrays(
-    #         x=np.array([0.0, 20.0, 60]),
-    #         y=np.array([0.0, 0.0,0.0]),
-    #         z=np.array([-61, sp_cord[7,2], -27]),
-    #         names='surface4'
-    #     ),
-    #     orientations=gp.data.OrientationsTable.initialize_empty()
-    # )
-
-    # geo_model_test_post.structural_frame.structural_groups[0].append_element(element4)
-
-    # element5 = gp.data.StructuralElement(
-    #     name='surface5',
-    #     color=next(geo_model_test_post.structural_frame.color_generator),
-    #     surface_points=gp.data.SurfacePointsTable.from_arrays(
-    #         x=np.array([0.0, 20, 40]),
-    #         y=np.array([0.0, 0.0, 0.0]),
-    #         z=np.array([-39, sp_cord[4,2], -16]),
-    #         names='surface5'
-    #     ),
-    #     orientations=gp.data.OrientationsTable.initialize_empty()
-    # )
-
-    # geo_model_test_post.structural_frame.structural_groups[0].append_element(element5)
-
-    # element6 = gp.data.StructuralElement(
-    #     name='surface6',
-    #     color=next(geo_model_test_post.structural_frame.color_generator),
-    #     surface_points=gp.data.SurfacePointsTable.from_arrays(
-    #         x=np.array([0.0, 20.0,30]),
-    #         y=np.array([0.0, 0.0, 0.0]),
-    #         z=np.array([-21, sp_cord[1,2], -1]),
-    #         names='surface6'
-    #     ),
-    #     orientations=gp.data.OrientationsTable.initialize_empty()
-    # )
-
-    # geo_model_test_post.structural_frame.structural_groups[0].append_element(element6)
-
-    # num_elements = len(geo_model_test_post.structural_frame.structural_groups[0].elements) - 1  # Number of elements - 1 for zero-based index
-    # for swap_length in range(num_elements, 0, -1):  
-    #     for i in range(swap_length):
-    #         # Perform the swap for each pair (i, i+1)
-    #         geo_model_test_post.structural_frame.structural_groups[0].elements[i], geo_model_test_post.structural_frame.structural_groups[0].elements[i + 1] = \
-    #         geo_model_test_post.structural_frame.structural_groups[0].elements[i + 1], geo_model_test_post.structural_frame.structural_groups[0].elements[i]
+   
     if dataset =="Salinas":
         geo_model_test_post = create_final_gempy_model_Salinas_6_layer(refinement=7,filename=directory_path_MAP,sp_cord=sp_cord, save=False)
     elif dataset =="KSL" :
@@ -1412,7 +1087,7 @@ def main():
         for idx, (key, value) in enumerate(RV_mean_data_post_Mean.items()):
             mean_k = value
             eigen_vectors_data = torch.tensor(eigen_vector_list[idx], dtype=torch.float64)
-            cov_data = eigen_vectors_data @ torch.diag(RV_post_cov_eigen_Mean[f"cov_eigen_values_{idx+1}"+"_post"])**2 @ eigen_vectors_data.T
+            cov_data = eigen_vectors_data @ (torch.diag(RV_post_cov_eigen_Mean[f"cov_eigen_values_{idx+1}"+"_post"])**2 + 1e-8 * torch.eye(eigen_values_list[0].shape[0], dtype=torch.float64)) @ eigen_vectors_data.T
             mean.append(mean_k)
             cov.append(cov_data)
             
