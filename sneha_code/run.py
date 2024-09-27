@@ -41,21 +41,21 @@ from final_gempy_model import *
 parser = argparse.ArgumentParser(description='pass values using command line')
 parser.add_argument('--startval', metavar='startcol', type=int, default=19,  help='start x column value')
 parser.add_argument('--endval', metavar='endcol', type=int, default=21, help='end x column value')
-parser.add_argument('--cluster', metavar='cluster', type=int, default=3, help='total number of cluster')
+parser.add_argument('--cluster', metavar='cluster', type=int, default=6, help='total number of cluster')
 parser.add_argument('--dimred', metavar='dimred', type=str , default="pca", help='type of dimensionality reduction')
 parser.add_argument('--plot_dimred', metavar='plot_dimred', type=str , default="tsne", help='type of dimensionality reduction for plotting after data is alread reduced in a smaller dimension')
 parser.add_argument('--prior_number_samples', metavar='prior_number_samples', type=int , default=100, help='number of samples for prior')
 parser.add_argument('--posterior_number_samples', metavar='posterior_number_samples', type=int , default=150, help='number of samples for posterior')
 parser.add_argument('--posterior_warmup_steps', metavar='posterior_warmup_steps', type=int , default=50, help='number of  warmup steps for posterior')
 parser.add_argument('--directory_path', metavar='directory_path', type=str , default="./Results", help='name of the directory in which result should be stored')
-parser.add_argument('--dataset', metavar='dataset', type=str , default="KSL_layer3", help='name of the dataset (Salinas, KSL, KSL_layer3 or other)')
+parser.add_argument('--dataset', metavar='dataset', type=str , default="Salinas", help='name of the dataset (Salinas, KSL, KSL_layer3 or other)')
 parser.add_argument('--posterior_num_chain', metavar='posterior_num_chain', type=int , default=1, help='number of chain')
 parser.add_argument('--posterior_condition',metavar='posterior_condition', type=int , default=3, help='1-Deterministic for mean and covariance for hsi data, 2-Deterministic for covariance but a prior on mean ,3-Prior on mean and covariance')
-parser.add_argument('--num_layers',metavar='num_layers', type=int , default=2, help='number of points used to model layer information')
+parser.add_argument('--num_layers',metavar='num_layers', type=int , default=4, help='number of points used to model layer information')
 parser.add_argument('--slope_gempy', metavar='slope_gempy', type=float , default=40.0, help='slope for gempy')
 parser.add_argument('--scale', metavar='scale', type=float , default=10.0, help='scaling factor to generate probability for each voxel')
-parser.add_argument('--alpha', metavar='alpha', type=float , default=0.1, help='scaling parameter for the mean, 0.1')
-parser.add_argument('--beta', metavar='beta', type=float , default=20, help='scaling parameter for the covariance, 20')
+parser.add_argument('--alpha', metavar='alpha', type=float , default=0.01, help='scaling parameter for the mean, 0.1')
+parser.add_argument('--beta', metavar='beta', type=float , default=1000, help='scaling parameter for the covariance, 20')
 
 def cluster_acc(Y_pred, Y, ignore_label=None):
     """ Rearranging the class labels of prediction so that it maximise the 
@@ -153,6 +153,10 @@ def calculate_entropy(mixing_coefficient):
     # Return the average entropy
     return entropy_per_point
 
+def objective(trial):
+    # suggest hyperparameter
+    alpha = trial.suggest_uniform("alpha", 1e-4, 100)
+    beta  = trial.suggest_uniform("beta", 1e-4, 100)
 
 def main():
     """
@@ -187,6 +191,8 @@ def main():
     torch.backends.cudnn.benchmark = False
     # Setting the seed for Pyro sampling
     pyro.set_rng_seed(42)
+    
+    
     directory_path = directory_path + "/" + dataset + "/posterior_condition_" + str(posterior_condition) + "alpha_" + str(alpha) + "beta_"+str(beta)
     # Check if the directory exists
     if not os.path.exists(directory_path):
@@ -429,8 +435,12 @@ def main():
         data = torch.cat([Z_data.reshape((-1,1)), normalised_hsi], dim=1)
         filename_tsne = directory_path + "/tsne_gmm_label.png"
         TSNE_transformation(data=data, label=gmm_label_rearranged, filename=filename_tsne)
+    if dataset=="Salinas":
+        data = torch.cat([Z_data.reshape((-1,1)), normalised_hsi], dim=1)
+        filename_tsne = directory_path + "/tsne_gmm_label_true.png"
+        TSNE_transformation(data=data, label=y_obs_label, filename=filename_tsne)
+        
     
-   
     
     geo_model_test.transform.apply_inverse(sp_coords_copy_test)
     
@@ -574,7 +584,7 @@ def main():
     ######################### Find the MAP value ##############################################
     ###########################################################################################
     
-    MAP_sample_index = compute_map(posterior_samples,geo_model_test,normalised_hsi,test_list,y_obs_label, mean_init,cov_init,directory_path,num_layers,posterior_condition,scale, cluster, alpha, beta)
+    MAP_sample_index, max_posterior_value = compute_map(posterior_samples,geo_model_test,normalised_hsi,test_list,y_obs_label, mean_init,cov_init,directory_path,num_layers,posterior_condition,scale, cluster, alpha, beta)
     print("MAP_sample_index\n", MAP_sample_index)
     directory_path_MAP = directory_path +"/MAP"
     
@@ -878,6 +888,7 @@ def main():
     entropy_data["entropy_mixing_prior"] = entropy_mixing_prior.tolist()
     entropy_data["entropy_MAP_mixing"] = entropy_MAP_mixing.tolist()
     
+    accuracy_data={}
     
     filename_entropy_data =directory_path_MAP + "/entropy_data.json"
     with open(filename_entropy_data, "w") as json_file:
@@ -892,6 +903,9 @@ def main():
     #########################################################################################
     accuracy_final = torch.sum(torch.round(torch.tensor(custom_grid_values_post)) == y_obs_label) / y_obs_label.shape[0]
     print("accuracy_init: ", accuracy_init , "accuracy_final: ", accuracy_final)
+    
+    accuracy_data["accuracy_init"] = accuracy_init.detach().numpy().tolist()
+    accuracy_data["accuracy_final_MAP"] = accuracy_final.detach().numpy().tolist()
     
     picture_test_post = gpv.plot_2d(geo_model_test_post, cell_number=5, legend='force')
     filename_posterior_model = directory_path_MAP + "/Posterior_model.png"
@@ -1235,6 +1249,8 @@ def main():
     accuracy_final = torch.sum(torch.round(torch.tensor(custom_grid_values_post)) == y_obs_label) / y_obs_label.shape[0]
     print("accuracy_init: ", accuracy_init , "accuracy_final_mean: ", accuracy_final)
     
+    accuracy_data["accuracy_final_mean"] = accuracy_final.detach().numpy().tolist()
+    
     picture_test_post = gpv.plot_2d(geo_model_test_post, cell_number=5, legend='force')
     filename_posterior_model = directory_path_Mean + "/Posterior_model.png"
     plt.savefig(filename_posterior_model)
@@ -1242,6 +1258,12 @@ def main():
         data = torch.cat([Z_data.reshape((-1,1)), normalised_hsi], dim=1)
         filename_tsne_final_label = directory_path_Mean + "/tsne_gempy_final_label.png"
         TSNE_transformation(data=data, label=torch.round(torch.tensor(custom_grid_values_post)), filename=filename_tsne_final_label)
+    
+        # Save to file
+    filename_accuracy_data = directory_path + "/accuaracy_data.json"
+    with open(filename_accuracy_data, "w") as json_file:
+        json.dump(accuracy_data, json_file)
+        
 if __name__ == "__main__":
     
     # Your main script code starts here
