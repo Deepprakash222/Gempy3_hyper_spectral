@@ -50,12 +50,12 @@ parser.add_argument('--posterior_warmup_steps', metavar='posterior_warmup_steps'
 parser.add_argument('--directory_path', metavar='directory_path', type=str , default="./Results", help='name of the directory in which result should be stored')
 parser.add_argument('--dataset', metavar='dataset', type=str , default="Salinas", help='name of the dataset (Salinas, KSL, KSL_layer3 or other)')
 parser.add_argument('--posterior_num_chain', metavar='posterior_num_chain', type=int , default=1, help='number of chain')
-parser.add_argument('--posterior_condition',metavar='posterior_condition', type=int , default=3, help='1-Deterministic for mean and covariance for hsi data, 2-Deterministic for covariance but a prior on mean ,3-Prior on mean and covariance')
+parser.add_argument('--posterior_condition',metavar='posterior_condition', type=int , default=4, help='1-Deterministic for mean and covariance for hsi data, 2-Deterministic for covariance but a prior on mean ,3-Prior on mean and covariance')
 parser.add_argument('--num_layers',metavar='num_layers', type=int , default=4, help='number of points used to model layer information')
-parser.add_argument('--slope_gempy', metavar='slope_gempy', type=float , default=40.0, help='slope for gempy')
+parser.add_argument('--slope_gempy', metavar='slope_gempy', type=float , default=200.0, help='slope for gempy')
 parser.add_argument('--scale', metavar='scale', type=float , default=10.0, help='scaling factor to generate probability for each voxel')
-parser.add_argument('--alpha', metavar='alpha', type=float , default=0.01, help='scaling parameter for the mean, 0.1')
-parser.add_argument('--beta', metavar='beta', type=float , default=1000, help='scaling parameter for the covariance, 20')
+parser.add_argument('--alpha', metavar='alpha', type=float , default=1e-5, help='scaling parameter for the mean, 0.1')
+parser.add_argument('--beta', metavar='beta', type=float , default=1e3, help='scaling parameter for the covariance, 20')
 
 def cluster_acc(Y_pred, Y, ignore_label=None):
     """ Rearranging the class labels of prediction so that it maximise the 
@@ -337,7 +337,7 @@ def main():
         geo_model_test = create_initial_gempy_model_Salinas_6_layer(refinement=7,filename=prior_filename, save=True)
         # We can initialize again but with lower refinement because gempy solution are inddependent
         geo_model_test = create_initial_gempy_model_Salinas_6_layer(refinement=3,filename=prior_filename, save=False)
-        
+        exit()
         
         ################################################################################
         # Custom grid
@@ -346,23 +346,34 @@ def main():
         gp.set_custom_grid(geo_model_test.grid, xyz_coord=xyz_coord)
     ################################################################################
     elif dataset=="KSL":
-         # Create initial model with higher refinement for better resolution and save it
+        # Create initial model with higher refinement for better resolution and save it
         prior_filename= directory_path + "/prior_model.png"
         geo_model_test = create_initial_gempy_model_KSL_4_layer(refinement=7,filename=prior_filename, save=True)
         # We can initialize again but with lower refinement because gempy solution are inddependent
         geo_model_test = create_initial_gempy_model_KSL_4_layer(refinement=3,filename=prior_filename, save=False)
+        ################################################################################
+        # Custom grid
+        ################################################################################
+        x_loc = 300
+        y_loc = 0
+        z_loc = dataframe_KSL.iloc[:,3].to_numpy()
+        xyz_coord = np.array([[x_loc, y_loc, z] for z in z_loc])
+        # xyz_coord = dataframe_KSL.iloc[:,:3].to_numpy()
+        gp.set_custom_grid(geo_model_test.grid, xyz_coord=xyz_coord)
+        
     elif dataset =="KSL_layer3":
         # Create initial model with higher refinement for better resolution and save it
         prior_filename= directory_path + "/prior_model.png"
         geo_model_test = create_initial_gempy_model_KSL_3_layer(refinement=7,filename=prior_filename, save=True)
         # We can initialize again but with lower refinement because gempy solution are inddependent
         geo_model_test = create_initial_gempy_model_KSL_3_layer(refinement=3,filename=prior_filename, save=False)
-    ################################################################################
+        ################################################################################
         # Custom grid
         ################################################################################
         x_loc = 300
         y_loc = 0
         z_loc = dataframe_KSL.iloc[:,3].to_numpy()
+        
         xyz_coord = np.array([[x_loc, y_loc, z] for z in z_loc])
         # xyz_coord = dataframe_KSL.iloc[:,:3].to_numpy()
         gp.set_custom_grid(geo_model_test.grid, xyz_coord=xyz_coord)
@@ -496,8 +507,8 @@ def main():
         test_list.append({"update":"interface_data","id":torch.tensor([4]), "direction":"Z", "prior_distribution":"normal","normal":{"mean":torch.tensor(sp_coords_copy_test[4,2],dtype=torch.float64), "std":torch.tensor(0.2,dtype=torch.float64)}})
         test_list.append({"update":"interface_data","id":torch.tensor([7]), "direction":"Z", "prior_distribution":"normal","normal":{"mean":torch.tensor(sp_coords_copy_test[7,2],dtype=torch.float64), "std":torch.tensor(0.2,dtype=torch.float64)}})
     elif dataset=="KSL_layer3":
-        test_list.append({"update":"interface_data","id":torch.tensor([1]), "direction":"Z", "prior_distribution":"normal","normal":{"mean":torch.tensor(sp_coords_copy_test[1,2],dtype=torch.float64), "std":torch.tensor(0.2,dtype=torch.float64)}})
-        test_list.append({"update":"interface_data","id":torch.tensor([4]), "direction":"Z", "prior_distribution":"normal","normal":{"mean":torch.tensor(sp_coords_copy_test[4,2],dtype=torch.float64), "std":torch.tensor(0.2,dtype=torch.float64)}})
+        test_list.append({"update":"interface_data","id":torch.tensor([1]), "direction":"Z", "prior_distribution":"normal","normal":{"mean":torch.tensor(sp_coords_copy_test[1,2],dtype=torch.float64), "std":torch.tensor(0.06,dtype=torch.float64)}})
+        test_list.append({"update":"interface_data","id":torch.tensor([4]), "direction":"Z", "prior_distribution":"normal","normal":{"mean":torch.tensor(sp_coords_copy_test[4,2],dtype=torch.float64), "std":torch.tensor(0.06,dtype=torch.float64)}})
     
     factor= 1 
     
@@ -639,8 +650,10 @@ def main():
     if dataset =="Salinas":
         geo_model_test_post = create_final_gempy_model_Salinas_6_layer(refinement=7,filename=directory_path_MAP,sp_cord=sp_cord, save=False)
     elif dataset =="KSL" :
+        print("I am here")
         filename_posterior_model = directory_path_MAP + "/Posterior_model.png"
         geo_model_test_post = create_final_gempy_model_KSL_4_layer(refinement=7,filename=filename_posterior_model,sp_cord=sp_cord, save=False)
+        exit()
     elif dataset=="KSL_layer3":
         filename_posterior_model = directory_path_MAP + "/Posterior_model.png"
         geo_model_test_post = create_final_gempy_model_KSL_3_layer(refinement=7,filename=filename_posterior_model,sp_cord=sp_cord, save=False)

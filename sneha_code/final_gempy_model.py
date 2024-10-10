@@ -154,7 +154,7 @@ def create_final_gempy_model_KSL_3_layer(refinement,filename,sp_cord, save=True)
         y=[0.0],
         z=[brk1],
         elements_names=['surface1'],
-        pole_vector=[[0, 0, 1]]
+        pole_vector=[[0, 0, 0.5]]
     )
     geo_model_test_post.update_transform(gp.data.GlobalAnisotropy.NONE)
 
@@ -172,8 +172,6 @@ def create_final_gempy_model_KSL_3_layer(refinement,filename,sp_cord, save=True)
 
     geo_model_test_post.structural_frame.structural_groups[0].append_element(element2)
 
-    
-    
     num_elements = len(geo_model_test_post.structural_frame.structural_groups[0].elements) - 1  # Number of elements - 1 for zero-based index
     for swap_length in range(num_elements, 0, -1):  
         for i in range(swap_length):
@@ -200,12 +198,12 @@ def create_final_gempy_model_KSL_4_layer(refinement,filename, sp_cord, save=True
     structural_frame= gp.data.StructuralFrame.initialize_default_structure()
     )
     
-    brk1 = -855
-    brk2 = -845 
-    brk3 = -825 
-    # brk1 = -847
-    # brk2 = -824
-    # brk3 = -793
+    # brk1 = -855
+    # brk2 = -845 
+    # brk3 = -825 
+    brk1 = -847
+    brk2 = -824
+    brk3 = -793
 
     gp.add_surface_points(
         geo_model=geo_model_test_post,
@@ -223,8 +221,10 @@ def create_final_gempy_model_KSL_4_layer(refinement,filename, sp_cord, save=True
         elements_names=['surface1'],
         pole_vector=[[0, 0, 1]]
     )
+    
     geo_model_test_post.update_transform(gp.data.GlobalAnisotropy.NONE)
 
+    
     element2 = gp.data.StructuralElement(
         name='surface2',
         color=next(geo_model_test_post.structural_frame.color_generator),
@@ -251,7 +251,10 @@ def create_final_gempy_model_KSL_4_layer(refinement,filename, sp_cord, save=True
         orientations=gp.data.OrientationsTable.initialize_empty()
     )
 
+    geo_model_test_post.structural_frame.structural_groups[0].append_element(element3)
+    
     num_elements = len(geo_model_test_post.structural_frame.structural_groups[0].elements) - 1  # Number of elements - 1 for zero-based index
+    
     for swap_length in range(num_elements, 0, -1):  
         for i in range(swap_length):
             # Perform the swap for each pair (i, i+1)

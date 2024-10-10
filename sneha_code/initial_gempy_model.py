@@ -127,6 +127,7 @@ def create_initial_gempy_model_Salinas_6_layer(refinement,filename, save=True):
     if save:
         plt.savefig(filename)
         plt.close()
+    gpv.plot_3d(geo_model_test, cell_number=5, legend='force')
     return geo_model_test
 
 def create_initial_gempy_model_KSL_3_layer(refinement,filename, save=True):
@@ -153,7 +154,7 @@ def create_initial_gempy_model_KSL_3_layer(refinement,filename, save=True):
         geo_model=geo_model_test,
         x=[100.0,300, 900.0],
         y=[0.0, 0.0, 0.0],
-        z=[brk1, brk1-10, brk1],
+        z=[brk1, brk1 +10, brk1],
         elements_names=['surface1','surface1', 'surface1']
     )
 
@@ -163,7 +164,7 @@ def create_initial_gempy_model_KSL_3_layer(refinement,filename, save=True):
         y=[0.0],
         z=[brk1],
         elements_names=['surface1'],
-        pole_vector=[[0, 0, 1]]
+        pole_vector=[[0, 0, 0.5]]
     )
     geo_model_test.update_transform(gp.data.GlobalAnisotropy.NONE)
 
@@ -173,7 +174,7 @@ def create_initial_gempy_model_KSL_3_layer(refinement,filename, save=True):
         surface_points=gp.data.SurfacePointsTable.from_arrays(
             x=np.array([100.0, 300.0,900.0]),
             y=np.array([0.0, 0.0, 0.0]),
-            z=np.array([brk2, brk2+10, brk2]),
+            z=np.array([brk2, brk2+30, brk2]),
             names='surface2'
         ),
         orientations=gp.data.OrientationsTable.initialize_empty()
@@ -206,19 +207,19 @@ def create_initial_gempy_model_KSL_4_layer(refinement,filename, save=True):
     refinement=refinement,
     structural_frame= gp.data.StructuralFrame.initialize_default_structure()
     )
-    brk1 = -855
-    brk2 = -845 
-    brk3 = -825 
-    # brk1 = -847
-    # brk2 = -824
-    # brk3 = -793
+    # brk1 = -855
+    # brk2 = -845 
+    # brk3 = -825 
+    brk1 = -847
+    brk2 = -824
+    brk3 = -793
     
     
     gp.add_surface_points(
         geo_model=geo_model_test,
         x=[100.0,300, 900.0],
         y=[0.0, 0.0, 0.0],
-        z=[brk1, brk1-20, brk1],
+        z=[brk1, brk1-10, brk1],
         elements_names=['surface1','surface1', 'surface1']
     )
 
@@ -252,7 +253,7 @@ def create_initial_gempy_model_KSL_4_layer(refinement,filename, save=True):
         surface_points=gp.data.SurfacePointsTable.from_arrays(
             x=np.array([100.0, 300.0,900.0]),
             y=np.array([0.0, 0.0, 0.0]),
-            z=np.array([brk3, brk3+20, brk3]),
+            z=np.array([brk3, brk3+10, brk3]),
             names='surface3'
         ),
         orientations=gp.data.OrientationsTable.initialize_empty()
