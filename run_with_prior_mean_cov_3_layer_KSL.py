@@ -39,8 +39,8 @@ parser.add_argument('--cluster', metavar='cluster', type=int, default=3, help='t
 parser.add_argument('--dimred', metavar='dimred', type=str , default="pca", help='type of dimensionality reduction')
 parser.add_argument('--plot_dimred', metavar='plot_dimred', type=str , default="tsne", help='type of dimensionality reduction for plotting after data is alread reduced in a smaller dimension')
 parser.add_argument('--prior_number_samples', metavar='prior_number_samples', type=int , default=100, help='number of samples for prior')
-parser.add_argument('--posterior_number_samples', metavar='posterior_number_samples', type=int , default=150, help='number of samples for posterior')
-parser.add_argument('--posterior_warmup_steps', metavar='posterior_warmup_steps', type=int , default=50, help='number of  warmup steps for posterior')
+parser.add_argument('--posterior_number_samples', metavar='posterior_number_samples', type=int , default=5, help='number of samples for posterior')
+parser.add_argument('--posterior_warmup_steps', metavar='posterior_warmup_steps', type=int , default=0, help='number of  warmup steps for posterior')
 parser.add_argument('--directory_path', metavar='directory_path', type=str , default="./Results_with_prior_mean_cov_3_layer_KSL", help='name of the directory in which result should be stored')
 parser.add_argument('--posterior_num_chain', metavar='posterior_num_chain', type=int , default=1, help='number of chain')
 parser.add_argument('--slope_gempy', metavar='slope_gempy', type=float , default=40.0, help='slope for gempy')
@@ -223,6 +223,16 @@ def main():
     directory_path = args.directory_path
     slope_gempy = args.slope_gempy
     scale = args.scale
+    
+    ## seed numpy and pytorch
+    seed = 42
+    np.random.seed(seed)
+    torch.manual_seed(seed)
+    # Ensure deterministic behavior
+    torch.backends.cudnn.deterministic = True
+    torch.backends.cudnn.benchmark = False
+    # Setting the seed for Pyro sampling
+    pyro.set_rng_seed(42)
     
     # Check if the directory exists
     if not os.path.exists(directory_path):
@@ -474,8 +484,8 @@ def main():
     
     store_accuracy=[]
     factor=100 #0.01 , 100
-    alpha = 10
-    beta  = 10
+    alpha = 0.001#10
+    beta  = 0.001#10
     @config_enumerate
     def model_test(obs_data):
         """
@@ -717,6 +727,7 @@ def main():
         cov_matrix_mean = alpha * torch.eye(loc_mean[0].shape[0], dtype=torch.float64)
         cov_matrix_cov = beta * torch.eye(loc_mean[0].shape[0], dtype=torch.float64)
         log_prior_hsi_mean =torch.tensor(0.0, dtype=torch.float64)
+        
         for j in range(loc_mean.shape[0]):
             log_prior_hsi_mean = log_prior_hsi_mean + dist.MultivariateNormal(loc=loc_mean[j],covariance_matrix=cov_matrix_mean).log_prob(posterior_samples[keys_list[3+j]][i])
         # log_prior_hsi = dist.MultivariateNormal(loc=loc_mean[0],covariance_matrix=cov_matrix).log_prob(post_sample_data1)+\

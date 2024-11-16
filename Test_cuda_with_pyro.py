@@ -40,15 +40,15 @@ def main():
             pyro.sample("obs", dist.Normal(y_hat, sigma), obs=y)
         
     # Inference with NUTS on GPU
-    nuts_kernel = NUTS(model)
-    mcmc = MCMC(nuts_kernel, num_samples=200, warmup_steps=100, num_chains=4)
+    nuts_kernel = NUTS(model, jit_compile=True)
+    mcmc = MCMC(nuts_kernel, num_samples=200, warmup_steps=100, num_chains=4, mp_context="spawn" )
     mcmc.run(X,y,)
 
     # Summarize the results
     mcmc.summary()
 
     # Extract the samples
-    samples = mcmc.get_samples(group_by_chain=True)
+    samples = mcmc.get_samples(group_by_chain=True )
     #print(samples)
     
 if __name__ == "__main__":

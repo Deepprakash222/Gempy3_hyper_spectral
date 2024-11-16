@@ -231,7 +231,7 @@ class MyModel(PyroModule):
                     
                     cov.append(cov_data)
                     
-                    
+             
                     
             mean_tensor = torch.stack(mean, dim=0)
             cov_tensor = torch.stack(cov, dim=0)

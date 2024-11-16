@@ -243,7 +243,7 @@ def compute_map(posterior_samples,geo_model_test,normalised_hsi,test_list,y_obs_
         
         unnormalise_posterior_value={}
         unnormalise_posterior_value["log_prior_geo_list"]=[]
-        unnormalise_posterior_value["log_prior_hsi_list"]=[]
+        unnormalise_posterior_value["log_prior_hsi_mean_list"]=[]
         unnormalise_posterior_value["log_likelihood_list"]=[]
         unnormalise_posterior_value["log_posterior_list"]=[]
         
@@ -354,7 +354,7 @@ def compute_map(posterior_samples,geo_model_test,normalised_hsi,test_list,y_obs_
             store_mixing_entropy.append(entropy_pi_k)
             
             unnormalise_posterior_value["log_prior_geo_list"].append(log_prior_geo)
-            unnormalise_posterior_value["log_prior_hsi_list"].append(log_prior_hsi)
+            unnormalise_posterior_value["log_prior_hsi_mean_list"].append(log_prior_hsi)
             unnormalise_posterior_value["log_likelihood_list"].append(log_likelihood)
             unnormalise_posterior_value["log_posterior_list"].append(log_prior_geo + log_prior_hsi + log_likelihood)
         

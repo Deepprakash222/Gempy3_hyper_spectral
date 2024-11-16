@@ -41,21 +41,21 @@ from final_gempy_model import *
 parser = argparse.ArgumentParser(description='pass values using command line')
 parser.add_argument('--startval', metavar='startcol', type=int, default=19,  help='start x column value')
 parser.add_argument('--endval', metavar='endcol', type=int, default=21, help='end x column value')
-parser.add_argument('--cluster', metavar='cluster', type=int, default=6, help='total number of cluster')
+parser.add_argument('--cluster', metavar='cluster', type=int, default=3, help='total number of cluster')
 parser.add_argument('--dimred', metavar='dimred', type=str , default="pca", help='type of dimensionality reduction')
 parser.add_argument('--plot_dimred', metavar='plot_dimred', type=str , default="tsne", help='type of dimensionality reduction for plotting after data is alread reduced in a smaller dimension')
-parser.add_argument('--prior_number_samples', metavar='prior_number_samples', type=int , default=100, help='number of samples for prior')
-parser.add_argument('--posterior_number_samples', metavar='posterior_number_samples', type=int , default=150, help='number of samples for posterior')
-parser.add_argument('--posterior_warmup_steps', metavar='posterior_warmup_steps', type=int , default=50, help='number of  warmup steps for posterior')
+parser.add_argument('--prior_number_samples', metavar='prior_number_samples', type=int , default=10, help='number of samples for prior')
+parser.add_argument('--posterior_number_samples', metavar='posterior_number_samples', type=int , default=10, help='number of samples for posterior')
+parser.add_argument('--posterior_warmup_steps', metavar='posterior_warmup_steps', type=int , default=0, help='number of  warmup steps for posterior')
 parser.add_argument('--directory_path', metavar='directory_path', type=str , default="./Results", help='name of the directory in which result should be stored')
-parser.add_argument('--dataset', metavar='dataset', type=str , default="Salinas", help='name of the dataset (Salinas, KSL, KSL_layer3 or other)')
+parser.add_argument('--dataset', metavar='dataset', type=str , default="KSL_layer3", help='name of the dataset (Salinas, KSL, KSL_layer3 or other)')
 parser.add_argument('--posterior_num_chain', metavar='posterior_num_chain', type=int , default=1, help='number of chain')
-parser.add_argument('--posterior_condition',metavar='posterior_condition', type=int , default=4, help='1-Deterministic for mean and covariance for hsi data, 2-Deterministic for covariance but a prior on mean ,3-Prior on mean and covariance')
-parser.add_argument('--num_layers',metavar='num_layers', type=int , default=4, help='number of points used to model layer information')
-parser.add_argument('--slope_gempy', metavar='slope_gempy', type=float , default=200.0, help='slope for gempy')
+parser.add_argument('--posterior_condition',metavar='posterior_condition', type=int , default=1, help='1-Deterministic for mean and covariance for hsi data, 2-Deterministic for covariance but a prior on mean ,3-Prior on mean and covariance')
+#parser.add_argument('--num_layers',metavar='num_layers', type=int , default=3, help='number of points used to model layer information')
+parser.add_argument('--slope_gempy', metavar='slope_gempy', type=float , default=50.0, help='slope for gempy #45, 50, 200')
 parser.add_argument('--scale', metavar='scale', type=float , default=10.0, help='scaling factor to generate probability for each voxel')
-parser.add_argument('--alpha', metavar='alpha', type=float , default=1e-5, help='scaling parameter for the mean, 0.1')
-parser.add_argument('--beta', metavar='beta', type=float , default=1e3, help='scaling parameter for the covariance, 20')
+parser.add_argument('--alpha', metavar='alpha', type=float , default=1e2, help='scaling parameter for the mean, 0.1')
+parser.add_argument('--beta', metavar='beta', type=float , default=1e1, help='scaling parameter for the covariance, 20')
 
 def cluster_acc(Y_pred, Y, ignore_label=None):
     """ Rearranging the class labels of prediction so that it maximise the 
@@ -175,7 +175,7 @@ def main():
     posterior_num_chain = args.posterior_num_chain
     directory_path = args.directory_path
     dataset = args.dataset
-    num_layers = args.num_layers
+    #num_layers = args.num_layers
     posterior_condition= args.posterior_condition
     slope_gempy = args.slope_gempy
     scale = args.scale
@@ -193,7 +193,13 @@ def main():
     pyro.set_rng_seed(42)
     
     
-    directory_path = directory_path + "/" + dataset + "/posterior_condition_" + str(posterior_condition) + "alpha_" + str(alpha) + "beta_"+str(beta)
+    if posterior_condition==1:
+        directory_path = directory_path + "/" + dataset + "/posterior_condition_" + str(posterior_condition) + "_slope_gempy_" + str(slope_gempy) + "_scale_" + str(scale)
+    elif posterior_condition==2:
+        directory_path = directory_path + "/" + dataset + "/posterior_condition_" + str(posterior_condition) + "_alpha_" + str(alpha) + "_slope_gempy_"  + str(slope_gempy) + "_scale_" + str(scale)
+    elif (posterior_condition==3) or (posterior_condition==4):
+        directory_path = directory_path + "/" + dataset + "/posterior_condition_" + str(posterior_condition) + "_alpha_" + str(alpha) + "_beta_"+str(beta) + "_slope_gempy_" + str(slope_gempy) + "scale_" + str(scale)
+    # Check if the directory exists
     # Check if the directory exists
     if not os.path.exists(directory_path):
         # Create the directory if it does not exist
@@ -337,7 +343,6 @@ def main():
         geo_model_test = create_initial_gempy_model_Salinas_6_layer(refinement=7,filename=prior_filename, save=True)
         # We can initialize again but with lower refinement because gempy solution are inddependent
         geo_model_test = create_initial_gempy_model_Salinas_6_layer(refinement=3,filename=prior_filename, save=False)
-        exit()
         
         ################################################################################
         # Custom grid
@@ -365,6 +370,7 @@ def main():
         # Create initial model with higher refinement for better resolution and save it
         prior_filename= directory_path + "/prior_model.png"
         geo_model_test = create_initial_gempy_model_KSL_3_layer(refinement=7,filename=prior_filename, save=True)
+        
         # We can initialize again but with lower refinement because gempy solution are inddependent
         geo_model_test = create_initial_gempy_model_KSL_3_layer(refinement=3,filename=prior_filename, save=False)
         ################################################################################
@@ -429,7 +435,18 @@ def main():
     gmm_label_rearranged = torch.tensor([y_obs_label_order[x-1] +1  for x in gmm_label], dtype=torch.float64)
 
     rearrange_list = y_obs_label_order
-    mean_init, cov_init = gm.means_[rearrange_list], gm.covariances_[rearrange_list]
+    weights_init, mean_init, cov_init =gm.weights_[rearrange_list], gm.means_[rearrange_list], gm.covariances_[rearrange_list]
+    ##
+    #
+    
+    gmm_data_init ={}
+    gmm_data_init["weights"] = weights_init.tolist()
+    gmm_data_init["means"] = [ele.tolist() for ele in mean_init]
+    gmm_data_init["covariances"] = [ele.tolist() for ele in cov_init]
+    filename_gmm_data =directory_path + "/initial_gmm_data.json"
+    with open(filename_gmm_data, "w") as json_file:
+        json.dump(gmm_data_init, json_file)
+    
     ####################################TODO#################################################
     #   Try to find the initial accuracy of classification
     #########################################################################################
@@ -510,8 +527,8 @@ def main():
         test_list.append({"update":"interface_data","id":torch.tensor([1]), "direction":"Z", "prior_distribution":"normal","normal":{"mean":torch.tensor(sp_coords_copy_test[1,2],dtype=torch.float64), "std":torch.tensor(0.06,dtype=torch.float64)}})
         test_list.append({"update":"interface_data","id":torch.tensor([4]), "direction":"Z", "prior_distribution":"normal","normal":{"mean":torch.tensor(sp_coords_copy_test[4,2],dtype=torch.float64), "std":torch.tensor(0.06,dtype=torch.float64)}})
     
-    factor= 1 
-    
+    num_layers = len(test_list)
+    factor =1
     model = MyModel()
     
     filename_Bayesian_graph =directory_path +"/Bayesian_graph.png"
@@ -562,7 +579,7 @@ def main():
 
     
     print(summary_output)
-
+    
     with open(f'{directory_path}/mcmc_summary_p{posterior_condition}.txt', 'w') as f:
         f.write(summary_output)
     
@@ -620,7 +637,7 @@ def main():
             raise Exception("Only 3 different posterior condition is implemented yet")
     # # Update the model with the new top layer's location
     interpolation_input = geo_model_test.interpolation_input
-    print(RV_mu_post_MAP)
+    
     counter2=1
     for interpolation_input_data in test_list[:num_layers]:
         interpolation_input.surface_points.sp_coords = torch.index_put(interpolation_input.surface_points.sp_coords,(torch.tensor([interpolation_input_data["id"]]), torch.tensor([2])), RV_mu_post_MAP["mu_"+str(counter2)+"_post"])
@@ -650,10 +667,8 @@ def main():
     if dataset =="Salinas":
         geo_model_test_post = create_final_gempy_model_Salinas_6_layer(refinement=7,filename=directory_path_MAP,sp_cord=sp_cord, save=False)
     elif dataset =="KSL" :
-        print("I am here")
         filename_posterior_model = directory_path_MAP + "/Posterior_model.png"
         geo_model_test_post = create_final_gempy_model_KSL_4_layer(refinement=7,filename=filename_posterior_model,sp_cord=sp_cord, save=False)
-        exit()
     elif dataset=="KSL_layer3":
         filename_posterior_model = directory_path_MAP + "/Posterior_model.png"
         geo_model_test_post = create_final_gempy_model_KSL_3_layer(refinement=7,filename=filename_posterior_model,sp_cord=sp_cord, save=False)
@@ -923,6 +938,7 @@ def main():
     picture_test_post = gpv.plot_2d(geo_model_test_post, cell_number=5, legend='force')
     filename_posterior_model = directory_path_MAP + "/Posterior_model.png"
     plt.savefig(filename_posterior_model)
+    
     if plot_dimred=="tsne":
         data = torch.cat([Z_data.reshape((-1,1)), normalised_hsi], dim=1)
         filename_tsne_final_label = directory_path_MAP + "/tsne_gempy_final_label.png"
@@ -964,7 +980,7 @@ def main():
             raise Exception("Only 3 different posterior condition is implemented yet")
     # # Update the model with the new top layer's location
     interpolation_input = geo_model_test.interpolation_input
-    print(RV_mu_post_Mean)
+    
     counter2=1
     for interpolation_input_data in test_list[:num_layers]:
         interpolation_input.surface_points.sp_coords = torch.index_put(interpolation_input.surface_points.sp_coords,(interpolation_input_data["id"], torch.tensor([2])), RV_mu_post_Mean["mu_"+str(counter2)+"_post"])
@@ -1060,7 +1076,7 @@ def main():
         RV_mean_data_post_Mean ={} 
         for j in range(cluster):  
                 RV_mean_data_post_Mean[f"mean_data{j+1}"+"_post"] = posterior_samples["mean_data"+str(j+1)].mean(dim=0)
-        print(RV_mean_data_post_Mean)
+        
         for idx, (key, value) in enumerate(RV_mean_data_post_Mean.items()):
             D = value.shape[0]
             mean_k = value
