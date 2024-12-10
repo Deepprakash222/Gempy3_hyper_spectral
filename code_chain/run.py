@@ -34,7 +34,7 @@ from sklearn.cluster import KMeans
 
 import io
 import contextlib
-from model1 import MyModel
+from model2 import MyModel
 from map_func import compute_map
 from initial_gempy_model import *
 from final_gempy_model import *
@@ -42,21 +42,21 @@ from final_gempy_model import *
 parser = argparse.ArgumentParser(description='pass values using command line')
 parser.add_argument('--startval', metavar='startcol', type=int, default=19,  help='start x column value')
 parser.add_argument('--endval', metavar='endcol', type=int, default=21, help='end x column value')
-parser.add_argument('--cluster', metavar='cluster', type=int, default=3, help='total number of cluster')
+parser.add_argument('--cluster', metavar='cluster', type=int, default=6, help='total number of cluster')
 parser.add_argument('--dimred', metavar='dimred', type=str , default="pca", help='type of dimensionality reduction')
 parser.add_argument('--plot_dimred', metavar='plot_dimred', type=str , default="tsne", help='type of dimensionality reduction for plotting after data is alread reduced in a smaller dimension')
 parser.add_argument('--prior_number_samples', metavar='prior_number_samples', type=int , default=10, help='number of samples for prior')
-parser.add_argument('--posterior_number_samples', metavar='posterior_number_samples', type=int , default=5, help='number of samples for posterior')
+parser.add_argument('--posterior_number_samples', metavar='posterior_number_samples', type=int , default=1, help='number of samples for posterior')
 parser.add_argument('--posterior_warmup_steps', metavar='posterior_warmup_steps', type=int , default=0, help='number of  warmup steps for posterior')
 parser.add_argument('--directory_path', metavar='directory_path', type=str , default="./Results", help='name of the directory in which result should be stored')
-parser.add_argument('--dataset', metavar='dataset', type=str , default="KSL_layer3", help='name of the dataset (Salinas, KSL, KSL_layer3 or other)')
-parser.add_argument('--posterior_num_chain', metavar='posterior_num_chain', type=int , default=2, help='number of chain')
-parser.add_argument('--posterior_condition',metavar='posterior_condition', type=int , default=1, help='1-Deterministic for mean and covariance for hsi data, 2-Deterministic for covariance but a prior on mean ,3-Prior on mean and covariance')
+parser.add_argument('--dataset', metavar='dataset', type=str , default="Salinas", help='name of the dataset (Salinas, KSL, KSL_layer3 or other)')
+parser.add_argument('--posterior_num_chain', metavar='posterior_num_chain', type=int , default=1, help='number of chain')
+parser.add_argument('--posterior_condition',metavar='posterior_condition', type=int , default=3, help='1-Deterministic for mean and covariance for hsi data, 2-Deterministic for covariance but a prior on mean ,3-Prior on mean and covariance')
 #parser.add_argument('--num_layers',metavar='num_layers', type=int , default=3, help='number of points used to model layer information')
-parser.add_argument('--slope_gempy', metavar='slope_gempy', type=float , default=200.0, help='slope for gempy #45, 50, 200')
+parser.add_argument('--slope_gempy', metavar='slope_gempy', type=float , default=50.0, help='slope for gempy #45, 50, 200')
 parser.add_argument('--scale', metavar='scale', type=float , default=10.0, help='scaling factor to generate probability for each voxel')
-parser.add_argument('--alpha', metavar='alpha', type=float , default=1e2, help='scaling parameter for the mean, 0.1')
-parser.add_argument('--beta', metavar='beta', type=float , default=1e1, help='scaling parameter for the covariance, 20')
+parser.add_argument('--alpha', metavar='alpha', type=float , default=1e6, help='scaling parameter for the mean, 0.1')
+parser.add_argument('--beta', metavar='beta', type=float , default=1e3, help='scaling parameter for the covariance, 20')
 
 
 dtype = torch.float64
@@ -559,13 +559,13 @@ def main():
     
     #avoid_key = ['mu_1 < 0','mu_1 > mu_2','mu_2 > mu_3', 'mu_3 > mu_4' , 'mu_4 > -83']
     # Create sub-dictionary without the avoid_key
-    prior = dict((key, value) for key, value in prior.items() if key not in avoid_key)
-    plt.figure(figsize=(8,10))
-    data = az.from_pyro(prior=prior)
-    az.plot_trace(data.prior)
-    filename_prior_plot = directory_path + "/prior.png"
-    plt.savefig(filename_prior_plot)
-    plt.close()
+    # prior = dict((key, value) for key, value in prior.items() if key not in avoid_key)
+    # plt.figure(figsize=(8,10))
+    # data = az.from_pyro(prior=prior)
+    # az.plot_trace(data.prior)
+    # filename_prior_plot = directory_path + "/prior.png"
+    # plt.savefig(filename_prior_plot)
+    # plt.close()
     
     ################################################################################
     # Posterior 
@@ -576,12 +576,51 @@ def main():
     
     pyro.primitives.enable_validation(is_validate=True)
     nuts_kernel = NUTS(model.model_test, step_size=0.0085, adapt_step_size=True, target_accept_prob=0.9, max_tree_depth=10, init_strategy=init_to_mean)
-    mcmc = MCMC(nuts_kernel, num_samples=posterior_number_samples, warmup_steps=posterior_warmup_steps,num_chains=posterior_num_chain,mp_context="spawn", disable_validation=False)
+    mcmc = MCMC(nuts_kernel, num_samples=posterior_number_samples, warmup_steps=posterior_warmup_steps,num_chains=posterior_num_chain, disable_validation=False)
     mcmc.run(normalised_hsi,test_list,geo_model_test,mean_init,cov_init,factor,num_layers,posterior_condition,scale, cluster, alpha, beta,dtype,device)
     
-    posterior_samples = mcmc.get_samples(group_by_chain=True)
-    #posterior_samples = mcmc.get_samples(group_by_chain=False)
-    for keys, values in posterior_samples.items():
+    posterior_samples = mcmc.get_samples(group_by_chain=False)
+    posterior_samples_ = mcmc.get_samples(group_by_chain=True)
+    
+    print("trace printing")
+    # Trace the model with the current sample values
+    import pyro.poutine as poutine
+    
+    # Calculate the log joint (which includes log likelihood and log prior)
+    log_posterior_vals = []
+    print(posterior_samples)
+    for sample in zip(*posterior_samples.values()):  # Iterate over samples of all parameters
+       
+        # Set the current values for the model parameters
+        sample_dict = {name: value for name, value in zip(posterior_samples.keys(), sample)}
+        
+        # Trace the model with the current sample values and the data as an argument
+        # You need to use `sample_dict` to assign values to the model's random variables
+        trace = poutine.trace(lambda: model.model_test(normalised_hsi,test_list,geo_model_test,mean_init,cov_init,factor,num_layers,posterior_condition,scale, cluster, alpha, beta,dtype,device)).get_trace()
+        #print(trace.nodes)
+        log_joint = trace.log_prob_sum()
+        print(log_joint)
+        # conditioned_model = poutine.condition(model.model_test, data=sample_dict)
+        # trace = poutine.trace(conditioned_model).get_trace(normalised_hsi,test_list,geo_model_test,mean_init,cov_init,factor,num_layers,posterior_condition,scale, cluster, alpha, beta,dtype,device)
+        # # Apply the sampled parameter values to the model trace
+        for name, value in sample_dict.items():
+            print(name)
+            print(value)
+            trace.nodes[name]["value"] = value  # Set the sampled values in the trace
+        #print(trace.nodes)
+        
+        # # we need to re run our model to update the value of node which are dependent on posterior sample
+        replayed_model = poutine.replay(model.model_test, trace=trace)
+        # #replayed_model(normalised_hsi,test_list,geo_model_test,mean_init,cov_init,factor,num_layers,posterior_condition,scale, cluster, alpha, beta,dtype,device)
+        trace = poutine.trace(replayed_model).get_trace(normalised_hsi,test_list,geo_model_test,mean_init,cov_init,factor,num_layers,posterior_condition,scale, cluster, alpha, beta,dtype,device)
+        # print("Second trace")
+        #print(trace.nodes)
+        # Calculate the log joint (which includes log likelihood and log prior)
+        log_joint = trace.log_prob_sum()
+        
+        log_posterior_vals.append(log_joint.item())  # .item() to extract scalar from tensor
+    '''
+    for keys, values in posterior_samples_.items():
         print(keys)
     
     print("MCMC summary results")
@@ -592,12 +631,14 @@ def main():
 
     
     print(summary_output)
-
+    
+    
     with open(f'{directory_path}/mcmc_summary_p{posterior_condition}.txt', 'w') as f:
         f.write(summary_output)
     
-    
-    posterior_predictive = Predictive(model.model_test, posterior_samples)(normalised_hsi,test_list,geo_model_test,mean_init,cov_init,factor,num_layers,posterior_condition,scale, cluster, alpha, beta,dtype,device)
+    posterior_samples_chain = {key: value[0] for key, value in posterior_samples_.items()}
+    print(posterior_samples_chain)
+    posterior_predictive = Predictive(model.model_test, posterior_samples )(normalised_hsi,test_list,geo_model_test,mean_init,cov_init,factor,num_layers,posterior_condition,scale, cluster, alpha, beta,dtype,device)
     plt.figure(figsize=(8,10))
     data = az.from_pyro(posterior=mcmc, prior=prior, posterior_predictive=posterior_predictive)
     az.plot_trace(data)
@@ -620,15 +661,22 @@ def main():
         filename_mu = directory_path + "/mu_"+str(i+1)+".png"
         plt.savefig(filename_mu)
         plt.close()
-    
+    '''
     ###########################################################################################
     ######################### Find the MAP value ##############################################
     ###########################################################################################
+    MAP_sample_index_trace = torch.argmax(torch.tensor(log_posterior_vals))
+    print("MAP_sample_index_trace\n", MAP_sample_index_trace)
     
-    MAP_sample_index, max_posterior_value = compute_map(posterior_samples,geo_model_test,normalised_hsi,test_list,y_obs_label, mean_init,cov_init,directory_path,num_layers,posterior_condition,scale, cluster, alpha, beta,dtype,device)
+    MAP_sample_index, max_posterior_value, log_posterior_vals2 = compute_map(posterior_samples,geo_model_test,normalised_hsi,test_list,y_obs_label, mean_init,cov_init,directory_path,num_layers,posterior_condition,scale, cluster, alpha, beta,dtype,device)
     print("MAP_sample_index\n", MAP_sample_index)
-    directory_path_MAP = directory_path +"/MAP"
     
+    print(torch.tensor(log_posterior_vals, dtype=dtype))
+    print(torch.tensor(log_posterior_vals2,dtype=dtype))
+    print(torch.tensor(log_posterior_vals,dtype=dtype) - torch.tensor(log_posterior_vals2, dtype=dtype))
+    
+    directory_path_MAP = directory_path +"/MAP"
+    exit()
     ################################################################################
     #  Try Plot the data and save it as file in output folder
     ################################################################################

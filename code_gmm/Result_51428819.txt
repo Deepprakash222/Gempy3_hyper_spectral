@@ -1,0 +1,36 @@
+[INFO] Module CUDA/12.3.0 loaded.
+/home/jt925938/anaconda3/envs/gempy_pyro/lib/python3.10/site-packages/gempy/core/data/geo_model.py:164: UserWarning: You are using refinement and passing a regular grid. The resolution of the regular grid will be overwritten
+  warnings.warn(
+/home/jt925938/anaconda3/envs/gempy_pyro/lib/python3.10/site-packages/gempy/core/data/geo_model.py:164: UserWarning: You are using refinement and passing a regular grid. The resolution of the regular grid will be overwritten
+  warnings.warn(
+Setting Backend To: AvailableBackends.numpy
+Script started...
+Directory './Results/Salinas/posterior_condition_3_alpha_1000000.0_beta_1000.0_slope_gempy_50.0scale_10.0' already exists.
+Setting Backend To: AvailableBackends.numpy
+Setting Backend To: AvailableBackends.numpy
+Active grids: ['custom']
+Setting Backend To: AvailableBackends.numpy
+Setting Backend To: AvailableBackends.numpy
+entropy_gmm_prior
+ 1.1512992383663035e-08
+Intial accuracy
+ tensor(0.7722)
+Optimal number of components: 9
+Optimal number of components: 19
+Setting Backend To: AvailableBackends.PYTORCH
+Traceback (most recent call last):
+  File "/rwthfs/rz/cluster/home/jt925938/gempy_pyro/Gempy3_hyper_spectral/code_gmm/run.py", line 1312, in <module>
+    main()
+  File "/rwthfs/rz/cluster/home/jt925938/gempy_pyro/Gempy3_hyper_spectral/code_gmm/run.py", line 554, in main
+    dot = pyro.render_model(model_test, model_args=(normalised_hsi,test_list,geo_model_test,mean_init,cov_init,factor,num_layers,posterior_condition, scale, cluster, alpha, beta,dtype,device))
+  File "/home/jt925938/anaconda3/envs/gempy_pyro/lib/python3.10/site-packages/pyro/infer/inspect.py", line 630, in render_model
+    get_model_relations(
+  File "/home/jt925938/anaconda3/envs/gempy_pyro/lib/python3.10/site-packages/pyro/infer/inspect.py", line 302, in get_model_relations
+    trace = poutine.trace(model).get_trace(*model_args, **model_kwargs)
+  File "/home/jt925938/anaconda3/envs/gempy_pyro/lib/python3.10/site-packages/pyro/poutine/trace_messenger.py", line 216, in get_trace
+    self(*args, **kwargs)
+  File "/home/jt925938/anaconda3/envs/gempy_pyro/lib/python3.10/site-packages/pyro/poutine/trace_messenger.py", line 191, in __call__
+    ret = self.fn(*args, **kwargs)
+  File "/home/jt925938/anaconda3/envs/gempy_pyro/lib/python3.10/site-packages/pyro/poutine/messenger.py", line 32, in _context_wrap
+    return fn(*args, **kwargs)
+TypeError: model_test() missing 1 required positional argument: 'device'

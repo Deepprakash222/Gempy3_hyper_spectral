@@ -1,0 +1,749 @@
+/home/jt925938/anaconda3/envs/gempy_pyro/lib/python3.10/site-packages/gempy/core/data/geo_model.py:164: UserWarning: You are using refinement and passing a regular grid. The resolution of the regular grid will be overwritten
+  warnings.warn(
+/home/jt925938/anaconda3/envs/gempy_pyro/lib/python3.10/site-packages/gempy/core/data/geo_model.py:164: UserWarning: You are using refinement and passing a regular grid. The resolution of the regular grid will be overwritten
+  warnings.warn(
+/home/jt925938/anaconda3/envs/gempy_pyro/lib/python3.10/site-packages/arviz/stats/density_utils.py:488: UserWarning: Your data appears to have a single value or no finite values
+  warnings.warn("Your data appears to have a single value or no finite values")
+Setting Backend To: AvailableBackends.numpy
+Script started...
+Directory './Results/Salinas/posterior_condition_3_alpha_1000000.0_beta_1000.0_slope_gempy_50.0scale_10.0' already exists.
+Setting Backend To: AvailableBackends.numpy
+Setting Backend To: AvailableBackends.numpy
+Active grids: ['custom']
+Setting Backend To: AvailableBackends.numpy
+Setting Backend To: AvailableBackends.numpy
+entropy_gmm_prior
+ 1.1512992383663035e-08
+Intial accuracy
+ tensor(0.7722)
+Optimal number of components: 9
+Optimal number of components: 19
+Setting Backend To: AvailableBackends.PYTORCH
+Condition number: 1553.9750196410391.
+Condition number: 1553.9750196410391.
+Condition number: 1546.2882051333454.
+Condition number: 1578.4750860912216.
+Condition number: 1540.7832925793905.
+Condition number: 1555.6060177704499.
+Condition number: 1549.4847607603554.
+Condition number: 1580.8860647357192.
+Condition number: 1534.0228270699904.
+Condition number: 1572.3119053325233.
+Condition number: 1539.0706957801822.
+Condition number: 1539.2655478931333.
+Condition number: 1540.3698117342194.
+Warmup [1]:   0%|          | 0/5 [00:00, ?it/s]
+Warmup [2]:   0%|          | 0/5 [00:00, ?it/s][AWarmup [1]:  20%|██        | 1/5 [00:11, 11.46s/it, step size=2.44e-04, acc. prob=0.400]Warmup [1]:  40%|████      | 2/5 [00:14,  6.67s/it, step size=2.44e-04, acc. prob=0.202]Warmup [1]:  60%|██████    | 3/5 [00:16,  4.47s/it, step size=2.44e-04, acc. prob=0.134]
+Warmup [2]:  20%|██        | 1/5 [00:16, 16.84s/it, step size=1.22e-04, acc. prob=0.259][AWarmup [1]:  80%|████████  | 4/5 [00:18,  3.42s/it, step size=2.44e-04, acc. prob=0.131]Warmup [1]: 100%|██████████| 5/5 [00:24,  4.51s/it, step size=2.44e-04, acc. prob=0.105]Condition number: 1553.9750196410398.
+Condition number: 1549.9412401989284.
+Condition number: 1549.9412401989284.
+Condition number: 1549.9412401989284.
+Condition number: 1549.9412401989284.
+Condition number: 1549.9412401989284.
+Condition number: 1469.6091506420273.
+Condition number: 1549.9412401989284.
+Condition number: 1563.5406204875424.
+Condition number: 1549.9412401989284.
+Condition number: 1553.8384647110656.
+Condition number: 1549.9412401989284.
+Condition number: 1552.1374131772363.
+Condition number: 1549.9412401989284.
+Condition number: 1546.0755655227456.
+Condition number: 1549.9412401989284.
+Condition number: 1554.830977149696.
+Condition number: 1549.9412401989284.
+Condition number: 1549.2038259667804.
+Condition number: 1549.9412401989284.
+Condition number: 1549.799283446529.
+Condition number: 1549.9412401989284.
+Condition number: 1549.6452043610925.
+Condition number: 1549.9412401989284.
+Condition number: 1549.862782633618.
+Condition number: 1549.9412401989284.
+Condition number: 1550.0486127845347.
+Condition number: 1549.9412401989284.
+Condition number: 1549.9603801080254.
+Condition number: 1549.9412401989284.
+Condition number: 1549.9614674590814.
+Condition number: 1549.9442506445662.
+Condition number: 1549.9382290559172.
+Condition number: 1549.9352171758323.
+Condition number: 1549.9322045231079.
+Condition number: 1549.9291910658867.
+Condition number: 1549.9111361525422.
+Condition number: 1549.9653284190465.
+Condition number: 1549.9924341803091.
+Condition number: 1549.8968437262076.
+Condition number: 1549.979617122849.
+Condition number: 1550.021007747921.
+Condition number: 1549.855461348834.
+Condition number: 1549.8140821881823.
+Condition number: 1549.7727065762758.
+Condition number: 1549.9448483097556.
+Condition number: 1549.9514641780256.
+Condition number: 1549.9580765996154.
+Condition number: 1549.9316064851046.
+Condition number: 1549.9249806746338.
+Condition number: 1549.9183517119832.
+Condition number: 1549.9374206144698.
+Condition number: 1549.9390290786089.
+Condition number: 1549.9398206503058.
+Condition number: 1549.9406037403417.
+Condition number: 1549.9413783194768.
+Condition number: 1549.942144359734.
+Condition number: 1549.9429018342423.
+Condition number: 1549.936603788267.
+Condition number: 1549.9357786132346.
+Condition number: 1549.9349451273963.
+Condition number: 1549.9341033710796.
+Condition number: 1549.9332533871252.
+Condition number: 1549.932395221077.
+Condition number: 1549.9315289214373.
+Condition number: 1549.9306545399008.
+Condition number: 1549.9297721316243.
+Condition number: 1549.9288817555064.
+Condition number: 1549.9279834744927.
+Condition number: 1549.9270773559128.
+Condition number: 1549.9261634718262.
+Condition number: 1549.9252418994106.
+
+Warmup [2]:  40%|████      | 2/5 [00:29, 14.35s/it, step size=1.22e-04, acc. prob=0.135][A
+Warmup [2]:  60%|██████    | 3/5 [00:29,  8.00s/it, step size=1.22e-04, acc. prob=0.090][A
+Warmup [2]:  80%|████████  | 4/5 [00:57, 15.83s/it, step size=1.22e-04, acc. prob=0.068][A
+Warmup [2]: 100%|██████████| 5/5 [00:58, 10.23s/it, step size=1.22e-04, acc. prob=0.054][ACondition number: 1539.4536381679181.
+Condition number: 1549.9412401989284.
+Condition number: 1549.9412401989284.
+Condition number: 1549.9412401989284.
+Condition number: 1549.9412401989284.
+Condition number: 1549.9412401989284.
+Condition number: 1492.3786814819907.
+Condition number: 1549.9412401989284.
+Condition number: 1542.5940488531282.
+Condition number: 1549.9412401989284.
+Condition number: 1513.5816273024845.
+Condition number: 1549.9412401989284.
+Condition number: 1555.0167033952816.
+Condition number: 1549.9412401989284.
+Condition number: 1551.6474388322015.
+Condition number: 1549.9412401989284.
+Condition number: 1552.2701594971127.
+Condition number: 1549.9412401989284.
+Condition number: 1549.3087588320393.
+Condition number: 1549.9412401989284.
+Condition number: 1550.8760604671636.
+Condition number: 1549.9412401989284.
+Condition number: 1549.9499625317123.
+Condition number: 1549.9412401989284.
+Condition number: 1549.9711633736756.
+Condition number: 1549.9412401989284.
+Condition number: 1550.0115254437437.
+Condition number: 1549.9412401989284.
+Condition number: 1549.946183849174.
+Condition number: 1549.9412401989284.
+Condition number: 1549.9675323335032.
+Condition number: 1549.9412401989284.
+Condition number: 1549.9395258044867.
+Condition number: 1549.940732354198.
+Condition number: 1549.9417491533502.
+Condition number: 1549.942259219002.
+Condition number: 1549.9402256176422.
+Condition number: 1549.939719987772.
+Condition number: 1549.9392154631228.
+Condition number: 1549.9387120422482.
+Condition number: 1549.9427703974509.
+Condition number: 1549.9432826902876.
+Condition number: 1549.943796099126.
+Condition number: 1549.9443106256126.
+Condition number: 1549.9448262714127.
+Condition number: 1549.9453430382275.
+Condition number: 1549.9458609277863.
+Condition number: 1549.9463799418372.
+Condition number: 1549.9382097237249.
+Condition number: 1549.9377085061592.
+Condition number: 1549.937208388171.
+Condition number: 1549.936709368411.
+Condition number: 1549.9362114455419.
+Condition number: 1549.9357146182542.
+Condition number: 1549.9352188852538.
+Condition number: 1549.9347242452739.
+Condition number: 1549.9342306970584.
+Condition number: 1549.9337382393805.
+Condition number: 1549.9414414100156.
+Condition number: 1549.9426557438685.
+Condition number: 1549.9438686210412.
+Condition number: 1549.9450800434172.
+Condition number: 1549.946290012901.
+Condition number: 1549.947498531442.
+Condition number: 1549.9487056010187.
+Condition number: 1549.9499112236529.
+Condition number: 1549.9511154014012.
+Condition number: 1549.9523181363577.
+Condition number: 1549.9535194306582.
+Condition number: 1549.9547192864761.
+Condition number: 1549.9559177060341.
+Condition number: 1549.9571146915978.
+Condition number: 1549.9583102454706.
+Condition number: 1549.939008364932.
+Condition number: 1549.9377896501005.
+Condition number: 1549.9365694713956.
+Condition number: 1549.9353478270898.
+Condition number: 1549.9341247154825.
+Condition number: 1549.9329001348988.
+Condition number: 1549.9316740836955.
+Condition number: 1549.9304465602381.
+Condition number: 1549.9292175629303.
+Condition number: 1549.9279870901848.
+Condition number: 1549.9267551404396.
+Condition number: 1549.9255217121529.
+Condition number: 1549.9242868037923.
+Condition number: 1549.923050413851.
+Condition number: 1549.9218125408315.
+Condition number: 1549.9205731832499.
+Condition number: 1549.9595043700044.
+Condition number: 1549.9606970676016.
+Condition number: 1549.961888340716.
+Condition number: 1549.9630781918386.
+Condition number: 1549.9642666235204.
+Condition number: 1549.9654536383664.
+Condition number: 1549.9666392390236.
+Condition number: 1549.9678234282053.
+Condition number: 1549.9690062086752.
+Condition number: 1549.9701875832507.
+Condition number: 1549.971367554818.
+Condition number: 1549.9725461263104.
+Condition number: 1549.9737233007293.
+Condition number: 1549.974899081137.
+Condition number: 1549.9760734706645.
+Condition number: 1549.9772464724963.
+Condition number: 1549.978418089898.
+Condition number: 1549.9795883261909.
+Condition number: 1549.9807571847766.
+Condition number: 1549.9819246691216.
+Condition number: 1549.9830907827645.
+Condition number: 1549.9842555293246.
+Condition number: 1549.9854189124926.
+Condition number: 1549.9865809360397.
+Condition number: 1549.947608886477.
+Condition number: 1549.9377002943822.
+Condition number: 1549.9327425332394.
+Condition number: 1549.9352243529531.
+Condition number: 1549.9277867869405.
+Condition number: 1549.9203430425393.
+Condition number: 1549.9128931167886.
+Condition number: 1549.9054370070357.
+Condition number: 1549.8979747109036.
+Condition number: 1549.8905062263104.
+Condition number: 1549.883031551425.
+Condition number: 1549.87555068466.
+Condition number: 1549.8680636246736.
+Condition number: 1549.8605703703322.
+Condition number: 1549.8530709207223.
+Condition number: 1549.8455652751318.
+Condition number: 1549.8380534330227.
+Condition number: 1549.8305353940555.
+Condition number: 1549.8230111580474.
+Condition number: 1549.8154807249805.
+Condition number: 1549.8079440949944.
+Condition number: 1549.8004012683696.
+Condition number: 1549.7928522455238.
+Condition number: 1549.7852970270123.
+Condition number: 1549.7777356135057.
+Condition number: 1549.7701680058049.
+Condition number: 1549.7625942048103.
+Condition number: 1549.7550142115415.
+Condition number: 1549.747428027116.
+Condition number: 1549.7398356527515.
+Condition number: 1549.7322370897468.
+Condition number: 1549.724632339501.
+Condition number: 1549.7170214034973.
+Condition number: 1549.709404283296.
+Condition number: 1549.950080963315.
+Condition number: 1549.9575000152856.
+Condition number: 1549.9649129041497.
+Condition number: 1549.9723196346808.
+Condition number: 1549.9797202120797.
+Condition number: 1549.9871146419846.
+Condition number: 1549.9945029305168.
+Condition number: 1550.0018850842857.
+Condition number: 1550.0092611104271.
+Condition number: 1550.016631016622.
+Condition number: 1550.0239948111312.
+Condition number: 1550.031352502824.
+Condition number: 1550.038704101197.
+Condition number: 1550.0460496164183.
+Condition number: 1550.053389059349.
+Condition number: 1550.0607224415692.
+Condition number: 1550.0680497754208.
+Condition number: 1550.0753710740125.
+Condition number: 1550.0826863512689.
+Condition number: 1550.0899956219337.
+Condition number: 1550.0972989016013.
+Condition number: 1550.1045962067174.
+Condition number: 1550.1118875545947.
+Condition number: 1550.1191729634024.
+Condition number: 1550.1264524521475.
+Condition number: 1550.133726040649.
+Condition number: 1550.1409937494648.
+Condition number: 1550.148255599837.
+Condition number: 1550.1555116135667.
+Condition number: 1550.1627618128534.
+Condition number: 1550.1700062200964.
+Condition number: 1550.1772448576282.
+Condition number: 1549.7017809805322.
+Condition number: 1549.694151496917.
+Condition number: 1549.6865158342384.
+Condition number: 1549.6788739943358.
+Condition number: 1549.6712259791236.
+Condition number: 1549.6635717905806.
+Condition number: 1549.655911430733.
+Condition number: 1549.648244901676.
+Condition number: 1549.6405722055456.
+Condition number: 1549.6328933445443.
+Condition number: 1549.6252083209122.
+Condition number: 1549.6175171369416.
+Condition number: 1549.6098197949764.
+Condition number: 1549.6021162973925.
+Condition number: 1549.5944066466168.
+Condition number: 1549.5866908451205.
+Condition number: 1549.5789688954017.
+Condition number: 1549.5712408000072.
+Condition number: 1549.5635065615224.
+Condition number: 1549.5557661825558.
+Condition number: 1549.548019665761.
+Condition number: 1549.5402670138221.
+Condition number: 1549.5325082294505.
+Condition number: 1549.5247433153947.
+Condition number: 1549.516972274431.
+Condition number: 1549.5091951093661.
+Condition number: 1549.5014118230326.
+Condition number: 1549.4936224182907.
+Condition number: 1549.4858268980252.
+Condition number: 1549.4780252651553.
+Condition number: 1549.4702175226166.
+Condition number: 1549.4624036733733.
+Condition number: 1549.4545837204098.
+Condition number: 1549.4467576667382.
+Condition number: 1549.4389255153892.
+Condition number: 1549.4310872694205.
+Condition number: 1549.423242931908.
+Condition number: 1549.4153925059504.
+Condition number: 1549.4075359946592.
+Condition number: 1549.3996734011794.
+Condition number: 1549.3918047286666.
+Condition number: 1549.3839299802983.
+Condition number: 1549.3760491592736.
+Condition number: 1549.368162268805.
+Condition number: 1549.3602693121209.
+Condition number: 1549.3523702924792.
+Condition number: 1549.3444652131438.
+Condition number: 1549.3365540774032.
+Condition number: 1549.3286368885597.
+Condition number: 1549.3207136499298.
+Condition number: 1549.3127843648547.
+Condition number: 1549.30484903668.
+Condition number: 1549.2969076687768.
+Condition number: 1549.2889602645303.
+Condition number: 1549.2810068273354.
+Condition number: 1549.2730473606086.
+Condition number: 1549.2650818677776.
+Condition number: 1549.25711035229.
+Condition number: 1549.2491328176009.
+Condition number: 1549.2411492671843.
+Condition number: 1549.233159704525.
+Condition number: 1549.2251641331356.
+Condition number: 1549.2171625565215.
+Condition number: 1549.209154978216.
+Condition number: 1549.2011414017586.
+Condition number: 1549.1931218307175.
+Condition number: 1549.185096268651.
+Condition number: 1549.177064719148.
+Condition number: 1549.169027185806.
+Condition number: 1549.1609836722332.
+Condition number: 1549.1529341820578.
+Condition number: 1549.1448787189122.
+Condition number: 1549.1368172864452.
+Condition number: 1549.1287498883182.
+Condition number: 1549.1206765282097.
+Condition number: 1549.1125972097975.
+Condition number: 1549.1045119367946.
+Condition number: 1549.096420712899.
+Condition number: 1549.0883235418423.
+Condition number: 1549.0802204273639.
+Condition number: 1549.0721113732047.
+Condition number: 1549.0639963831259.
+Condition number: 1549.055875460906.
+Condition number: 1549.0477486103223.
+Condition number: 1549.0396158351757.
+Condition number: 1549.0314771392727.
+Condition number: 1549.0233325264335.
+Condition number: 1549.0151820004905.
+Condition number: 1549.0070255652856.
+Condition number: 1548.9988632246723.
+Condition number: 1548.990694982523.
+Condition number: 1548.9825208427096.
+Condition number: 1548.9743408091215.
+Condition number: 1548.9661548856639.
+Condition number: 1548.9579630762466.
+Condition number: 1548.9497653847918.
+Condition number: 1548.9415618152361.
+Condition number: 1548.933352371529.
+Condition number: 1548.9251370576158.
+Condition number: 1548.9169158774775.
+Condition number: 1548.908688835091.
+Condition number: 1548.9004559344442.
+Condition number: 1548.8922171795398.
+Condition number: 1548.8839725743924.
+Condition number: 1548.8757221230217.
+Condition number: 1548.8674658294692.
+Condition number: 1548.859203697775.
+Condition number: 1548.8509357319983.
+Condition number: 1548.8426619362094.
+Condition number: 1548.83438231448.
+Condition number: 1548.8260968709055.
+Condition number: 1548.8178056095844.
+Condition number: 1548.8095085346265.
+Condition number: 1548.8012056501573.
+Condition number: 1548.7928969603086.
+Condition number: 1548.7845824692185.
+Condition number: 1548.7762621810464.
+Condition number: 1548.7679360999575.
+Condition number: 1549.940129553396.
+Condition number: 1549.9376031800382.
+Warmup [1]: 100%|██████████| 5/5 [00:58, 11.61s/it, step size=2.44e-04, acc. prob=0.105]
+Warmup [2]: 100%|██████████| 5/5 [00:58, 11.61s/it, step size=1.22e-04, acc. prob=0.054]
+
+
+/home/jt925938/anaconda3/envs/gempy_pyro/lib/python3.10/site-packages/arviz/data/io_pyro.py:158: UserWarning: Could not get vectorized trace, log_likelihood group will be omitted. Check your model vectorization or set log_likelihood=False
+  warnings.warn(
+/home/jt925938/anaconda3/envs/gempy_pyro/lib/python3.10/site-packages/arviz/stats/density_utils.py:488: UserWarning: Your data appears to have a single value or no finite values
+  warnings.warn("Your data appears to have a single value or no finite values")
+/home/jt925938/anaconda3/envs/gempy_pyro/lib/python3.10/site-packages/arviz/stats/density_utils.py:488: UserWarning: Your data appears to have a single value or no finite values
+  warnings.warn("Your data appears to have a single value or no finite values")
+/home/jt925938/anaconda3/envs/gempy_pyro/lib/python3.10/site-packages/arviz/stats/density_utils.py:488: UserWarning: Your data appears to have a single value or no finite values
+  warnings.warn("Your data appears to have a single value or no finite values")
+/home/jt925938/anaconda3/envs/gempy_pyro/lib/python3.10/site-packages/arviz/stats/density_utils.py:488: UserWarning: Your data appears to have a single value or no finite values
+  warnings.warn("Your data appears to have a single value or no finite values")
+/home/jt925938/anaconda3/envs/gempy_pyro/lib/python3.10/site-packages/arviz/stats/density_utils.py:488: UserWarning: Your data appears to have a single value or no finite values
+  warnings.warn("Your data appears to have a single value or no finite values")
+/home/jt925938/anaconda3/envs/gempy_pyro/lib/python3.10/site-packages/arviz/stats/density_utils.py:488: UserWarning: Your data appears to have a single value or no finite values
+  warnings.warn("Your data appears to have a single value or no finite values")
+/home/jt925938/anaconda3/envs/gempy_pyro/lib/python3.10/site-packages/arviz/stats/density_utils.py:488: UserWarning: Your data appears to have a single value or no finite values
+  warnings.warn("Your data appears to have a single value or no finite values")
+/home/jt925938/anaconda3/envs/gempy_pyro/lib/python3.10/site-packages/arviz/stats/density_utils.py:488: UserWarning: Your data appears to have a single value or no finite values
+  warnings.warn("Your data appears to have a single value or no finite values")
+/home/jt925938/anaconda3/envs/gempy_pyro/lib/python3.10/site-packages/arviz/stats/density_utils.py:488: UserWarning: Your data appears to have a single value or no finite values
+  warnings.warn("Your data appears to have a single value or no finite values")
+/home/jt925938/anaconda3/envs/gempy_pyro/lib/python3.10/site-packages/arviz/stats/density_utils.py:488: UserWarning: Your data appears to have a single value or no finite values
+  warnings.warn("Your data appears to have a single value or no finite values")
+/home/jt925938/anaconda3/envs/gempy_pyro/lib/python3.10/site-packages/arviz/stats/density_utils.py:488: UserWarning: Your data appears to have a single value or no finite values
+  warnings.warn("Your data appears to have a single value or no finite values")
+/home/jt925938/anaconda3/envs/gempy_pyro/lib/python3.10/site-packages/arviz/stats/density_utils.py:488: UserWarning: Your data appears to have a single value or no finite values
+  warnings.warn("Your data appears to have a single value or no finite values")
+/home/jt925938/anaconda3/envs/gempy_pyro/lib/python3.10/site-packages/arviz/stats/density_utils.py:488: UserWarning: Your data appears to have a single value or no finite values
+  warnings.warn("Your data appears to have a single value or no finite values")
+/home/jt925938/anaconda3/envs/gempy_pyro/lib/python3.10/site-packages/arviz/stats/density_utils.py:488: UserWarning: Your data appears to have a single value or no finite values
+  warnings.warn("Your data appears to have a single value or no finite values")
+/home/jt925938/anaconda3/envs/gempy_pyro/lib/python3.10/site-packages/arviz/stats/density_utils.py:488: UserWarning: Your data appears to have a single value or no finite values
+  warnings.warn("Your data appears to have a single value or no finite values")
+/home/jt925938/anaconda3/envs/gempy_pyro/lib/python3.10/site-packages/arviz/stats/density_utils.py:488: UserWarning: Your data appears to have a single value or no finite values
+  warnings.warn("Your data appears to have a single value or no finite values")
+/home/jt925938/anaconda3/envs/gempy_pyro/lib/python3.10/site-packages/gempy/core/data/geo_model.py:164: UserWarning: You are using refinement and passing a regular grid. The resolution of the regular grid will be overwritten
+  warnings.warn(
+/home/jt925938/anaconda3/envs/gempy_pyro/lib/python3.10/site-packages/gempy/core/data/geo_model.py:164: UserWarning: You are using refinement and passing a regular grid. The resolution of the regular grid will be overwritten
+  warnings.warn(
+Condition number: 1560.9447699274224.
+Condition number: 1549.9412401989284.
+Condition number: 1549.9412401989284.
+Condition number: 1549.9412401989284.
+Condition number: 1549.9412401989284.
+Condition number: 1549.9412401989284.
+Condition number: 1664.4403837069776.
+Condition number: 1549.9412401989284.
+Condition number: 1483.8579061135013.
+Condition number: 1549.9412401989284.
+Condition number: 1528.8594279598913.
+Condition number: 1549.9412401989284.
+Condition number: 1538.0417690998293.
+Condition number: 1549.9412401989284.
+Condition number: 1559.0833542545106.
+Condition number: 1549.9412401989284.
+Condition number: 1548.6219819564656.
+Condition number: 1549.9412401989284.
+Condition number: 1546.6796594038808.
+Condition number: 1549.9412401989284.
+Condition number: 1549.6381806565448.
+Condition number: 1549.9412401989284.
+Condition number: 1549.3106423918202.
+Condition number: 1549.9412401989284.
+Condition number: 1550.0920094155244.
+Condition number: 1549.9412401989284.
+Condition number: 1549.925409139534.
+Condition number: 1549.9412401989284.
+Condition number: 1549.8634071409856.
+Condition number: 1549.9412401989284.
+Condition number: 1549.978572882802.
+Condition number: 1549.9412401989284.
+Condition number: 1549.922973547169.
+cov_eigen_values_1
+cov_eigen_values_2
+cov_eigen_values_3
+cov_eigen_values_4
+cov_eigen_values_5
+cov_eigen_values_6
+mean_data_1
+mean_data_2
+mean_data_3
+mean_data_4
+mean_data_5
+mean_data_6
+mu_1
+mu_2
+mu_3
+mu_4
+MCMC summary results
+
+                           mean       std    median      5.0%     95.0%     n_eff     r_hat
+cov_eigen_values_1[0]      0.42      0.00      0.42      0.42      0.42      1.54      2.71
+cov_eigen_values_1[1]      0.08      0.00      0.08      0.08      0.08      1.46      5.44
+cov_eigen_values_1[2]      0.04      0.00      0.04      0.04      0.05      1.43     66.94
+cov_eigen_values_1[3]      0.03      0.00      0.03      0.03      0.03     23.55      0.91
+cov_eigen_values_1[4]      0.02      0.00      0.02      0.02      0.02      7.70      0.99
+cov_eigen_values_1[5]      0.00      0.00      0.00      0.00      0.00      2.08      1.52
+cov_eigen_values_1[6]      0.01      0.00      0.01      0.01      0.01      2.60      1.21
+cov_eigen_values_1[7]      0.01      0.00      0.01      0.01      0.01      1.43    197.98
+cov_eigen_values_2[0]      0.56      0.00      0.56      0.56      0.56      1.49      3.62
+cov_eigen_values_2[1]      0.07      0.00      0.07      0.07      0.07      1.47      4.53
+cov_eigen_values_2[2]      0.06      0.00      0.06      0.06      0.06      1.44     10.65
+cov_eigen_values_2[3]      0.05      0.00      0.05      0.05      0.05      1.43     28.39
+cov_eigen_values_2[4]      0.05      0.00      0.05      0.05      0.05      1.75      1.74
+cov_eigen_values_2[5]      0.01      0.00      0.01      0.01      0.01     16.25      0.92
+cov_eigen_values_2[6]      0.02      0.00      0.02      0.02      0.02      1.55      2.63
+cov_eigen_values_2[7]      0.03      0.00      0.03      0.03      0.03      1.60      2.37
+cov_eigen_values_3[0]      0.32      0.00      0.32      0.32      0.32      1.45      5.51
+cov_eigen_values_3[1]      0.14      0.00      0.14      0.14      0.14      6.74      1.00
+cov_eigen_values_3[2]      0.00      0.00      0.00      0.00      0.00      1.52      2.95
+cov_eigen_values_3[3]      0.02      0.00      0.02      0.02      0.02      4.00      1.16
+cov_eigen_values_3[4]      0.07      0.00      0.07      0.07      0.07      1.52      3.00
+cov_eigen_values_3[5]      0.05      0.00      0.05      0.05      0.05     10.18      0.95
+cov_eigen_values_3[6]      0.06      0.00      0.06      0.06      0.06      1.43     13.63
+cov_eigen_values_3[7]      0.06      0.00      0.06      0.06      0.06      1.51      3.25
+cov_eigen_values_4[0]      0.19      0.00      0.19      0.19      0.19      1.64      2.06
+cov_eigen_values_4[1]      0.08      0.00      0.08      0.08      0.08      1.46      5.31
+cov_eigen_values_4[2]      0.05      0.00      0.05      0.05      0.05      1.44      6.84
+cov_eigen_values_4[3]      0.04      0.00      0.03      0.03      0.04      1.45      6.34
+cov_eigen_values_4[4]      0.02      0.00      0.02      0.02      0.02      1.43     31.88
+cov_eigen_values_4[5]      0.00      0.00      0.00      0.00      0.00     11.99      0.99
+cov_eigen_values_4[6]      0.02      0.00      0.02      0.02      0.02      1.54      2.67
+cov_eigen_values_4[7]      0.01      0.00      0.01      0.01      0.01      1.60      2.23
+cov_eigen_values_5[0]      0.54      0.00      0.54      0.54      0.54     18.96      0.92
+cov_eigen_values_5[1]      0.07      0.00      0.07      0.07      0.07      1.43     20.36
+cov_eigen_values_5[2]      0.06      0.00      0.06      0.06      0.06      1.43     13.54
+cov_eigen_values_5[3]      0.03      0.00      0.03      0.03      0.03      2.50      1.34
+cov_eigen_values_5[4]      0.02      0.00      0.02      0.02      0.02      1.44      7.32
+cov_eigen_values_5[5]      0.01      0.00      0.01      0.01      0.01      1.45      5.72
+cov_eigen_values_5[6]      0.00      0.00      0.00      0.00      0.00      1.44      9.74
+cov_eigen_values_5[7]      0.00      0.00      0.00     -0.00      0.00      1.50      3.43
+cov_eigen_values_6[0]      0.13      0.00      0.13      0.13      0.13      1.95      1.62
+cov_eigen_values_6[1]      0.04      0.00      0.04      0.04      0.04      1.64      2.21
+cov_eigen_values_6[2]      0.02      0.00      0.02      0.02      0.02     14.07      0.93
+cov_eigen_values_6[3]      0.02      0.00      0.02      0.02      0.02     23.38      0.91
+cov_eigen_values_6[4]      0.01      0.00      0.01      0.01      0.01      1.90      1.53
+cov_eigen_values_6[5]      0.00      0.00      0.00      0.00      0.00     22.95      0.91
+cov_eigen_values_6[6]      0.00      0.00      0.00      0.00      0.00      1.49      3.80
+cov_eigen_values_6[7]      0.00      0.00      0.00      0.00      0.00      1.58      2.38
+       mean_data_1[0]     -3.72      0.00     -3.72     -3.72     -3.72      2.40      1.37
+       mean_data_1[1]      0.46      0.00      0.46      0.46      0.46      1.47      4.43
+       mean_data_1[2]      0.38      0.00      0.38      0.38      0.38      1.56      2.47
+       mean_data_1[3]     -0.13      0.00     -0.13     -0.13     -0.13      1.63      2.08
+       mean_data_1[4]     -0.03      0.00     -0.03     -0.03     -0.03      1.55      2.59
+       mean_data_1[5]      0.08      0.00      0.08      0.08      0.08      1.43     22.51
+       mean_data_1[6]     -0.06      0.00     -0.06     -0.06     -0.06      2.03      1.42
+       mean_data_1[7]      0.02      0.00      0.02      0.02      0.02      1.47      4.32
+       mean_data_2[0]     -1.05      0.00     -1.05     -1.05     -1.05      1.66      1.99
+       mean_data_2[1]      0.56      0.00      0.56      0.56      0.56      1.43     45.52
+       mean_data_2[2]      0.53      0.00      0.53      0.53      0.53      1.44      7.77
+       mean_data_2[3]     -0.00      0.00     -0.00     -0.00     -0.00      1.45      5.85
+       mean_data_2[4]      0.05      0.00      0.05      0.05      0.05      1.43     12.91
+       mean_data_2[5]     -0.04      0.00     -0.04     -0.04     -0.04      1.50      3.26
+       mean_data_2[6]      0.02      0.00      0.02      0.02      0.02      1.49      3.82
+       mean_data_2[7]     -0.01      0.00     -0.01     -0.01     -0.01      1.43     30.73
+       mean_data_3[0]      3.92      0.00      3.92      3.92      3.92      1.44      9.74
+       mean_data_3[1]     -0.44      0.00     -0.44     -0.44     -0.44      2.37      1.38
+       mean_data_3[2]     -0.10      0.00     -0.10     -0.10     -0.10      1.56      2.54
+       mean_data_3[3]     -0.02      0.00     -0.02     -0.02     -0.02      1.47      4.12
+       mean_data_3[4]      0.03      0.00      0.03      0.03      0.03      1.51      3.21
+       mean_data_3[5]      0.00      0.00      0.00      0.00      0.00      1.49      3.44
+       mean_data_3[6]     -0.01      0.00     -0.01     -0.01     -0.01      1.55      2.73
+       mean_data_3[7]     -0.00      0.00     -0.00     -0.00     -0.00      1.43     20.94
+       mean_data_4[0]      2.69      0.00      2.69      2.69      2.69      3.30      1.11
+       mean_data_4[1]     -0.03      0.00     -0.03     -0.03     -0.03      1.47      4.24
+       mean_data_4[2]      0.20      0.00      0.20      0.20      0.20      1.53      2.83
+       mean_data_4[3]      0.09      0.00      0.09      0.09      0.09      1.50      3.43
+       mean_data_4[4]     -0.11      0.00     -0.11     -0.11     -0.11      1.47      4.54
+       mean_data_4[5]      0.00      0.00      0.00      0.00      0.01     25.24      0.91
+       mean_data_4[6]      0.02      0.00      0.02      0.02      0.02      1.46      4.71
+       mean_data_4[7]      0.01      0.00      0.01      0.01      0.01      1.81      1.64
+       mean_data_5[0]      0.73      0.00      0.73      0.73      0.73      1.43     39.69
+       mean_data_5[1]      1.44      0.00      1.44      1.44      1.44      1.51      3.26
+       mean_data_5[2]     -1.07      0.00     -1.07     -1.07     -1.07      1.46      5.02
+       mean_data_5[3]      0.01      0.00      0.01      0.01      0.01      1.59      2.46
+       mean_data_5[4]      0.00      0.00      0.00      0.00      0.00      1.87      1.57
+       mean_data_5[5]     -0.00      0.00     -0.00     -0.00     -0.00      1.48      3.99
+       mean_data_5[6]      0.01      0.00      0.01      0.01      0.01      8.08      0.99
+       mean_data_5[7]      0.00      0.00      0.00      0.00      0.00      1.44      7.00
+       mean_data_6[0]     -6.85      0.00     -6.85     -6.85     -6.85     14.58      0.97
+       mean_data_6[1]     -0.65      0.00     -0.65     -0.65     -0.65      1.49      3.70
+       mean_data_6[2]     -0.29      0.00     -0.29     -0.29     -0.29      1.48      3.87
+       mean_data_6[3]      0.04      0.00      0.04      0.04      0.04      1.74      1.77
+       mean_data_6[4]     -0.00      0.00     -0.00     -0.00     -0.00      2.71      1.18
+       mean_data_6[5]     -0.01      0.00     -0.01     -0.01     -0.01      1.46      4.71
+       mean_data_6[6]      0.01      0.00      0.01      0.01      0.01      1.44      8.02
+       mean_data_6[7]     -0.00      0.00     -0.00     -0.00     -0.00      1.46      5.28
+                 mu_1      3.20      0.00      3.20      3.20      3.20      1.46      4.60
+                 mu_2      2.30      0.00      2.30      2.30      2.30      1.43     25.97
+                 mu_3      1.25      0.00      1.25      1.25      1.25      1.45      5.78
+                 mu_4     -0.00      0.00     -0.00     -0.00     -0.00      2.07      1.40
+
+Number of divergences: 10
+
+{'cov_eigen_values_1': tensor([[0.4181, 0.0771, 0.0447, 0.0325, 0.0194, 0.0019, 0.0147, 0.0098],
+        [0.4181, 0.0771, 0.0447, 0.0325, 0.0194, 0.0019, 0.0147, 0.0098],
+        [0.4181, 0.0771, 0.0447, 0.0325, 0.0194, 0.0019, 0.0147, 0.0098],
+        [0.4181, 0.0771, 0.0447, 0.0325, 0.0194, 0.0019, 0.0147, 0.0098],
+        [0.4181, 0.0771, 0.0447, 0.0325, 0.0194, 0.0019, 0.0147, 0.0098]],
+       dtype=torch.float64), 'cov_eigen_values_2': tensor([[0.5572, 0.0689, 0.0649, 0.0486, 0.0456, 0.0065, 0.0184, 0.0301],
+        [0.5572, 0.0689, 0.0649, 0.0486, 0.0456, 0.0065, 0.0184, 0.0301],
+        [0.5572, 0.0689, 0.0649, 0.0486, 0.0456, 0.0065, 0.0184, 0.0301],
+        [0.5572, 0.0689, 0.0649, 0.0486, 0.0456, 0.0065, 0.0184, 0.0301],
+        [0.5572, 0.0689, 0.0649, 0.0486, 0.0456, 0.0065, 0.0184, 0.0301]],
+       dtype=torch.float64), 'cov_eigen_values_3': tensor([[0.3163, 0.1359, 0.0040, 0.0185, 0.0691, 0.0459, 0.0625, 0.0558],
+        [0.3163, 0.1359, 0.0040, 0.0185, 0.0691, 0.0459, 0.0625, 0.0558],
+        [0.3163, 0.1359, 0.0040, 0.0185, 0.0691, 0.0459, 0.0625, 0.0558],
+        [0.3163, 0.1359, 0.0040, 0.0185, 0.0691, 0.0459, 0.0625, 0.0558],
+        [0.3163, 0.1359, 0.0040, 0.0185, 0.0691, 0.0459, 0.0625, 0.0558]],
+       dtype=torch.float64), 'cov_eigen_values_4': tensor([[0.1933, 0.0785, 0.0522, 0.0348, 0.0232, 0.0027, 0.0158, 0.0099],
+        [0.1933, 0.0785, 0.0522, 0.0348, 0.0232, 0.0027, 0.0158, 0.0099],
+        [0.1933, 0.0785, 0.0522, 0.0348, 0.0232, 0.0027, 0.0158, 0.0099],
+        [0.1933, 0.0785, 0.0522, 0.0348, 0.0232, 0.0027, 0.0158, 0.0099],
+        [0.1933, 0.0785, 0.0522, 0.0348, 0.0232, 0.0027, 0.0158, 0.0099]],
+       dtype=torch.float64), 'cov_eigen_values_5': tensor([[0.5354, 0.0676, 0.0586, 0.0336, 0.0219, 0.0099, 0.0034, 0.0007],
+        [0.5354, 0.0676, 0.0586, 0.0336, 0.0219, 0.0099, 0.0034, 0.0007],
+        [0.5354, 0.0676, 0.0586, 0.0336, 0.0219, 0.0099, 0.0034, 0.0007],
+        [0.5354, 0.0676, 0.0586, 0.0336, 0.0219, 0.0099, 0.0034, 0.0007],
+        [0.5354, 0.0676, 0.0586, 0.0336, 0.0219, 0.0099, 0.0034, 0.0007]],
+       dtype=torch.float64), 'cov_eigen_values_6': tensor([[0.1312, 0.0358, 0.0219, 0.0162, 0.0115, 0.0038, 0.0007, 0.0029],
+        [0.1312, 0.0358, 0.0219, 0.0162, 0.0115, 0.0038, 0.0007, 0.0029],
+        [0.1312, 0.0358, 0.0219, 0.0162, 0.0115, 0.0038, 0.0007, 0.0029],
+        [0.1312, 0.0358, 0.0219, 0.0162, 0.0115, 0.0038, 0.0007, 0.0029],
+        [0.1312, 0.0358, 0.0219, 0.0162, 0.0115, 0.0038, 0.0007, 0.0029]],
+       dtype=torch.float64), 'mean_data_1': tensor([[-3.7210,  0.4622,  0.3836, -0.1340, -0.0309,  0.0813, -0.0630,  0.0176],
+        [-3.7210,  0.4622,  0.3836, -0.1340, -0.0309,  0.0813, -0.0630,  0.0176],
+        [-3.7210,  0.4622,  0.3836, -0.1340, -0.0309,  0.0813, -0.0630,  0.0176],
+        [-3.7210,  0.4622,  0.3836, -0.1340, -0.0309,  0.0813, -0.0630,  0.0176],
+        [-3.7210,  0.4622,  0.3836, -0.1340, -0.0309,  0.0813, -0.0630,  0.0176]],
+       dtype=torch.float64), 'mean_data_2': tensor([[-1.0523,  0.5559,  0.5255, -0.0021,  0.0469, -0.0403,  0.0211, -0.0132],
+        [-1.0523,  0.5559,  0.5255, -0.0021,  0.0469, -0.0403,  0.0211, -0.0132],
+        [-1.0523,  0.5559,  0.5255, -0.0021,  0.0469, -0.0403,  0.0211, -0.0132],
+        [-1.0523,  0.5559,  0.5255, -0.0021,  0.0469, -0.0403,  0.0211, -0.0132],
+        [-1.0523,  0.5559,  0.5255, -0.0021,  0.0469, -0.0403,  0.0211, -0.0132]],
+       dtype=torch.float64), 'mean_data_3': tensor([[ 3.9213e+00, -4.4331e-01, -9.6419e-02, -2.1450e-02,  2.5821e-02,
+          4.1807e-03, -9.8211e-03, -2.4372e-03],
+        [ 3.9213e+00, -4.4331e-01, -9.6419e-02, -2.1450e-02,  2.5821e-02,
+          4.1807e-03, -9.8211e-03, -2.4372e-03],
+        [ 3.9213e+00, -4.4331e-01, -9.6419e-02, -2.1450e-02,  2.5821e-02,
+          4.1807e-03, -9.8211e-03, -2.4372e-03],
+        [ 3.9213e+00, -4.4331e-01, -9.6419e-02, -2.1450e-02,  2.5821e-02,
+          4.1807e-03, -9.8211e-03, -2.4372e-03],
+        [ 3.9213e+00, -4.4331e-01, -9.6419e-02, -2.1450e-02,  2.5821e-02,
+          4.1807e-03, -9.8211e-03, -2.4372e-03]], dtype=torch.float64), 'mean_data_4': tensor([[ 2.6889, -0.0258,  0.2042,  0.0857, -0.1068,  0.0046,  0.0182,  0.0129],
+        [ 2.6889, -0.0258,  0.2042,  0.0857, -0.1068,  0.0046,  0.0182,  0.0129],
+        [ 2.6889, -0.0258,  0.2042,  0.0857, -0.1068,  0.0046,  0.0182,  0.0129],
+        [ 2.6889, -0.0258,  0.2042,  0.0857, -0.1068,  0.0046,  0.0182,  0.0129],
+        [ 2.6889, -0.0258,  0.2042,  0.0857, -0.1068,  0.0046,  0.0182,  0.0129]],
+       dtype=torch.float64), 'mean_data_5': tensor([[ 7.3024e-01,  1.4417e+00, -1.0685e+00,  1.2820e-02,  3.0489e-03,
+         -1.1570e-03,  8.9046e-03,  2.8007e-04],
+        [ 7.3024e-01,  1.4417e+00, -1.0685e+00,  1.2820e-02,  3.0489e-03,
+         -1.1570e-03,  8.9046e-03,  2.8007e-04],
+        [ 7.3024e-01,  1.4417e+00, -1.0685e+00,  1.2820e-02,  3.0489e-03,
+         -1.1570e-03,  8.9046e-03,  2.8007e-04],
+        [ 7.3024e-01,  1.4417e+00, -1.0685e+00,  1.2820e-02,  3.0489e-03,
+         -1.1570e-03,  8.9046e-03,  2.8007e-04],
+        [ 7.3024e-01,  1.4417e+00, -1.0685e+00,  1.2820e-02,  3.0489e-03,
+         -1.1570e-03,  8.9046e-03,  2.8007e-04]], dtype=torch.float64), 'mean_data_6': tensor([[-6.8528e+00, -6.5350e-01, -2.9103e-01,  3.6942e-02, -1.5138e-03,
+         -8.1885e-03,  8.5827e-03, -8.8499e-04],
+        [-6.8528e+00, -6.5350e-01, -2.9103e-01,  3.6942e-02, -1.5138e-03,
+         -8.1885e-03,  8.5827e-03, -8.8499e-04],
+        [-6.8528e+00, -6.5350e-01, -2.9103e-01,  3.6942e-02, -1.5138e-03,
+         -8.1885e-03,  8.5827e-03, -8.8499e-04],
+        [-6.8528e+00, -6.5350e-01, -2.9103e-01,  3.6942e-02, -1.5138e-03,
+         -8.1885e-03,  8.5827e-03, -8.8499e-04],
+        [-6.8528e+00, -6.5350e-01, -2.9103e-01,  3.6942e-02, -1.5138e-03,
+         -8.1885e-03,  8.5827e-03, -8.8499e-04]], dtype=torch.float64), 'mu_1': tensor([3.1998, 3.1998, 3.1998, 3.1998, 3.1998], dtype=torch.float64), 'mu_2': tensor([2.3001, 2.3001, 2.3001, 2.3001, 2.3001], dtype=torch.float64), 'mu_3': tensor([1.2499, 1.2499, 1.2499, 1.2499, 1.2499], dtype=torch.float64), 'mu_4': tensor([-6.3371e-05, -6.3371e-05, -6.3371e-05, -6.3371e-05, -6.3371e-05],
+       dtype=torch.float64)}
+Condition number: 1557.1063864805042.
+Condition number: 1534.0973312189944.
+Condition number: 1549.9382290559183.
+Condition number: 1549.9382290559183.
+Condition number: 1549.9382290559183.
+Condition number: 1549.9382290559183.
+Condition number: 1549.9382290559183.
+Condition number: 1549.9402256176425.
+Condition number: 1549.942655743869.
+Condition number: 1549.942655743869.
+Condition number: 1549.942655743869.
+Condition number: 1549.942655743869.
+Condition number: 1539.6112873288832.
+Condition number: 1541.1474267707856.
+Condition number: 1535.9297833921214.
+Directory './Results/Salinas/posterior_condition_3_alpha_1000000.0_beta_1000.0_slope_gempy_50.0scale_10.0/MAP' was created.
+Posterior 3 reached
+Condition number: 1549.9382290559172.
+Condition number: 1549.9382290559172.
+Condition number: 1549.9382290559172.
+Condition number: 1549.9382290559172.
+Condition number: 1549.9382290559172.
+Condition number: 1549.9402256176422.
+Condition number: 1549.9426557438685.
+Condition number: 1549.9426557438685.
+Condition number: 1549.9426557438685.
+Condition number: 1549.9426557438685.
+MAP_sample_index
+ tensor(5)
+Condition number: 1549.9402256176422.
+Active grids: ['custom']
+Setting Backend To: AvailableBackends.numpy
+MAP index
+ tensor(5)
+entropy_prior_gmm
+ 1.1512992383663035e-08 
+ entropy_MAP_gmm
+ 1.1512926e-08
+entropy_z_nk_prior
+ 0.0010043481942177436
+entropy_MAP_z_nk
+ 0.0010016470726370674
+entropy_mixing_prior
+ 53.75278407684164
+entropy_MAP_mixing
+ 1.713751316916333
+accuracy_init:  tensor(0.7722) accuracy_final:  tensor(1.)
+Directory './Results/Salinas/posterior_condition_3_alpha_1000000.0_beta_1000.0_slope_gempy_50.0scale_10.0/Mean' was created.
+Setting Backend To: AvailableBackends.PYTORCH
+Condition number: 1549.94019987879.
+Active grids: ['custom']
+Setting Backend To: AvailableBackends.numpy
+entropy_prior_gmm
+ 1.1512992383663035e-08 
+ entropy_Mean_gmm
+ 1.1512926e-08
+entropy_z_nk_prior
+ 0.0010043481942177436
+entropy_Mean_z_nk
+ 0.0010000221965763638
+entropy_mixing_prior
+ 53.75278407684164
+entropy_Mean_mixing
+ 1.7137513072421102
+accuracy_init:  tensor(0.7722) accuracy_final_mean:  tensor(1.)
+Script ended...
+Elapsed time: 0:01:52.747662

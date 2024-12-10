@@ -1,0 +1,54 @@
+digraph {
+	mu_1 [label=mu_1 fillcolor=white shape=ellipse style=filled]
+	mu_2 [label=mu_2 fillcolor=white shape=ellipse style=filled]
+	mu_3 [label=mu_3 fillcolor=white shape=ellipse style=filled]
+	mu_4 [label=mu_4 fillcolor=white shape=ellipse style=filled]
+	"mu_1 < mu_1 + 2 * std" [label="mu_1 < mu_1 + 2 * std" fillcolor=gray shape=ellipse style=filled]
+	"mu_1 > mu_2 " [label="mu_1 > mu_2 " fillcolor=gray shape=ellipse style=filled]
+	"mu_2 > mu_3 " [label="mu_2 > mu_3 " fillcolor=gray shape=ellipse style=filled]
+	"mu_3 > mu_4 " [label="mu_3 > mu_4 " fillcolor=gray shape=ellipse style=filled]
+	"mu_4 > mu_4 - 2 * std" [label="mu_4 > mu_4 - 2 * std" fillcolor=gray shape=ellipse style=filled]
+	mean_data_1 [label=mean_data_1 fillcolor=white shape=ellipse style=filled]
+	cov_eigen_values_1 [label=cov_eigen_values_1 fillcolor=white shape=ellipse style=filled]
+	mean_data_2 [label=mean_data_2 fillcolor=white shape=ellipse style=filled]
+	cov_eigen_values_2 [label=cov_eigen_values_2 fillcolor=white shape=ellipse style=filled]
+	mean_data_3 [label=mean_data_3 fillcolor=white shape=ellipse style=filled]
+	cov_eigen_values_3 [label=cov_eigen_values_3 fillcolor=white shape=ellipse style=filled]
+	mean_data_4 [label=mean_data_4 fillcolor=white shape=ellipse style=filled]
+	cov_eigen_values_4 [label=cov_eigen_values_4 fillcolor=white shape=ellipse style=filled]
+	mean_data_5 [label=mean_data_5 fillcolor=white shape=ellipse style=filled]
+	cov_eigen_values_5 [label=cov_eigen_values_5 fillcolor=white shape=ellipse style=filled]
+	mean_data_6 [label=mean_data_6 fillcolor=white shape=ellipse style=filled]
+	cov_eigen_values_6 [label=cov_eigen_values_6 fillcolor=white shape=ellipse style=filled]
+	subgraph "cluster_N=180" {
+		label="N=180" labeljust=r labelloc=b
+		assignment [label=assignment fillcolor=white shape=ellipse style=filled]
+		obs [label=obs fillcolor=gray shape=ellipse style=filled]
+	}
+	mu_1 -> "mu_1 < mu_1 + 2 * std"
+	mu_1 -> "mu_1 > mu_2 "
+	mu_2 -> "mu_1 > mu_2 "
+	mu_2 -> "mu_2 > mu_3 "
+	mu_3 -> "mu_2 > mu_3 "
+	mu_3 -> "mu_3 > mu_4 "
+	mu_4 -> "mu_3 > mu_4 "
+	mu_4 -> "mu_4 > mu_4 - 2 * std"
+	mu_1 -> assignment
+	mu_2 -> assignment
+	mu_3 -> assignment
+	mu_4 -> assignment
+	mean_data_1 -> obs
+	cov_eigen_values_1 -> obs
+	mean_data_2 -> obs
+	cov_eigen_values_2 -> obs
+	mean_data_3 -> obs
+	cov_eigen_values_3 -> obs
+	mean_data_4 -> obs
+	cov_eigen_values_4 -> obs
+	mean_data_5 -> obs
+	cov_eigen_values_5 -> obs
+	mean_data_6 -> obs
+	cov_eigen_values_6 -> obs
+	assignment -> obs
+	distribution_description_node [label="mu_1 ~ Normal\lmu_2 ~ Normal\lmu_3 ~ Normal\lmu_4 ~ Normal\lmu_1 < mu_1 + 2 * std ~ Delta\lmu_1 > mu_2  ~ Delta\lmu_2 > mu_3  ~ Delta\lmu_3 > mu_4  ~ Delta\lmu_4 > mu_4 - 2 * std ~ Delta\lmean_data_1 ~ MultivariateNormal\lcov_eigen_values_1 ~ MultivariateNormal\lmean_data_2 ~ MultivariateNormal\lcov_eigen_values_2 ~ MultivariateNormal\lmean_data_3 ~ MultivariateNormal\lcov_eigen_values_3 ~ MultivariateNormal\lmean_data_4 ~ MultivariateNormal\lcov_eigen_values_4 ~ MultivariateNormal\lmean_data_5 ~ MultivariateNormal\lcov_eigen_values_5 ~ MultivariateNormal\lmean_data_6 ~ MultivariateNormal\lcov_eigen_values_6 ~ MultivariateNormal\lassignment ~ Categorical\lobs ~ MultivariateNormal\l" shape=plaintext]
+}

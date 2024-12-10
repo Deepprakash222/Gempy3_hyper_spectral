@@ -9,7 +9,7 @@
 ### You must at least specify minutes or days and hours and may add or
 ### leave out any other parameters
 
-#SBATCH --time=07:00:00
+#SBATCH --time=00:10:00
 
 ### Request all CPUs on one node
 #SBATCH --nodes=1

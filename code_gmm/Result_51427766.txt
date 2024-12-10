@@ -1,0 +1,214 @@
+[INFO] Module CUDA/12.3.0 loaded.
+/home/jt925938/anaconda3/envs/gempy_pyro/lib/python3.10/site-packages/gempy/core/data/geo_model.py:164: UserWarning: You are using refinement and passing a regular grid. The resolution of the regular grid will be overwritten
+  warnings.warn(
+/home/jt925938/anaconda3/envs/gempy_pyro/lib/python3.10/site-packages/gempy/core/data/geo_model.py:164: UserWarning: You are using refinement and passing a regular grid. The resolution of the regular grid will be overwritten
+  warnings.warn(
+/home/jt925938/anaconda3/envs/gempy_pyro/lib/python3.10/site-packages/arviz/stats/density_utils.py:488: UserWarning: Your data appears to have a single value or no finite values
+  warnings.warn("Your data appears to have a single value or no finite values")
+Setting Backend To: AvailableBackends.numpy
+Script started...
+Directory './Results/Salinas/posterior_condition_3_alpha_1000000.0_beta_1000.0_slope_gempy_50.0scale_10.0' already exists.
+Setting Backend To: AvailableBackends.numpy
+Setting Backend To: AvailableBackends.numpy
+Active grids: ['custom']
+Setting Backend To: AvailableBackends.numpy
+Setting Backend To: AvailableBackends.numpy
+entropy_gmm_prior
+ 1.1512992383663035e-08
+Intial accuracy
+ tensor(0.7722)
+Optimal number of components: 9
+Optimal number of components: 19
+Setting Backend To: AvailableBackends.PYTORCH
+Condition number: 1553.9750196410391.
+Condition number: 1553.9750196410391.
+Condition number: 1546.2882051333454.
+Condition number: 1578.4750860912216.
+Condition number: 1540.7832925793905.
+Condition number: 1555.6060177704499.
+Condition number: 1549.4847607603554.
+Condition number: 1580.8860647357192.
+Condition number: 1534.0228270699904.
+Condition number: 1572.3119053325233.
+Condition number: 1539.0706957801822.
+Condition number: 1539.2655478931333.
+Condition number: 1540.3698117342194.
+Condition number: 1560.9447699274226.
+Condition number: 1545.9555922015961.
+Condition number: 1541.4293048245618.
+Condition number: 1551.5629960944566.
+Condition number: 1542.432283885304.
+Condition number: 1560.008368392531.
+Condition number: 1549.1317690869025.
+Condition number: 1539.874404090989.
+Condition number: 1551.3261334515987.
+Condition number: 1525.1607395135063.
+Condition number: 1535.6922442106948.
+Condition number: 1571.4929548071584.
+Condition number: 1569.8753682362817.
+Condition number: 1549.299186053678.
+Condition number: 1526.3910472150583.
+Condition number: 1532.0645722553365.
+Condition number: 1563.9244123972742.
+Condition number: 1566.3989743990348.
+Condition number: 1559.1399164621478.
+Condition number: 1546.0287612177578.
+Condition number: 1560.522456227668.
+Condition number: 1565.4401233546234.
+Condition number: 1545.0848118047213.
+Condition number: 1542.8557958279953.
+Condition number: 1550.4397319908423.
+Condition number: 1550.203291635235.
+Condition number: 1549.6743239087045.
+Condition number: 1572.8097985427332.
+Condition number: 1540.311782106686.
+Condition number: 1570.1809530065198.
+Condition number: 1535.2668077431526.
+Condition number: 1559.7447059099657.
+Condition number: 1536.8131868306164.
+Condition number: 1565.4728428996932.
+Condition number: 1574.7390062372524.
+Condition number: 1519.1482064985023.
+Condition number: 1527.6632382685025.
+Condition number: 1549.828721593492.
+Condition number: 1518.0597818281435.
+Condition number: 1552.1982780302842.
+Condition number: 1533.1989995544845.
+Condition number: 1560.3142640440738.
+Condition number: 1561.3019727167882.
+Condition number: 1541.9669922215649.
+Condition number: 1534.013655775103.
+Condition number: 1534.9718937537677.
+Condition number: 1533.7521980716883.
+Condition number: 1531.696630199507.
+Condition number: 1550.9697906516412.
+Condition number: 1516.7263851443129.
+Condition number: 1523.9374692111608.
+Condition number: 1562.423237069552.
+Condition number: 1555.0876363977466.
+Condition number: 1554.5406845427458.
+Condition number: 1531.9968534867012.
+Condition number: 1524.4266790240022.
+Condition number: 1520.8335978350935.
+Condition number: 1557.3936255707292.
+Condition number: 1530.3951311697945.
+Condition number: 1562.1082245741159.
+Condition number: 1544.782139831733.
+Condition number: 1561.4204375810716.
+Condition number: 1549.765124460903.
+Condition number: 1569.0262240001098.
+Condition number: 1532.7080014159963.
+Condition number: 1547.2457568323725.
+Condition number: 1542.0006265171712.
+Condition number: 1558.6306778888554.
+Condition number: 1543.467768454887.
+Condition number: 1546.5105843459692.
+Condition number: 1560.188347325667.
+Condition number: 1537.6712054254263.
+Condition number: 1530.3611699899047.
+Condition number: 1549.2794482710112.
+Condition number: 1545.9958524253304.
+Condition number: 1518.00022985776.
+Condition number: 1561.544508109544.
+Condition number: 1539.5953101248965.
+Condition number: 1538.3368005615773.
+Condition number: 1540.2964141176622.
+Condition number: 1573.0128847985384.
+Condition number: 1527.8293670407645.
+Condition number: 1548.1684134759348.
+Condition number: 1551.1693864641784.
+Condition number: 1529.5804502683982.
+Condition number: 1528.0357522859977.
+Condition number: 1519.2690046895684.
+Condition number: 1551.441745813249.
+Condition number: 1558.2629250149832.
+Condition number: 1524.7302250730143.
+Warmup [1]:   0%|          | 0/15 [00:00, ?it/s]
+Warmup [2]:   0%|          | 0/15 [00:00, ?it/s][A
+
+Warmup [3]:   0%|          | 0/15 [00:00, ?it/s][A[A
+
+
+Warmup [4]:   0%|          | 0/15 [00:00, ?it/s][A[A[A
+
+
+
+Warmup [5]:   0%|          | 0/15 [00:00, ?it/s][A[A[A[A
+
+
+
+
+Warmup [6]:   0%|          | 0/15 [00:00, ?it/s][A[A[A[A[A
+
+
+
+
+
+Warmup [7]:   0%|          | 0/15 [00:00, ?it/s][A[A[A[A[A[A
+
+
+
+
+
+
+Warmup [8]:   0%|          | 0/15 [00:00, ?it/s][A[A[A[A[A[A[A
+
+
+
+
+
+
+
+Warmup [9]:   0%|          | 0/15 [00:00, ?it/s][A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+Warmup [10]:   0%|          | 0/15 [00:00, ?it/s][A[A[A[A[A[A[A[A[AWarmup [1]:   0%|          | 0/15 [00:00, ?it/s]
+Warmup [2]:   0%|          | 0/15 [00:00, ?it/s]
+Warmup [3]:   0%|          | 0/15 [00:00, ?it/s]
+Warmup [4]:   0%|          | 0/15 [00:00, ?it/s]
+Warmup [5]:   0%|          | 0/15 [00:00, ?it/s]
+Warmup [6]:   0%|          | 0/15 [00:00, ?it/s]
+Warmup [7]:   0%|          | 0/15 [00:00, ?it/s]
+Warmup [8]:   0%|          | 0/15 [00:00, ?it/s]
+Warmup [9]:   0%|          | 0/15 [00:00, ?it/s]
+Warmup [10]:   0%|          | 0/15 [00:00, ?it/s]
+
+
+
+
+
+
+
+
+
+
+Traceback (most recent call last):
+  File "/rwthfs/rz/cluster/home/jt925938/gempy_pyro/Gempy3_hyper_spectral/code_gmm/run.py", line 1307, in <module>
+    main()
+  File "/rwthfs/rz/cluster/home/jt925938/gempy_pyro/Gempy3_hyper_spectral/code_gmm/run.py", line 589, in main
+    mcmc.run(normalised_hsi,test_list,geo_model_test,mean_init,cov_init,factor,num_layers,posterior_condition,scale, cluster, alpha, beta,dtype,device)
+  File "/home/jt925938/anaconda3/envs/gempy_pyro/lib/python3.10/site-packages/pyro/poutine/messenger.py", line 32, in _context_wrap
+    return fn(*args, **kwargs)
+  File "/home/jt925938/anaconda3/envs/gempy_pyro/lib/python3.10/site-packages/pyro/infer/mcmc/api.py", line 565, in run
+    for x, chain_id in self.sampler.run(*args, **kwargs):
+  File "/home/jt925938/anaconda3/envs/gempy_pyro/lib/python3.10/site-packages/pyro/infer/mcmc/api.py", line 335, in run
+    w.start()
+  File "/home/jt925938/anaconda3/envs/gempy_pyro/lib/python3.10/multiprocessing/process.py", line 121, in start
+    self._popen = self._Popen(self)
+  File "/home/jt925938/anaconda3/envs/gempy_pyro/lib/python3.10/multiprocessing/context.py", line 288, in _Popen
+    return Popen(process_obj)
+  File "/home/jt925938/anaconda3/envs/gempy_pyro/lib/python3.10/multiprocessing/popen_spawn_posix.py", line 32, in __init__
+    super().__init__(process_obj)
+  File "/home/jt925938/anaconda3/envs/gempy_pyro/lib/python3.10/multiprocessing/popen_fork.py", line 19, in __init__
+    self._launch(process_obj)
+  File "/home/jt925938/anaconda3/envs/gempy_pyro/lib/python3.10/multiprocessing/popen_spawn_posix.py", line 47, in _launch
+    reduction.dump(process_obj, fp)
+  File "/home/jt925938/anaconda3/envs/gempy_pyro/lib/python3.10/multiprocessing/reduction.py", line 60, in dump
+    ForkingPickler(file, protocol).dump(obj)
+_pickle.PicklingError: Can't pickle <function MyModel.model_test at 0x1494c185a050>: it's not the same object as model1.MyModel.model_test

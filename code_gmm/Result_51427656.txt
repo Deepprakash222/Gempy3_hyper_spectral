@@ -1,0 +1,14 @@
+[INFO] Module CUDA/12.3.0 loaded.
+Setting Backend To: AvailableBackends.numpy
+Script started...
+Directory './Results/Salinas/posterior_condition_3_alpha_1000000.0_beta_1000.0_slope_gempy_50.0scale_10.0' already exists.
+Traceback (most recent call last):
+  File "/rwthfs/rz/cluster/home/jt925938/gempy_pyro/Gempy3_hyper_spectral/code_gmm/run.py", line 1307, in <module>
+    main()
+  File "/rwthfs/rz/cluster/home/jt925938/gempy_pyro/Gempy3_hyper_spectral/code_gmm/run.py", line 251, in main
+    data_hsi = torch.zeros((H*W, n_features ))
+  File "/home/jt925938/anaconda3/envs/gempy_pyro/lib/python3.10/site-packages/torch/utils/_device.py", line 77, in __torch_function__
+    return func(*args, **kwargs)
+  File "/home/jt925938/anaconda3/envs/gempy_pyro/lib/python3.10/site-packages/torch/cuda/__init__.py", line 293, in _lazy_init
+    raise AssertionError("Torch not compiled with CUDA enabled")
+AssertionError: Torch not compiled with CUDA enabled

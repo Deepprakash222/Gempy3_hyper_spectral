@@ -428,8 +428,8 @@ def compute_map(posterior_samples,geo_model_test,normalised_hsi,test_list,y_obs_
         
         
             log_prior_geo = torch.tensor(0.0, dtype=torch.float64)
-            for i in range(num_layers):
-                log_prior_geo+=dist.Normal(prior_mean_surface[i], prior_std_surface[i]).log_prob(RV_post_mu[f"mu_{i+1}"])
+            for l in range(num_layers):
+                log_prior_geo+=dist.Normal(prior_mean_surface[l], prior_std_surface[l]).log_prob(RV_post_mu[f"mu_{l+1}"])
             
             
             
@@ -589,8 +589,8 @@ def compute_map(posterior_samples,geo_model_test,normalised_hsi,test_list,y_obs_
         
         
             log_prior_geo = torch.tensor(0.0, dtype=torch.float64)
-            for i in range(num_layers):
-                log_prior_geo+=dist.Normal(prior_mean_surface[i], prior_std_surface[i]).log_prob(RV_post_mu[f"mu_{i+1}"])
+            for l in range(num_layers):
+                log_prior_geo+=dist.Normal(prior_mean_surface[l], prior_std_surface[l]).log_prob(RV_post_mu[f"mu_{l+1}"])
             
             
             

@@ -386,6 +386,7 @@ def compute_map(posterior_samples,geo_model_test,normalised_hsi,test_list,y_obs_
         
         prior_mean_surface = [item['normal']['mean'].item() for item in test_list]
         prior_std_surface =  [item['normal']['std'].item() for item in test_list[:num_layers]]
+        
         num_data= torch.tensor(mean_init,dtype=dtype, device=device).shape[0]
         
         
@@ -420,10 +421,11 @@ def compute_map(posterior_samples,geo_model_test,normalised_hsi,test_list,y_obs_
         
         
             log_prior_geo = torch.tensor(0.0, dtype=dtype, device=device)
-            for i in range(num_layers):
-                log_prior_geo+=dist.Normal(prior_mean_surface[i], prior_std_surface[i]).log_prob(RV_post_mu[f"mu_{i+1}"])
             
+            for l in range(num_layers):
+                log_prior_geo+=dist.Normal(prior_mean_surface[l], prior_std_surface[l]).log_prob(RV_post_mu[f"mu_{l+1}"])
             
+            print("log_prior_geo", log_prior_geo)
             
             # Update the model with the new top layer's location
             interpolation_input = geo_model_test.interpolation_input
@@ -431,8 +433,6 @@ def compute_map(posterior_samples,geo_model_test,normalised_hsi,test_list,y_obs_
             for interpolation_input_data in test_list[:num_layers]:
                 interpolation_input.surface_points.sp_coords = torch.index_put(interpolation_input.surface_points.sp_coords,(interpolation_input_data["id"], torch.tensor([2])), RV_post_mu["mu_"+ str(counter1)])
                 counter1=counter1+1
-            
-            
             
             
             # # Compute the geological model
@@ -462,13 +462,16 @@ def compute_map(posterior_samples,geo_model_test,normalised_hsi,test_list,y_obs_
             cov_matrix_cov = beta * torch.eye(loc_mean[0].shape[0], dtype=dtype, device=device)
             
             D = loc_mean.shape[1]
+            mean = []
             log_prior_hsi_mean =torch.tensor(0.0, dtype=dtype, device=device)
             
             for j in range(loc_mean.shape[0]):
+                mean.append(posterior_samples[keys_list[cluster+j]][i])
                 log_prior_hsi_mean = log_prior_hsi_mean + dist.MultivariateNormal(loc=loc_mean[j],covariance_matrix=cov_matrix_mean).log_prob(posterior_samples[keys_list[cluster+j]][i])
                 
+            mean_tensor = torch.stack(mean, dim=0)
             
-            
+            print("log_prior_hsi_mean", log_prior_hsi_mean)
             # for covariance
             log_prior_hsi_cov =torch.tensor(0.0, dtype=dtype, device=device)
             cov = []
@@ -480,10 +483,22 @@ def compute_map(posterior_samples,geo_model_test,normalised_hsi,test_list,y_obs_
                 cov.append(cov_data)
             cov_tensor = torch.stack(cov, dim=0)
             
+            print("log_prior_hsi_cov", log_prior_hsi_cov)
             # We can also calculate the accuracy using the mean and covariance to see if our GMM model has imroved or not
+            
             gamma_nk = torch.zeros(z_nk.shape)  
             log_likelihood=torch.tensor(0.0, dtype=dtype, device=device)
 
+            
+            gmm_prior = torch.exp(
+                        dist.MultivariateNormal(loc=mean_tensor, covariance_matrix=cov_tensor).log_prob(normalised_hsi.unsqueeze(1)))
+            pi_k_brodcast = pi_k.unsqueeze(0)
+            
+            gmm_density = pi_k_brodcast * gmm_prior
+            gmm_density_full = torch.sum(gmm_density, axis=1)
+            print("gmm_density_full",gmm_density_full.shape)
+            log_likelihood_full = torch.sum(torch.log(gmm_density_full))
+            print("log_likelihood_full",log_likelihood_full)
             for j in range(normalised_hsi.shape[0]):
                 likelihood = 0.0  
                 
@@ -501,7 +516,7 @@ def compute_map(posterior_samples,geo_model_test,normalised_hsi,test_list,y_obs_
                 
                 log_likelihood += torch.log(likelihood)
                 
-                
+            print("log_likelihood", log_likelihood) 
             
             gmm_label_new = torch.argmax(gamma_nk,dim=1) +1
             gmm_accuracy = torch.sum(gmm_label_new == y_obs_label) / y_obs_label.shape[0]
@@ -577,8 +592,8 @@ def compute_map(posterior_samples,geo_model_test,normalised_hsi,test_list,y_obs_
         
         
             log_prior_geo = torch.tensor(0.0, dtype=dtype, device=device)
-            for i in range(num_layers):
-                log_prior_geo+=dist.Normal(prior_mean_surface[i], prior_std_surface[i]).log_prob(RV_post_mu[f"mu_{i+1}"])
+            for l in range(num_layers):
+                log_prior_geo+=dist.Normal(prior_mean_surface[l], prior_std_surface[l]).log_prob(RV_post_mu[f"mu_{l+1}"])
             
             
             
@@ -740,4 +755,4 @@ def compute_map(posterior_samples,geo_model_test,normalised_hsi,test_list,y_obs_
     # Save to a JSON file
     with open(filename_posterior_samples, 'w') as f:
         json.dump(posterior_samples_serializable, f)
-    return MAP_sample_index, unnormalise_posterior_value["log_posterior_list"][MAP_sample_index]    
+    return MAP_sample_index, unnormalise_posterior_value["log_posterior_list"][MAP_sample_index] , [ele.detach() for ele in unnormalise_posterior_value["log_posterior_list"]  ] 

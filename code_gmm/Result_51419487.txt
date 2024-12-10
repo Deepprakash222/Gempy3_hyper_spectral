@@ -1,0 +1,3676 @@
+/home/jt925938/anaconda3/envs/gempy_pyro/lib/python3.10/site-packages/gempy/core/data/geo_model.py:164: UserWarning: You are using refinement and passing a regular grid. The resolution of the regular grid will be overwritten
+  warnings.warn(
+/home/jt925938/anaconda3/envs/gempy_pyro/lib/python3.10/site-packages/gempy/core/data/geo_model.py:164: UserWarning: You are using refinement and passing a regular grid. The resolution of the regular grid will be overwritten
+  warnings.warn(
+/home/jt925938/anaconda3/envs/gempy_pyro/lib/python3.10/site-packages/arviz/stats/density_utils.py:488: UserWarning: Your data appears to have a single value or no finite values
+  warnings.warn("Your data appears to have a single value or no finite values")
+Setting Backend To: AvailableBackends.numpy
+Script started...
+Directory './Results/Salinas/posterior_condition_3_alpha_1000000.0_beta_1000.0_slope_gempy_50.0scale_10.0' already exists.
+Setting Backend To: AvailableBackends.numpy
+Setting Backend To: AvailableBackends.numpy
+Active grids: ['custom']
+Setting Backend To: AvailableBackends.numpy
+Setting Backend To: AvailableBackends.numpy
+entropy_gmm_prior
+ 1.1512992383663035e-08
+Intial accuracy
+ tensor(0.7722)
+Optimal number of components: 9
+Optimal number of components: 19
+Setting Backend To: AvailableBackends.PYTORCH
+Condition number: 1553.9750196410391.
+Condition number: 1553.9750196410391.
+Condition number: 1546.2882051333454.
+Condition number: 1578.4750860912216.
+Condition number: 1540.7832925793905.
+Condition number: 1555.6060177704499.
+Condition number: 1549.4847607603554.
+Condition number: 1580.8860647357192.
+Condition number: 1534.0228270699904.
+Condition number: 1572.3119053325233.
+Condition number: 1539.0706957801822.
+Condition number: 1539.2655478931333.
+Condition number: 1540.3698117342194.
+Warmup [1]:   0%|          | 0/5 [00:00, ?it/s]
+Warmup [2]:   0%|          | 0/5 [00:00, ?it/s][A
+
+Warmup [3]:   0%|          | 0/5 [00:00, ?it/s][A[A
+
+
+Warmup [4]:   0%|          | 0/5 [00:00, ?it/s][A[A[A
+
+
+
+Warmup [5]:   0%|          | 0/5 [00:00, ?it/s][A[A[A[A
+
+
+
+
+Warmup [6]:   0%|          | 0/5 [00:00, ?it/s][A[A[A[A[A
+
+
+
+
+
+Warmup [7]:   0%|          | 0/5 [00:00, ?it/s][A[A[A[A[A[A
+
+
+
+
+
+
+Warmup [8]:   0%|          | 0/5 [00:00, ?it/s][A[A[A[A[A[A[A
+
+
+
+
+
+
+
+Warmup [9]:   0%|          | 0/5 [00:00, ?it/s][A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+Warmup [10]:   0%|          | 0/5 [00:00, ?it/s][A[A[A[A[A[A[A[A[AWarmup [1]:  20%|██        | 1/5 [00:47, 47.45s/it, step size=2.44e-04, acc. prob=0.400]
+
+
+
+
+Warmup [6]:  20%|██        | 1/5 [00:48, 48.21s/it, step size=1.22e-04, acc. prob=0.747][A[A[A[A[A
+
+
+
+Warmup [5]:  20%|██        | 1/5 [00:48, 48.66s/it, step size=1.22e-04, acc. prob=0.593][A[A[A[A
+
+
+
+
+
+
+
+
+Warmup [10]:  20%|██        | 1/5 [00:52, 52.09s/it, step size=2.44e-04, acc. prob=0.222][A[A[A[A[A[A[A[A[A
+
+Warmup [3]:  20%|██        | 1/5 [00:52, 52.11s/it, step size=2.44e-04, acc. prob=0.122][A[A
+
+
+
+Warmup [5]:  40%|████      | 2/5 [00:52, 22.53s/it, step size=1.22e-04, acc. prob=0.297][A[A[A[AWarmup [1]:  40%|████      | 2/5 [00:54, 23.95s/it, step size=2.44e-04, acc. prob=0.202]
+
+
+
+
+
+Warmup [7]:  20%|██        | 1/5 [00:56, 56.67s/it, step size=1.22e-04, acc. prob=0.351][A[A[A[A[A[A
+
+
+
+
+Warmup [6]:  40%|████      | 2/5 [00:57, 25.32s/it, step size=1.22e-04, acc. prob=0.374][A[A[A[A[A
+
+Warmup [3]:  40%|████      | 2/5 [00:58, 25.46s/it, step size=2.44e-04, acc. prob=0.228][A[A
+
+
+
+
+
+
+Warmup [8]:  20%|██        | 1/5 [00:58, 58.99s/it, step size=2.44e-04, acc. prob=0.046][A[A[A[A[A[A[A
+
+
+
+
+
+
+
+Warmup [9]:  20%|██        | 1/5 [01:01, 61.62s/it, step size=1.22e-04, acc. prob=0.212][A[A[A[A[A[A[A[AWarmup [1]:  60%|██████    | 3/5 [01:02, 16.30s/it, step size=2.44e-04, acc. prob=0.134]
+
+
+
+
+Warmup [6]:  60%|██████    | 3/5 [01:02, 15.95s/it, step size=1.22e-04, acc. prob=0.250][A[A[A[A[A
+
+Warmup [3]:  60%|██████    | 3/5 [01:08, 18.27s/it, step size=2.44e-04, acc. prob=0.152][A[AWarmup [1]:  80%|████████  | 4/5 [01:09, 12.87s/it, step size=2.44e-04, acc. prob=0.131]
+
+
+
+
+
+
+
+
+Warmup [10]:  40%|████      | 2/5 [01:10, 32.04s/it, step size=2.44e-04, acc. prob=0.111][A[A[A[A[A[A[A[A[A
+
+Warmup [3]:  80%|████████  | 4/5 [01:11, 12.15s/it, step size=2.44e-04, acc. prob=0.116][A[A
+
+Warmup [3]: 100%|██████████| 5/5 [01:12,  8.30s/it, step size=2.44e-04, acc. prob=0.093][A[ACondition number: 1545.1946261837859.
+Condition number: 1549.9412401989284.
+Condition number: 1549.9412401989284.
+Condition number: 1549.9412401989284.
+Condition number: 1549.9412401989284.
+Condition number: 1549.9412401989284.
+Condition number: 1575.907559459866.
+Condition number: 1549.9412401989284.
+Condition number: 1589.9651992906167.
+Condition number: 1549.9412401989284.
+Condition number: 1535.2904685473086.
+Condition number: 1549.9412401989284.
+Condition number: 1536.7061761063153.
+Condition number: 1549.9412401989284.
+Condition number: 1552.150249166895.
+Condition number: 1549.9412401989284.
+Condition number: 1549.0068650908722.
+Condition number: 1549.9412401989284.
+Condition number: 1549.6018794576737.
+Condition number: 1549.9412401989284.
+Condition number: 1550.639635003412.
+Condition number: 1549.9412401989284.
+Condition number: 1549.8033312456125.
+Condition number: 1549.9412401989284.
+Condition number: 1549.7918243618649.
+Condition number: 1549.9412401989284.
+Condition number: 1549.9960460404786.
+Condition number: 1549.9412401989284.
+Condition number: 1549.9255366472457.
+Condition number: 1549.9412401989284.
+Condition number: 1549.9192691952926.
+Condition number: 1549.9379505747224.
+Condition number: 1549.9445354609024.
+Condition number: 1549.947836398552.
+Condition number: 1549.9511430534549.
+Condition number: 1549.954455471245.
+Condition number: 1549.9577737020045.
+Condition number: 1549.9610978007142.
+Condition number: 1549.9346665537323.
+Condition number: 1549.9313881044595.
+Condition number: 1549.960336169311.
+Condition number: 1549.976134709845.
+Condition number: 1549.9919310588868.
+Condition number: 1549.9740808542133.
+Condition number: 1549.946587639576.
+Condition number: 1549.9328351983968.
+Condition number: 1549.9878217786945.
+Condition number: 1550.0015590488824.
+Condition number: 1550.0152927974264.
+Condition number: 1550.0290231894157.
+Condition number: 1550.0427504297004.
+Condition number: 1549.9798359942602.
+Condition number: 1549.9993389397423.
+Condition number: 1549.9782283670354.
+
+Warmup [2]:  20%|██        | 1/5 [01:14, 74.55s/it, step size=1.22e-04, acc. prob=0.259][A
+
+
+Warmup [4]:  20%|██        | 1/5 [01:14, 74.75s/it, step size=1.22e-04, acc. prob=0.270][A[A[A
+
+
+Warmup [4]:  40%|████      | 2/5 [01:23, 36.14s/it, step size=1.22e-04, acc. prob=0.135][A[A[A
+
+
+
+
+
+
+
+
+Warmup [10]:  60%|██████    | 3/5 [01:27, 25.15s/it, step size=2.44e-04, acc. prob=0.074][A[A[A[A[A[A[A[A[A
+
+
+Warmup [4]:  60%|██████    | 3/5 [01:27, 21.50s/it, step size=1.22e-04, acc. prob=0.090][A[A[A
+
+
+
+
+
+
+Warmup [8]:  40%|████      | 2/5 [01:33, 44.68s/it, step size=2.44e-04, acc. prob=0.046][A[A[A[A[A[A[AWarmup [1]: 100%|██████████| 5/5 [01:37, 18.26s/it, step size=2.44e-04, acc. prob=0.105]Condition number: 1553.9750196410398.
+Condition number: 1549.9412401989284.
+Condition number: 1549.9412401989284.
+Condition number: 1549.9412401989284.
+Condition number: 1549.9412401989284.
+Condition number: 1549.9412401989284.
+Condition number: 1469.6091506420273.
+Condition number: 1549.9412401989284.
+Condition number: 1563.5406204875424.
+Condition number: 1549.9412401989284.
+Condition number: 1553.8384647110656.
+Condition number: 1549.9412401989284.
+Condition number: 1552.1374131772363.
+Condition number: 1549.9412401989284.
+Condition number: 1546.0755655227456.
+Condition number: 1549.9412401989284.
+Condition number: 1554.830977149696.
+Condition number: 1549.9412401989284.
+Condition number: 1549.2038259667804.
+Condition number: 1549.9412401989284.
+Condition number: 1549.799283446529.
+Condition number: 1549.9412401989284.
+Condition number: 1549.6452043610925.
+Condition number: 1549.9412401989284.
+Condition number: 1549.862782633618.
+Condition number: 1549.9412401989284.
+Condition number: 1550.0486127845347.
+Condition number: 1549.9412401989284.
+Condition number: 1549.9603801080254.
+Condition number: 1549.9412401989284.
+Condition number: 1549.9614674590814.
+Condition number: 1549.9442506445662.
+Condition number: 1549.9382290559172.
+Condition number: 1549.9352171758323.
+Condition number: 1549.9322045231079.
+Condition number: 1549.9291910658867.
+Condition number: 1549.9111361525422.
+Condition number: 1549.9653284190465.
+Condition number: 1549.9924341803091.
+Condition number: 1549.8968437262076.
+Condition number: 1549.979617122849.
+Condition number: 1550.021007747921.
+Condition number: 1549.855461348834.
+Condition number: 1549.8140821881823.
+Condition number: 1549.7727065762758.
+Condition number: 1549.9448483097556.
+Condition number: 1549.9514641780256.
+Condition number: 1549.9580765996154.
+Condition number: 1549.9316064851046.
+Condition number: 1549.9249806746338.
+Condition number: 1549.9183517119832.
+Condition number: 1549.9374206144698.
+Condition number: 1549.9390290786089.
+Condition number: 1549.9398206503058.
+Condition number: 1549.9406037403417.
+Condition number: 1549.9413783194768.
+Condition number: 1549.942144359734.
+Condition number: 1549.9429018342423.
+Condition number: 1549.936603788267.
+Condition number: 1549.9357786132346.
+Condition number: 1549.9349451273963.
+Condition number: 1549.9341033710796.
+Condition number: 1549.9332533871252.
+Condition number: 1549.932395221077.
+Condition number: 1549.9315289214373.
+Condition number: 1549.9306545399008.
+Condition number: 1549.9297721316243.
+Condition number: 1549.9288817555064.
+Condition number: 1549.9279834744927.
+Condition number: 1549.9270773559128.
+Condition number: 1549.9261634718262.
+Condition number: 1549.9252418994106.
+
+
+
+
+
+
+
+
+
+Warmup [10]:  80%|████████  | 4/5 [01:39, 20.02s/it, step size=2.44e-04, acc. prob=0.056][A[A[A[A[A[A[A[A[A
+
+
+
+
+
+Warmup [7]:  40%|████      | 2/5 [01:42, 50.21s/it, step size=1.22e-04, acc. prob=0.248][A[A[A[A[A[A
+
+
+
+
+Warmup [6]:  80%|████████  | 4/5 [01:42, 25.52s/it, step size=1.22e-04, acc. prob=0.188][A[A[A[A[A
+
+
+
+
+
+
+Warmup [8]:  60%|██████    | 3/5 [01:44, 29.37s/it, step size=2.44e-04, acc. prob=0.031][A[A[A[A[A[A[A
+
+
+
+
+Warmup [6]: 100%|██████████| 5/5 [01:47, 18.01s/it, step size=1.22e-04, acc. prob=0.152][A[A[A[A[ACondition number: 1533.8506002219933.
+Condition number: 1549.9412401989284.
+Condition number: 1549.9412401989284.
+Condition number: 1549.9412401989284.
+Condition number: 1549.9412401989284.
+Condition number: 1549.9412401989284.
+Condition number: 1571.014221946705.
+Condition number: 1549.9412401989284.
+Condition number: 1546.1909882194705.
+Condition number: 1549.9412401989284.
+Condition number: 1549.7583636119937.
+Condition number: 1549.9412401989284.
+Condition number: 1550.569674179326.
+Condition number: 1549.9412401989284.
+Condition number: 1556.8013903714207.
+Condition number: 1549.9412401989284.
+Condition number: 1548.9386431697333.
+Condition number: 1549.9412401989284.
+Condition number: 1549.5504838729767.
+Condition number: 1549.9412401989284.
+Condition number: 1549.2782909707842.
+Condition number: 1549.9412401989284.
+Condition number: 1549.8481794758486.
+Condition number: 1549.9412401989284.
+Condition number: 1550.3458813661248.
+Condition number: 1549.9412401989284.
+Condition number: 1550.0479429487104.
+Condition number: 1549.9412401989284.
+Condition number: 1549.9696548157751.
+Condition number: 1549.9412401989284.
+Condition number: 1549.9308789386628.
+Condition number: 1549.9412401989284.
+Condition number: 1549.9252799216088.
+Condition number: 1549.9190231326295.
+Condition number: 1549.896803130251.
+Condition number: 1549.8745801928962.
+Condition number: 1549.8523543221265.
+Condition number: 1549.8865688120168.
+Condition number: 1549.8985579263547.
+Condition number: 1549.9105475300091.
+Condition number: 1549.8625920749125.
+Condition number: 1549.8506044639919.
+Condition number: 1549.8848787332706.
+Condition number: 1549.864278542867.
+Condition number: 1549.8539737848546.
+Condition number: 1549.8951741623412.
+Condition number: 1549.8778912793862.
+Condition number: 1549.8712688236328.
+Condition number: 1549.8679571686612.
+Condition number: 1549.881202086241.
+Condition number: 1549.8845126167855.
+Condition number: 1549.8878228745739.
+Condition number: 1549.8911328633772.
+Condition number: 1549.8944425871975.
+Condition number: 1549.8977520502835.
+Condition number: 1549.9010612571478.
+Condition number: 1549.9043702125664.
+Condition number: 1549.9076789216072.
+Condition number: 1549.910987389628.
+Condition number: 1549.9142956223104.
+Condition number: 1549.9176036256638.
+Condition number: 1549.864645225225.
+Condition number: 1549.8613329907412.
+Condition number: 1549.8580204627972.
+Condition number: 1549.8547076391476.
+Condition number: 1549.8513945176837.
+Condition number: 1549.8480810964531.
+Condition number: 1549.8447673736352.
+Condition number: 1549.8414533475457.
+Condition number: 1549.8381390166244.
+Condition number: 1549.8348243794342.
+Condition number: 1549.83150943465.
+Condition number: 1549.828194181049.
+Condition number: 1549.8248786175272.
+Condition number: 1549.8215627430743.
+Condition number: 1549.8182465567725.
+Condition number: 1549.814930057795.
+Condition number: 1549.870817992372.
+Condition number: 1549.8783384633732.
+Condition number: 1549.8820928018931.
+Condition number: 1549.8670518636889.
+
+
+
+
+
+
+Warmup [7]:  60%|██████    | 3/5 [01:50, 30.85s/it, step size=1.22e-04, acc. prob=0.165][A[A[A[A[A[A
+
+
+
+
+
+
+
+
+Warmup [10]: 100%|██████████| 5/5 [01:51, 17.22s/it, step size=2.44e-04, acc. prob=0.044][A[A[A[A[A[A[A[A[ACondition number: 1564.8671864938553.
+Condition number: 1549.9412401989284.
+Condition number: 1549.9412401989284.
+Condition number: 1549.9412401989284.
+Condition number: 1549.9412401989284.
+Condition number: 1549.9412401989284.
+Condition number: 1530.9907775660972.
+Condition number: 1549.9412401989284.
+Condition number: 1503.8239272873554.
+Condition number: 1549.9412401989284.
+Condition number: 1544.3389805421987.
+Condition number: 1549.9412401989284.
+Condition number: 1546.2691927938276.
+Condition number: 1549.9412401989284.
+Condition number: 1541.1360803752377.
+Condition number: 1549.9412401989284.
+Condition number: 1544.4636739764007.
+Condition number: 1549.9412401989284.
+Condition number: 1548.6088581595757.
+Condition number: 1549.9412401989284.
+Condition number: 1550.3989639190468.
+Condition number: 1549.9412401989284.
+Condition number: 1549.5391670691224.
+Condition number: 1549.9412401989284.
+Condition number: 1549.8560952616738.
+Condition number: 1549.9412401989284.
+Condition number: 1550.1047910860025.
+Condition number: 1549.9412401989284.
+Condition number: 1549.9081384224976.
+Condition number: 1549.9412401989284.
+Condition number: 1549.9126414747045.
+Condition number: 1549.9287534485675.
+Condition number: 1549.9537122583693.
+Condition number: 1549.9661696027663.
+Condition number: 1549.9786122075996.
+Condition number: 1549.9910400479014.
+Condition number: 1550.003453098121.
+Condition number: 1550.015851331987.
+Condition number: 1550.0282347223533.
+Condition number: 1550.0406032409774.
+Condition number: 1549.9853320369539.
+Condition number: 1549.9470095118477.
+Condition number: 1549.9278517938603.
+Condition number: 1550.004496784556.
+Condition number: 1550.023663815502.
+Condition number: 1550.0428330994673.
+Condition number: 1550.0620046058625.
+Condition number: 1549.9086964782794.
+Condition number: 1549.8895435944305.
+Condition number: 1549.8703931714783.
+Condition number: 1549.851245238469.
+Condition number: 1549.8320998243255.
+Condition number: 1549.9861173581176.
+Condition number: 1550.0060601402008.
+Condition number: 1550.025998020083.
+Condition number: 1549.9462168186647.
+Condition number: 1549.926258963404.
+Condition number: 1549.9062960054882.
+Condition number: 1549.8863279225927.
+Condition number: 1549.866354700094.
+Condition number: 1549.846376329829.
+Condition number: 1549.8263928090903.
+Condition number: 1549.8064041397795.
+Condition number: 1549.7864103276622.
+Condition number: 1549.7664113818043.
+Condition number: 1549.97430911184.
+Condition number: 1549.9580204334968.
+Condition number: 1549.9498617685174.
+Condition number: 1549.9824388327029.
+Condition number: 1549.9905586644952.
+Condition number: 1549.9986685266965.
+Condition number: 1550.0067683541051.
+Condition number: 1550.0148580930872.
+Condition number: 1550.0229376988561.
+Condition number: 1549.941144961407.
+Condition number: 1549.916107753022.
+Condition number: 1549.8910579435772.
+Condition number: 1549.9911817262766.
+Condition number: 1550.0161813999111.
+Condition number: 1550.0411687149997.
+Condition number: 1550.0661437918975.
+Condition number: 1550.0911067871482.
+Condition number: 1550.116057902368.
+Condition number: 1550.140997395417.
+Condition number: 1550.165925594299.
+
+
+
+
+
+
+
+Warmup [8]:  80%|████████  | 4/5 [01:55, 22.11s/it, step size=2.44e-04, acc. prob=0.023][A[A[A[A[A[A[A
+
+
+
+Warmup [5]:  60%|██████    | 3/5 [02:03, 44.27s/it, step size=1.22e-04, acc. prob=0.198][A[A[A[A
+
+
+
+
+
+
+Warmup [8]: 100%|██████████| 5/5 [02:10, 19.50s/it, step size=2.44e-04, acc. prob=0.019][A[A[A[A[A[A[ACondition number: 1563.547989768902.
+Condition number: 1549.9412401989284.
+Condition number: 1549.9412401989284.
+Condition number: 1549.9412401989284.
+Condition number: 1549.9412401989284.
+Condition number: 1549.9412401989284.
+Condition number: 1518.4967462695802.
+Condition number: 1549.9412401989284.
+Condition number: 1569.243447373804.
+Condition number: 1549.9412401989284.
+Condition number: 1582.7041164453835.
+Condition number: 1549.9412401989284.
+Condition number: 1528.1497628644343.
+Condition number: 1549.9412401989284.
+Condition number: 1549.159815435841.
+Condition number: 1549.9412401989284.
+Condition number: 1549.5640645751064.
+Condition number: 1549.9412401989284.
+Condition number: 1552.3950839293207.
+Condition number: 1549.9412401989284.
+Condition number: 1551.7083031982227.
+Condition number: 1549.9412401989284.
+Condition number: 1549.7939792477941.
+Condition number: 1549.9412401989284.
+Condition number: 1549.7472281856983.
+Condition number: 1549.9412401989284.
+Condition number: 1549.9420594778705.
+Condition number: 1549.9412401989284.
+Condition number: 1549.9385744156855.
+Condition number: 1549.9412401989284.
+Condition number: 1549.8860004405035.
+Condition number: 1549.951021963686.
+Condition number: 1549.9314615980936.
+Condition number: 1549.9216861466664.
+Condition number: 1549.9608069088645.
+Condition number: 1549.9705950530756.
+Condition number: 1549.9803864172115.
+Condition number: 1549.9901810246135.
+Condition number: 1549.911913831958.
+Condition number: 1549.902144643007.
+Condition number: 1549.8923785704424.
+Condition number: 1549.8826156063813.
+Condition number: 1549.8728557443308.
+Condition number: 1549.8630989790913.
+Condition number: 1549.8533453066675.
+Condition number: 1549.843594724196.
+Condition number: 1549.918635088611.
+Condition number: 1549.9058089723085.
+Condition number: 1549.892983282162.
+Condition number: 1549.9442884681418.
+Condition number: 1549.9571156665056.
+Condition number: 1549.9699431612858.
+Condition number: 1549.9827709209019.
+Condition number: 1549.8801580515353.
+Condition number: 1549.8673333141808.
+Condition number: 1549.8545091042722.
+Condition number: 1549.8416854563984.
+Condition number: 1549.8288624055815.
+Condition number: 1549.8160399873095.
+Condition number: 1549.8032182375257.
+Condition number: 1549.7903971926705.
+Condition number: 1549.7775768896704.
+Condition number: 1549.7647573659847.
+Condition number: 1549.751938659609.
+Condition number: 1549.739120809088.
+Condition number: 1549.726303853547.
+Condition number: 1549.7134878327106.
+Condition number: 1549.700672786912.
+Condition number: 1549.6878587571412.
+Condition number: 1549.6750457850355.
+Condition number: 1549.9376808890404.
+Condition number: 1549.9310745688956.
+Condition number: 1549.9244695654995.
+Condition number: 1549.9178659414777.
+Condition number: 1549.9112637647993.
+Condition number: 1549.9046631093809.
+Condition number: 1549.898064055743.
+Condition number: 1549.8914666917435.
+Condition number: 1549.8848711134028.
+Condition number: 1549.9859765015399.
+Condition number: 1549.9026053121984.
+Condition number: 1549.8609270955242.
+Condition number: 1549.819253879818.
+Condition number: 1549.7775857266613.
+Condition number: 1549.7359226974952.
+Condition number: 1549.6942648536217.
+Condition number: 1549.6526122561866.
+Condition number: 1549.6109649661687.
+Condition number: 1549.569323044367.
+Condition number: 1549.5276865513695.
+Condition number: 1549.9577855426373.
+Condition number: 1549.9307909214795.
+Condition number: 1549.9172929020215.
+Condition number: 1549.9712821466617.
+Condition number: 1549.984778283055.
+Condition number: 1549.9982739558432.
+Condition number: 1550.0117691703385.
+Condition number: 1549.9037944101624.
+Condition number: 1549.8902954472467.
+Condition number: 1549.8767960155433.
+Condition number: 1549.8632961181727.
+Condition number: 1549.8497957590794.
+Condition number: 1549.8362949429777.
+Condition number: 1549.822793675312.
+Condition number: 1549.8092919622213.
+Condition number: 1550.0252639331711.
+Condition number: 1550.0387582523988.
+Condition number: 1550.052252137578.
+
+Warmup [2]:  40%|████      | 2/5 [02:15, 66.60s/it, step size=1.22e-04, acc. prob=0.135][A
+Warmup [2]:  60%|██████    | 3/5 [02:17, 37.20s/it, step size=1.22e-04, acc. prob=0.090][A
+
+
+
+
+
+Warmup [7]:  80%|████████  | 4/5 [02:24, 32.25s/it, step size=1.22e-04, acc. prob=0.124][A[A[A[A[A[A
+
+
+
+
+
+Warmup [7]: 100%|██████████| 5/5 [02:36, 24.81s/it, step size=1.22e-04, acc. prob=0.099][A[A[A[A[A[ACondition number: 1519.5013645535173.
+Condition number: 1549.9412401989284.
+Condition number: 1549.9412401989284.
+Condition number: 1549.9412401989284.
+Condition number: 1549.9412401989284.
+Condition number: 1549.9412401989284.
+Condition number: 1636.5816971531378.
+Condition number: 1549.9412401989284.
+Condition number: 1552.7119239103247.
+Condition number: 1549.9412401989284.
+Condition number: 1518.285283511489.
+Condition number: 1549.9412401989284.
+Condition number: 1557.0916176543578.
+Condition number: 1549.9412401989284.
+Condition number: 1555.7277643939783.
+Condition number: 1549.9412401989284.
+Condition number: 1549.0113157953426.
+Condition number: 1549.9412401989284.
+Condition number: 1549.7452014016276.
+Condition number: 1549.9412401989284.
+Condition number: 1549.8753920498655.
+Condition number: 1549.9412401989284.
+Condition number: 1550.0596255852913.
+Condition number: 1549.9412401989284.
+Condition number: 1549.7329888469137.
+Condition number: 1549.9412401989284.
+Condition number: 1549.85763180386.
+Condition number: 1549.9412401989284.
+Condition number: 1549.97086693929.
+Condition number: 1549.9412401989284.
+Condition number: 1549.9374975267501.
+Condition number: 1549.9412401989284.
+Condition number: 1549.9378376294899.
+Condition number: 1549.9192652783775.
+Condition number: 1549.9632195975364.
+Condition number: 1549.9852034714152.
+Condition number: 1549.897294838901.
+Condition number: 1549.875328883736.
+Condition number: 1549.8533674163286.
+Condition number: 1549.8314104403198.
+Condition number: 1550.0071918180154.
+Condition number: 1550.0291846350494.
+Condition number: 1550.051181920492.
+Condition number: 1550.0731836725963.
+Condition number: 1550.0014150169088.
+Condition number: 1550.017626628301.
+Condition number: 1550.033838309632.
+Condition number: 1549.9689919884934.
+Condition number: 1549.9527805654839.
+Condition number: 1549.9365692003298.
+Condition number: 1549.9203578915524.
+Condition number: 1550.050050065702.
+Condition number: 1550.0662619021505.
+Condition number: 1550.082473825508.
+Condition number: 1550.098685843285.
+Condition number: 1550.1148979640275.
+Condition number: 1550.1311101974238.
+Condition number: 1550.1473225543823.
+Condition number: 1550.1635350471363.
+Condition number: 1550.17974768935.
+Condition number: 1550.1959604962392.
+Condition number: 1550.212173484693.
+Condition number: 1550.2283866734106.
+Condition number: 1550.2446000830523.
+Condition number: 1550.260813736395.
+Condition number: 1550.2770276585131.
+Condition number: 1550.2932418769537.
+Condition number: 1550.3094564219498.
+Condition number: 1550.3256713266392.
+Condition number: 1550.3418866272873.
+Condition number: 1550.3581023635554.
+Condition number: 1550.3743185787635.
+Condition number: 1550.390535320199.
+Condition number: 1550.4067526394224.
+Condition number: 1550.422970592614.
+Condition number: 1549.9041466381836.
+Condition number: 1549.8879354397502.
+Condition number: 1550.0082052366124.
+Condition number: 1550.0270470802577.
+Condition number: 1550.0364665825355.
+Condition number: 1549.9987829153768.
+Condition number: 1549.9893596750444.
+Condition number: 1549.979935526334.
+Condition number: 1549.9705104802495.
+Condition number: 1550.0054509273089.
+Condition number: 1549.9932753921778.
+Condition number: 1549.9811000292832.
+Condition number: 1549.9689248450138.
+Condition number: 1549.9567498457554.
+Condition number: 1549.9445750379205.
+Condition number: 1549.9324004279133.
+Condition number: 1549.9202260221546.
+Condition number: 1549.9080518270782.
+Condition number: 1549.8958778491167.
+Condition number: 1549.8837040947203.
+Condition number: 1549.871530570348.
+Condition number: 1549.859357282466.
+Condition number: 1549.8471842375475.
+Condition number: 1549.8350114420823.
+Condition number: 1549.8228389025674.
+Condition number: 1549.8106666255014.
+Condition number: 1549.798494617411.
+Condition number: 1549.786322884815.
+Condition number: 1549.7741514342547.
+Condition number: 1549.7619802722713.
+Condition number: 1549.749809405427.
+Condition number: 1549.7376388402843.
+Condition number: 1549.72546858343.
+Condition number: 1549.7132986414515.
+Condition number: 1549.7011290209466.
+Condition number: 1549.6889597285283.
+Condition number: 1549.6767907708247.
+Condition number: 1549.6646221544643.
+Condition number: 1549.6524538861004.
+Condition number: 1549.640285972382.
+Condition number: 1549.6281184199847.
+Condition number: 1549.615951235591.
+Condition number: 1549.603784425894.
+Condition number: 1549.5916179976005.
+Condition number: 1549.579451957425.
+Condition number: 1549.5672863121054.
+Condition number: 1549.5551210683805.
+Condition number: 1549.5429562330107.
+Condition number: 1549.5307918127612.
+Condition number: 1549.518627814416.
+Condition number: 1549.5064642447767.
+Condition number: 1549.49430111065.
+Condition number: 1550.025256869177.
+Condition number: 1550.0328870686103.
+Condition number: 1550.0405172182052.
+Condition number: 1550.0481473097796.
+Condition number: 1550.0557773353435.
+Condition number: 1550.0634072870919.
+Condition number: 1550.0710371574005.
+Condition number: 1550.0786669388272.
+Condition number: 1550.0862966240845.
+Condition number: 1550.093926206051.
+Condition number: 1550.1015556777545.
+Condition number: 1550.1091850323744.
+Condition number: 1550.1168142632264.
+Condition number: 1550.124443363768.
+Condition number: 1550.1320723275753.
+Condition number: 1550.0099963545879.
+
+
+
+Warmup [4]:  80%|████████  | 4/5 [03:46, 67.89s/it, step size=1.22e-04, acc. prob=0.071][A[A[A
+Warmup [2]:  80%|████████  | 4/5 [03:59, 62.56s/it, step size=1.22e-04, acc. prob=0.068][A
+Warmup [2]: 100%|██████████| 5/5 [04:00, 40.39s/it, step size=1.22e-04, acc. prob=0.054][ACondition number: 1539.4536381679181.
+Condition number: 1549.9412401989284.
+Condition number: 1549.9412401989284.
+Condition number: 1549.9412401989284.
+Condition number: 1549.9412401989284.
+Condition number: 1549.9412401989284.
+Condition number: 1492.3786814819907.
+Condition number: 1549.9412401989284.
+Condition number: 1542.5940488531282.
+Condition number: 1549.9412401989284.
+Condition number: 1513.5816273024845.
+Condition number: 1549.9412401989284.
+Condition number: 1555.0167033952816.
+Condition number: 1549.9412401989284.
+Condition number: 1551.6474388322015.
+Condition number: 1549.9412401989284.
+Condition number: 1552.2701594971127.
+Condition number: 1549.9412401989284.
+Condition number: 1549.3087588320393.
+Condition number: 1549.9412401989284.
+Condition number: 1550.8760604671636.
+Condition number: 1549.9412401989284.
+Condition number: 1549.9499625317123.
+Condition number: 1549.9412401989284.
+Condition number: 1549.9711633736756.
+Condition number: 1549.9412401989284.
+Condition number: 1550.0115254437437.
+Condition number: 1549.9412401989284.
+Condition number: 1549.946183849174.
+Condition number: 1549.9412401989284.
+Condition number: 1549.9675323335032.
+Condition number: 1549.9412401989284.
+Condition number: 1549.9395258044867.
+Condition number: 1549.940732354198.
+Condition number: 1549.9417491533502.
+Condition number: 1549.942259219002.
+Condition number: 1549.9402256176422.
+Condition number: 1549.939719987772.
+Condition number: 1549.9392154631228.
+Condition number: 1549.9387120422482.
+Condition number: 1549.9427703974509.
+Condition number: 1549.9432826902876.
+Condition number: 1549.943796099126.
+Condition number: 1549.9443106256126.
+Condition number: 1549.9448262714127.
+Condition number: 1549.9453430382275.
+Condition number: 1549.9458609277863.
+Condition number: 1549.9463799418372.
+Condition number: 1549.9382097237249.
+Condition number: 1549.9377085061592.
+Condition number: 1549.937208388171.
+Condition number: 1549.936709368411.
+Condition number: 1549.9362114455419.
+Condition number: 1549.9357146182542.
+Condition number: 1549.9352188852538.
+Condition number: 1549.9347242452739.
+Condition number: 1549.9342306970584.
+Condition number: 1549.9337382393805.
+Condition number: 1549.9414414100156.
+Condition number: 1549.9426557438685.
+Condition number: 1549.9438686210412.
+Condition number: 1549.9450800434172.
+Condition number: 1549.946290012901.
+Condition number: 1549.947498531442.
+Condition number: 1549.9487056010187.
+Condition number: 1549.9499112236529.
+Condition number: 1549.9511154014012.
+Condition number: 1549.9523181363577.
+Condition number: 1549.9535194306582.
+Condition number: 1549.9547192864761.
+Condition number: 1549.9559177060341.
+Condition number: 1549.9571146915978.
+Condition number: 1549.9583102454706.
+Condition number: 1549.939008364932.
+Condition number: 1549.9377896501005.
+Condition number: 1549.9365694713956.
+Condition number: 1549.9353478270898.
+Condition number: 1549.9341247154825.
+Condition number: 1549.9329001348988.
+Condition number: 1549.9316740836955.
+Condition number: 1549.9304465602381.
+Condition number: 1549.9292175629303.
+Condition number: 1549.9279870901848.
+Condition number: 1549.9267551404396.
+Condition number: 1549.9255217121529.
+Condition number: 1549.9242868037923.
+Condition number: 1549.923050413851.
+Condition number: 1549.9218125408315.
+Condition number: 1549.9205731832499.
+Condition number: 1549.9595043700044.
+Condition number: 1549.9606970676016.
+Condition number: 1549.961888340716.
+Condition number: 1549.9630781918386.
+Condition number: 1549.9642666235204.
+Condition number: 1549.9654536383664.
+Condition number: 1549.9666392390236.
+Condition number: 1549.9678234282053.
+Condition number: 1549.9690062086752.
+Condition number: 1549.9701875832507.
+Condition number: 1549.971367554818.
+Condition number: 1549.9725461263104.
+Condition number: 1549.9737233007293.
+Condition number: 1549.974899081137.
+Condition number: 1549.9760734706645.
+Condition number: 1549.9772464724963.
+Condition number: 1549.978418089898.
+Condition number: 1549.9795883261909.
+Condition number: 1549.9807571847766.
+Condition number: 1549.9819246691216.
+Condition number: 1549.9830907827645.
+Condition number: 1549.9842555293246.
+Condition number: 1549.9854189124926.
+Condition number: 1549.9865809360397.
+Condition number: 1549.947608886477.
+Condition number: 1549.9377002943822.
+Condition number: 1549.9327425332394.
+Condition number: 1549.9352243529531.
+Condition number: 1549.9277867869405.
+Condition number: 1549.9203430425393.
+Condition number: 1549.9128931167886.
+Condition number: 1549.9054370070357.
+Condition number: 1549.8979747109036.
+Condition number: 1549.8905062263104.
+Condition number: 1549.883031551425.
+Condition number: 1549.87555068466.
+Condition number: 1549.8680636246736.
+Condition number: 1549.8605703703322.
+Condition number: 1549.8530709207223.
+Condition number: 1549.8455652751318.
+Condition number: 1549.8380534330227.
+Condition number: 1549.8305353940555.
+Condition number: 1549.8230111580474.
+Condition number: 1549.8154807249805.
+Condition number: 1549.8079440949944.
+Condition number: 1549.8004012683696.
+Condition number: 1549.7928522455238.
+Condition number: 1549.7852970270123.
+Condition number: 1549.7777356135057.
+Condition number: 1549.7701680058049.
+Condition number: 1549.7625942048103.
+Condition number: 1549.7550142115415.
+Condition number: 1549.747428027116.
+Condition number: 1549.7398356527515.
+Condition number: 1549.7322370897468.
+Condition number: 1549.724632339501.
+Condition number: 1549.7170214034973.
+Condition number: 1549.709404283296.
+Condition number: 1549.950080963315.
+Condition number: 1549.9575000152856.
+Condition number: 1549.9649129041497.
+Condition number: 1549.9723196346808.
+Condition number: 1549.9797202120797.
+Condition number: 1549.9871146419846.
+Condition number: 1549.9945029305168.
+Condition number: 1550.0018850842857.
+Condition number: 1550.0092611104271.
+Condition number: 1550.016631016622.
+Condition number: 1550.0239948111312.
+Condition number: 1550.031352502824.
+Condition number: 1550.038704101197.
+Condition number: 1550.0460496164183.
+Condition number: 1550.053389059349.
+Condition number: 1550.0607224415692.
+Condition number: 1550.0680497754208.
+Condition number: 1550.0753710740125.
+Condition number: 1550.0826863512689.
+Condition number: 1550.0899956219337.
+Condition number: 1550.0972989016013.
+Condition number: 1550.1045962067174.
+Condition number: 1550.1118875545947.
+Condition number: 1550.1191729634024.
+Condition number: 1550.1264524521475.
+Condition number: 1550.133726040649.
+Condition number: 1550.1409937494648.
+Condition number: 1550.148255599837.
+Condition number: 1550.1555116135667.
+Condition number: 1550.1627618128534.
+Condition number: 1550.1700062200964.
+Condition number: 1550.1772448576282.
+Condition number: 1549.7017809805322.
+Condition number: 1549.694151496917.
+Condition number: 1549.6865158342384.
+Condition number: 1549.6788739943358.
+Condition number: 1549.6712259791236.
+Condition number: 1549.6635717905806.
+Condition number: 1549.655911430733.
+Condition number: 1549.648244901676.
+Condition number: 1549.6405722055456.
+Condition number: 1549.6328933445443.
+Condition number: 1549.6252083209122.
+Condition number: 1549.6175171369416.
+Condition number: 1549.6098197949764.
+Condition number: 1549.6021162973925.
+Condition number: 1549.5944066466168.
+Condition number: 1549.5866908451205.
+Condition number: 1549.5789688954017.
+Condition number: 1549.5712408000072.
+Condition number: 1549.5635065615224.
+Condition number: 1549.5557661825558.
+Condition number: 1549.548019665761.
+Condition number: 1549.5402670138221.
+Condition number: 1549.5325082294505.
+Condition number: 1549.5247433153947.
+Condition number: 1549.516972274431.
+Condition number: 1549.5091951093661.
+Condition number: 1549.5014118230326.
+Condition number: 1549.4936224182907.
+Condition number: 1549.4858268980252.
+Condition number: 1549.4780252651553.
+Condition number: 1549.4702175226166.
+Condition number: 1549.4624036733733.
+Condition number: 1549.4545837204098.
+Condition number: 1549.4467576667382.
+Condition number: 1549.4389255153892.
+Condition number: 1549.4310872694205.
+Condition number: 1549.423242931908.
+Condition number: 1549.4153925059504.
+Condition number: 1549.4075359946592.
+Condition number: 1549.3996734011794.
+Condition number: 1549.3918047286666.
+Condition number: 1549.3839299802983.
+Condition number: 1549.3760491592736.
+Condition number: 1549.368162268805.
+Condition number: 1549.3602693121209.
+Condition number: 1549.3523702924792.
+Condition number: 1549.3444652131438.
+Condition number: 1549.3365540774032.
+Condition number: 1549.3286368885597.
+Condition number: 1549.3207136499298.
+Condition number: 1549.3127843648547.
+Condition number: 1549.30484903668.
+Condition number: 1549.2969076687768.
+Condition number: 1549.2889602645303.
+Condition number: 1549.2810068273354.
+Condition number: 1549.2730473606086.
+Condition number: 1549.2650818677776.
+Condition number: 1549.25711035229.
+Condition number: 1549.2491328176009.
+Condition number: 1549.2411492671843.
+Condition number: 1549.233159704525.
+Condition number: 1549.2251641331356.
+Condition number: 1549.2171625565215.
+Condition number: 1549.209154978216.
+Condition number: 1549.2011414017586.
+Condition number: 1549.1931218307175.
+Condition number: 1549.185096268651.
+Condition number: 1549.177064719148.
+Condition number: 1549.169027185806.
+Condition number: 1549.1609836722332.
+Condition number: 1549.1529341820578.
+Condition number: 1549.1448787189122.
+Condition number: 1549.1368172864452.
+Condition number: 1549.1287498883182.
+Condition number: 1549.1206765282097.
+Condition number: 1549.1125972097975.
+Condition number: 1549.1045119367946.
+Condition number: 1549.096420712899.
+Condition number: 1549.0883235418423.
+Condition number: 1549.0802204273639.
+Condition number: 1549.0721113732047.
+Condition number: 1549.0639963831259.
+Condition number: 1549.055875460906.
+Condition number: 1549.0477486103223.
+Condition number: 1549.0396158351757.
+Condition number: 1549.0314771392727.
+Condition number: 1549.0233325264335.
+Condition number: 1549.0151820004905.
+Condition number: 1549.0070255652856.
+Condition number: 1548.9988632246723.
+Condition number: 1548.990694982523.
+Condition number: 1548.9825208427096.
+Condition number: 1548.9743408091215.
+Condition number: 1548.9661548856639.
+Condition number: 1548.9579630762466.
+Condition number: 1548.9497653847918.
+Condition number: 1548.9415618152361.
+Condition number: 1548.933352371529.
+Condition number: 1548.9251370576158.
+Condition number: 1548.9169158774775.
+Condition number: 1548.908688835091.
+Condition number: 1548.9004559344442.
+Condition number: 1548.8922171795398.
+Condition number: 1548.8839725743924.
+Condition number: 1548.8757221230217.
+Condition number: 1548.8674658294692.
+Condition number: 1548.859203697775.
+Condition number: 1548.8509357319983.
+Condition number: 1548.8426619362094.
+Condition number: 1548.83438231448.
+Condition number: 1548.8260968709055.
+Condition number: 1548.8178056095844.
+Condition number: 1548.8095085346265.
+Condition number: 1548.8012056501573.
+Condition number: 1548.7928969603086.
+Condition number: 1548.7845824692185.
+Condition number: 1548.7762621810464.
+Condition number: 1548.7679360999575.
+Condition number: 1549.940129553396.
+Condition number: 1549.9376031800382.
+
+
+
+
+
+
+
+
+Warmup [9]:  40%|████      | 2/5 [04:01, 131.08s/it, step size=1.22e-04, acc. prob=0.118][A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+Warmup [9]:  60%|██████    | 3/5 [04:39, 88.73s/it, step size=1.22e-04, acc. prob=0.080] [A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+Warmup [9]:  80%|████████  | 4/5 [04:42, 54.78s/it, step size=1.22e-04, acc. prob=0.086][A[A[A[A[A[A[A[A
+
+
+Warmup [4]: 100%|██████████| 5/5 [04:49, 65.94s/it, step size=1.22e-04, acc. prob=0.057][A[A[ACondition number: 1537.4366438932852.
+Condition number: 1549.9412401989284.
+Condition number: 1549.9412401989284.
+Condition number: 1549.9412401989284.
+Condition number: 1549.9412401989284.
+Condition number: 1549.9412401989284.
+Condition number: 1571.8884550116638.
+Condition number: 1549.9412401989284.
+Condition number: 1498.8676053218612.
+Condition number: 1549.9412401989284.
+Condition number: 1543.0311597143261.
+Condition number: 1549.9412401989284.
+Condition number: 1546.7591098586151.
+Condition number: 1549.9412401989284.
+Condition number: 1553.4178516002924.
+Condition number: 1549.9412401989284.
+Condition number: 1550.5346587603985.
+Condition number: 1549.9412401989284.
+Condition number: 1551.4115309754093.
+Condition number: 1549.9412401989284.
+Condition number: 1550.759144967527.
+Condition number: 1549.9412401989284.
+Condition number: 1550.0513971433086.
+Condition number: 1549.9412401989284.
+Condition number: 1550.066310783313.
+Condition number: 1549.9412401989284.
+Condition number: 1549.9781282544436.
+Condition number: 1549.9412401989284.
+Condition number: 1549.9441588413279.
+Condition number: 1549.9412401989284.
+Condition number: 1549.941063868644.
+Condition number: 1549.9412401989284.
+Condition number: 1549.9406918220009.
+Condition number: 1549.9441421542822.
+Condition number: 1549.9383374181623.
+Condition number: 1549.9354338231415.
+Condition number: 1549.947043273844.
+Condition number: 1549.949943547955.
+Condition number: 1549.9528429676043.
+Condition number: 1549.9557415243926.
+Condition number: 1549.9325294258851.
+Condition number: 1549.9296242393361.
+Condition number: 1549.9267182774524.
+Condition number: 1549.9238115553028.
+Condition number: 1549.9209040891749.
+Condition number: 1549.9179958966715.
+Condition number: 1549.9150869968523.
+Condition number: 1549.9121774103558.
+Condition number: 1549.9092671595577.
+Condition number: 1549.90635626873.
+Condition number: 1549.9034447642161.
+Condition number: 1549.9005326746276.
+Condition number: 1549.8976200310701.
+Condition number: 1549.8947068673606.
+Condition number: 1549.8917932202962.
+Condition number: 1549.888879129937.
+Condition number: 1549.8859646399046.
+Condition number: 1549.8830497977347.
+Condition number: 1549.9348515065144.
+Condition number: 1549.9302087780497.
+Condition number: 1549.9278895686766.
+Condition number: 1549.9316632356438.
+Condition number: 1549.9333958667776.
+Condition number: 1549.9342625575418.
+Condition number: 1549.9329517242802.
+Condition number: 1549.933374121991.
+Condition number: 1549.9337966236355.
+Condition number: 1549.9321072223397.
+Condition number: 1549.9316851093167.
+Condition number: 1549.9312630826255.
+Condition number: 1549.9308411382083.
+Condition number: 1549.934219233973.
+Condition number: 1549.9346419579228.
+Condition number: 1549.9350648005718.
+Condition number: 1549.9354877671694.
+Condition number: 1549.9359108631295.
+Condition number: 1549.936334094057.
+Condition number: 1549.9367574657383.
+Condition number: 1549.9371809841425.
+Condition number: 1549.9304192721402.
+Condition number: 1549.9299974806067.
+Condition number: 1549.929575759923.
+Condition number: 1549.9291541065222.
+Condition number: 1549.9287325169385.
+Condition number: 1549.9283109878238.
+Condition number: 1549.9278895159323.
+Condition number: 1549.9274680981187.
+Condition number: 1549.9270467313324.
+Condition number: 1549.926625412628.
+Condition number: 1549.9262041391405.
+Condition number: 1549.9257829081032.
+Condition number: 1549.9253617168285.
+Condition number: 1549.9249405627138.
+Condition number: 1549.924519443243.
+Condition number: 1549.9240983559707.
+Condition number: 1549.9236772985332.
+Condition number: 1549.923256268638.
+Condition number: 1549.9228352640616.
+Condition number: 1549.9224142826483.
+Condition number: 1549.921993322319.
+Condition number: 1549.9215723810446.
+Condition number: 1549.9211514568722.
+Condition number: 1549.9207305479003.
+Condition number: 1549.9203096522906.
+Condition number: 1549.9198887682558.
+Condition number: 1549.9194678940758.
+Condition number: 1549.9190470280716.
+Condition number: 1549.9186261686236.
+Condition number: 1549.9182053141558.
+Condition number: 1549.9177844631513.
+Condition number: 1549.917363614129.
+Condition number: 1549.9169427656598.
+Condition number: 1549.9165219163585.
+Condition number: 1549.91610106488.
+Condition number: 1549.915680209929.
+Condition number: 1549.9152593502383.
+Condition number: 1549.914838484589.
+Condition number: 1549.9144176117954.
+Condition number: 1549.913996730715.
+Condition number: 1549.9135758402342.
+Condition number: 1549.9131549392814.
+Condition number: 1549.9127340268092.
+Condition number: 1549.912313101808.
+Condition number: 1549.9118921633024.
+Condition number: 1549.9114712103465.
+Condition number: 1549.9110502420187.
+Condition number: 1549.9106292574352.
+Condition number: 1549.9102082557304.
+Condition number: 1549.9097872360794.
+Condition number: 1549.9093661976722.
+Condition number: 1549.908945139727.
+Condition number: 1549.9085240614909.
+Condition number: 1549.9081029622282.
+Condition number: 1549.9076818412354.
+Condition number: 1549.907260697827.
+Condition number: 1549.9068395313368.
+Condition number: 1549.9064183411322.
+Condition number: 1549.9059971265845.
+Condition number: 1549.9055758870963.
+Condition number: 1549.9051546220937.
+Condition number: 1549.9047333310064.
+Condition number: 1549.9043120132985.
+Condition number: 1549.9038906684432.
+Condition number: 1549.9034692959392.
+Condition number: 1549.903047895292.
+Condition number: 1549.902626466032.
+Condition number: 1549.9022050077028.
+Condition number: 1549.9017835198629.
+Condition number: 1549.9013620020844.
+Condition number: 1549.9009404539631.
+Condition number: 1549.9005188750996.
+Condition number: 1549.900097265111.
+Condition number: 1549.8996756236297.
+Condition number: 1549.8992539503024.
+Condition number: 1549.898832244785.
+Condition number: 1549.8984105067495.
+Condition number: 1549.8979887358755.
+Condition number: 1549.897566931862.
+Condition number: 1549.8971450944118.
+Condition number: 1549.8967232232467.
+Condition number: 1549.8963013180883.
+Condition number: 1549.8958793786805.
+Condition number: 1549.8954574047725.
+Condition number: 1549.8950353961206.
+Condition number: 1549.8946133524985.
+Condition number: 1549.8941912736777.
+Condition number: 1549.893769159453.
+Condition number: 1549.8933470096201.
+Condition number: 1549.8929248239842.
+Condition number: 1549.8925026023596.
+Condition number: 1549.8920803445703.
+Condition number: 1549.8916580504444.
+Condition number: 1549.891235719821.
+Condition number: 1549.8908133525536.
+Condition number: 1549.8903909484852.
+Condition number: 1549.8899685074882.
+Condition number: 1549.889546029422.
+Condition number: 1549.8891235141655.
+Condition number: 1549.8887009616035.
+Condition number: 1549.8882783716197.
+Condition number: 1549.8878557441158.
+Condition number: 1549.8874330789845.
+Condition number: 1549.887010376142.
+Condition number: 1549.8865876354967.
+Condition number: 1549.8861648569714.
+Condition number: 1549.885742040485.
+Condition number: 1549.8853191859707.
+Condition number: 1549.884896293368.
+Condition number: 1549.8844733626124.
+Condition number: 1549.8840503936542.
+Condition number: 1549.883627386445.
+Condition number: 1549.9376046554514.
+Condition number: 1549.938028486038.
+Condition number: 1549.938452482488.
+Condition number: 1549.938876651616.
+Condition number: 1549.939301000454.
+Condition number: 1549.939725536272.
+Condition number: 1549.9401502665787.
+Condition number: 1549.940575199146.
+Condition number: 1549.9410003419875.
+Condition number: 1549.941425703397.
+Condition number: 1549.9418512919558.
+Condition number: 1549.9422771165093.
+Condition number: 1549.9427031862208.
+Condition number: 1549.9431295105624.
+Condition number: 1549.9435560993159.
+Condition number: 1549.943982962601.
+Condition number: 1549.9444101108782.
+Condition number: 1549.9448375549696.
+Condition number: 1549.945265306059.
+Condition number: 1549.945693375715.
+Condition number: 1549.9461217758967.
+Condition number: 1549.9465505189794.
+Condition number: 1549.9469796177564.
+Condition number: 1549.9474090854649.
+Condition number: 1549.9478389357905.
+Condition number: 1549.9482691828975.
+Condition number: 1549.9486998414363.
+Condition number: 1549.949130926562.
+Condition number: 1549.9495624539552.
+Condition number: 1549.9499944398422.
+Condition number: 1549.9504269010033.
+Condition number: 1549.9508598548184.
+Condition number: 1549.951293319261.
+Condition number: 1549.9517273129302.
+Condition number: 1549.9521618550884.
+Condition number: 1549.9525969656574.
+Condition number: 1549.9530326652684.
+Condition number: 1549.9534689752672.
+Condition number: 1549.9539059177616.
+Condition number: 1549.954343515627.
+Condition number: 1549.9547817925538.
+Condition number: 1549.9552207730662.
+Condition number: 1549.9556604825575.
+Condition number: 1549.9561009473196.
+Condition number: 1549.9565421945808.
+Condition number: 1549.9569842525307.
+Condition number: 1549.9574271503689.
+Condition number: 1549.9578709183336.
+Condition number: 1549.9583155877403.
+Condition number: 1549.9587611910247.
+Condition number: 1549.9592077617874.
+Condition number: 1549.9596553348272.
+Condition number: 1549.960103946194.
+Condition number: 1549.960553633233.
+Condition number: 1549.9610044346307.
+Condition number: 1549.9614563904713.
+Condition number: 1549.9619095422754.
+Condition number: 1549.9623639330703.
+Condition number: 1549.96281960743.
+Condition number: 1549.9632766115476.
+Condition number: 1549.963734993281.
+Condition number: 1549.9641948022236.
+Condition number: 1549.964656089768.
+Condition number: 1549.9651189091596.
+Condition number: 1549.9655833155944.
+Condition number: 1549.966049366249.
+Condition number: 1549.9665171203978.
+Condition number: 1549.9669866394545.
+Condition number: 1549.967457987065.
+Condition number: 1549.9679312291883.
+Condition number: 1549.9684064341884.
+Condition number: 1549.9688836728992.
+Condition number: 1549.9693630187287.
+Condition number: 1549.9698445477552.
+Condition number: 1549.9703283388073.
+Condition number: 1549.970814473576.
+Condition number: 1549.9713030367059.
+Condition number: 1549.9717941158965.
+Condition number: 1549.9722878020202.
+Condition number: 1549.9727841892143.
+Condition number: 1549.9732833750045.
+Condition number: 1549.9737854604136.
+Condition number: 1549.914840066004.
+Condition number: 1549.9468422979091.
+Condition number: 1549.962843546179.
+Condition number: 1549.8988390806205.
+Condition number: 1549.8828381817707.
+Condition number: 1549.866837369516.
+Condition number: 1549.8508366442707.
+Condition number: 1549.8348360067614.
+Condition number: 1549.8188354580188.
+Condition number: 1549.8028349993613.
+Condition number: 1549.7868346323698.
+Condition number: 1549.7708343588897.
+Condition number: 1549.7548341809963.
+Condition number: 1549.7388341009948.
+Condition number: 1549.7228341214097.
+Condition number: 1549.706834244963.
+Condition number: 1549.6908344745693.
+Condition number: 1549.6748348133196.
+Condition number: 1549.6588352644837.
+Condition number: 1549.6428358314856.
+Condition number: 1549.6268365179042.
+Condition number: 1549.6108373274685.
+Condition number: 1549.5948382640338.
+Condition number: 1549.5788393315943.
+Condition number: 1549.562840534262.
+Condition number: 1549.546841876264.
+Condition number: 1549.5308433619346.
+Condition number: 1549.5148449957212.
+Condition number: 1549.4988467821643.
+Condition number: 1549.4828487258922.
+Condition number: 1549.4668508316279.
+Condition number: 1549.9788448845286.
+Condition number: 1549.994846314914.
+Condition number: 1550.0108478397838.
+Condition number: 1550.0268494620911.
+Condition number: 1550.0428511853381.
+Condition number: 1550.0588530136008.
+Condition number: 1550.074854951567.
+Condition number: 1550.0908570045738.
+Condition number: 1550.1068591786536.
+Condition number: 1550.1228614805646.
+Condition number: 1550.1388639178444.
+Condition number: 1550.154866498861.
+Condition number: 1550.1708692328543.
+Condition number: 1550.1868721299986.
+Condition number: 1550.2028752014526.
+Condition number: 1550.2188784594346.
+Condition number: 1550.2348819172694.
+Condition number: 1550.250885589478.
+Condition number: 1550.266889491835.
+Condition number: 1550.2828936414517.
+Condition number: 1550.2988980568664.
+Condition number: 1550.3149027581267.
+Condition number: 1550.3309077668823.
+Condition number: 1550.346913106487.
+Condition number: 1550.3629188021116.
+Condition number: 1550.3789248808425.
+Condition number: 1550.3949313718206.
+Condition number: 1550.4109383063328.
+Condition number: 1550.4269457179944.
+Condition number: 1550.4429536428581.
+Condition number: 1550.4589621195669.
+Condition number: 1550.474971189525.
+Condition number: 1550.4909808970574.
+Condition number: 1550.5069912895926.
+Condition number: 1550.5230024178495.
+Condition number: 1550.5390143360305.
+Condition number: 1550.5550271020409.
+Condition number: 1550.5710407776944.
+Condition number: 1550.5870554289625.
+Condition number: 1550.6030711262051.
+Condition number: 1550.6190879444207.
+Condition number: 1550.6351059635315.
+Condition number: 1550.6511252686428.
+Condition number: 1550.6671459503552.
+Condition number: 1550.6831681050417.
+Condition number: 1550.6991918351928.
+Condition number: 1550.7152172497176.
+Condition number: 1550.7312444643012.
+Condition number: 1550.7472736017364.
+Condition number: 1550.7633047922925.
+Condition number: 1550.7793381740687.
+Condition number: 1550.7953738933797.
+Condition number: 1550.8114121051137.
+Condition number: 1550.8274529731123.
+Condition number: 1550.8434966705552.
+Condition number: 1550.8595433803087.
+Condition number: 1550.8755932952984.
+Condition number: 1550.8916466188512.
+Condition number: 1550.9077035650112.
+Condition number: 1550.9237643588428.
+Condition number: 1550.939829236678.
+Condition number: 1550.9558984463558.
+Condition number: 1550.9719722473621.
+Condition number: 1550.988050910931.
+Condition number: 1551.0041347200765.
+Condition number: 1551.0202239695147.
+Condition number: 1551.0363189654868.
+Condition number: 1551.0524200254488.
+Condition number: 1551.068527477663.
+Condition number: 1551.0846416605714.
+Condition number: 1551.100762922032.
+Condition number: 1551.116891618364.
+Condition number: 1551.1330281131513.
+Condition number: 1551.1491727758125.
+Condition number: 1551.165325979962.
+Condition number: 1551.1814881014518.
+Condition number: 1551.197659516167.
+Condition number: 1551.2138405975406.
+Condition number: 1551.2300317137606.
+Condition number: 1551.2462332247217.
+Condition number: 1551.262445478705.
+Condition number: 1551.2786688088347.
+Condition number: 1551.2949035293184.
+Condition number: 1551.3111499315548.
+Condition number: 1551.3274082801365.
+Condition number: 1551.343678808895.
+Condition number: 1551.359961716962.
+Condition number: 1551.37625716504.
+Condition number: 1551.3925652719724.
+Condition number: 1551.4088861116836.
+Condition number: 1551.4252197106205.
+Condition number: 1551.4415660458183.
+Condition number: 1551.4579250436673.
+Condition number: 1551.4742965794003.
+Condition number: 1551.4906804774612.
+Condition number: 1551.507076512669.
+Condition number: 1549.4508531041765.
+Condition number: 1549.4348555484257.
+Condition number: 1549.4188581693322.
+Condition number: 1549.4028609719207.
+Condition number: 1549.3868639612972.
+Condition number: 1549.3708671426234.
+Condition number: 1549.35487052112.
+Condition number: 1549.338874102069.
+Condition number: 1549.3228778907996.
+Condition number: 1549.3068818927084.
+Condition number: 1549.2908861132291.
+Condition number: 1549.274890557841.
+Condition number: 1549.2588952320762.
+Condition number: 1549.2429001415042.
+Condition number: 1549.2269052917354.
+Condition number: 1549.2109106884209.
+Condition number: 1549.1949163372387.
+Condition number: 1549.1789222439172.
+Condition number: 1549.162928414202.
+Condition number: 1549.1469348538787.
+Condition number: 1549.1309415687592.
+Condition number: 1549.1149485646893.
+Condition number: 1549.098955847531.
+Condition number: 1549.0829634231827.
+Condition number: 1549.0669712975598.
+Condition number: 1549.0509794766006.
+
+
+
+
+
+
+
+
+Warmup [9]: 100%|██████████| 5/5 [05:01, 41.95s/it, step size=1.22e-04, acc. prob=0.069][A[A[A[A[A[A[A[ACondition number: 1545.1146327759163.
+Condition number: 1549.9412401989284.
+Condition number: 1549.9412401989284.
+Condition number: 1549.9412401989284.
+Condition number: 1549.9412401989284.
+Condition number: 1549.9412401989284.
+Condition number: 1478.2332476758957.
+Condition number: 1549.9412401989284.
+Condition number: 1516.9314715407525.
+Condition number: 1549.9412401989284.
+Condition number: 1531.9990651681856.
+Condition number: 1549.9412401989284.
+Condition number: 1552.1549159135363.
+Condition number: 1549.9412401989284.
+Condition number: 1552.4825606459772.
+Condition number: 1549.9412401989284.
+Condition number: 1546.8281623757327.
+Condition number: 1549.9412401989284.
+Condition number: 1550.4019709575582.
+Condition number: 1549.9412401989284.
+Condition number: 1550.1207101642194.
+Condition number: 1549.9412401989284.
+Condition number: 1549.5238034786546.
+Condition number: 1549.9412401989284.
+Condition number: 1550.038930546841.
+Condition number: 1549.9412401989284.
+Condition number: 1549.9555459343505.
+Condition number: 1549.9412401989284.
+Condition number: 1549.943386693852.
+Condition number: 1549.9412401989284.
+Condition number: 1549.9021787553415.
+Condition number: 1549.9412401989284.
+Condition number: 1549.946024307089.
+Condition number: 1549.9383561328355.
+Condition number: 1549.9441254310852.
+Condition number: 1549.947011823554.
+Condition number: 1549.9354732387533.
+Condition number: 1549.9325915228217.
+Condition number: 1549.929710991366.
+Condition number: 1549.9268316509315.
+Condition number: 1549.9239535082736.
+Condition number: 1549.9210765703797.
+Condition number: 1549.9182008444607.
+Condition number: 1549.9153263379926.
+Condition number: 1549.9124530586942.
+Condition number: 1549.9095810145625.
+Condition number: 1549.906710213871.
+Condition number: 1549.9038406651891.
+Condition number: 1549.9501859979548.
+Condition number: 1549.9207624810736.
+Condition number: 1549.90605372161.
+Condition number: 1549.9649007626238.
+Condition number: 1549.97961753743.
+Condition number: 1549.9943363278035.
+Condition number: 1550.0090571400121.
+Condition number: 1549.8913469576808.
+Condition number: 1549.8766421871728.
+Condition number: 1549.861939408481.
+Condition number: 1549.8472386204971.
+Condition number: 1549.8325398225559.
+Condition number: 1549.8178430144087.
+Condition number: 1549.8031481961946.
+Condition number: 1549.7884553684119.
+Condition number: 1549.7737645318866.
+Condition number: 1549.7590756877523.
+Condition number: 1549.744388837432.
+Condition number: 1549.729703982612.
+Condition number: 1549.7150211252258.
+Condition number: 1549.70034026743.
+Condition number: 1549.6856614116043.
+Condition number: 1549.670984560317.
+Condition number: 1549.6563097163182.
+Condition number: 1549.6416368825433.
+Condition number: 1549.626966062066.
+Condition number: 1549.6122972581195.
+Condition number: 1549.5976304740764.
+Condition number: 1549.5829657134275.
+Condition number: 1549.5683029797883.
+Condition number: 1549.5536422768844.
+Condition number: 1549.538983608549.
+Condition number: 1549.5243269786988.
+Condition number: 1549.5096723913507.
+Condition number: 1549.4950198505985.
+Condition number: 1549.480369360618.
+Condition number: 1549.4657209256552.
+Condition number: 1549.451074550024.
+Condition number: 1549.4364302380989.
+Condition number: 1549.421787994312.
+Condition number: 1549.4071478231576.
+Condition number: 1549.3925097291701.
+Condition number: 1549.3778737169375.
+Condition number: 1549.363239791088.
+Condition number: 1549.3486079562954.
+Condition number: 1549.3339782172677.
+Condition number: 1549.3193505787515.
+Condition number: 1549.3047250455218.
+Condition number: 1549.2901016223889.
+Condition number: 1549.2754803141916.
+Condition number: 1549.2608611257892.
+Condition number: 1549.246244062076.
+Condition number: 1549.2316291279617.
+Condition number: 1549.2170163283783.
+Condition number: 1549.2024056682778.
+Condition number: 1549.1877971526317.
+Condition number: 1549.1731907864275.
+Condition number: 1549.1585865746715.
+Condition number: 1549.1439845223792.
+Condition number: 1549.129384634587.
+Condition number: 1549.1147869163335.
+Condition number: 1549.1001913726748.
+Condition number: 1549.0855980086803.
+Condition number: 1550.0237799812237.
+Condition number: 1550.0385048595729.
+Condition number: 1550.0532317842558.
+Condition number: 1550.0679607655916.
+Condition number: 1550.08269181514.
+Condition number: 1550.0974249457947.
+Condition number: 1550.1121601718778.
+Condition number: 1550.12689750929.
+Condition number: 1550.141636975601.
+Condition number: 1550.156378590219.
+Condition number: 1550.171122374531.
+Condition number: 1550.1858683520538.
+Condition number: 1550.2006165486343.
+Condition number: 1550.2153669926277.
+Condition number: 1550.2301197150844.
+Condition number: 1550.2448747500282.
+Condition number: 1550.2596321346286.
+Condition number: 1550.274391909509.
+Condition number: 1550.2891541190136.
+Condition number: 1550.3039188115044.
+Condition number: 1550.318686039692.
+Condition number: 1550.333455860976.
+Condition number: 1550.3482283378385.
+Condition number: 1550.3630035382253.
+Condition number: 1550.3777815359924.
+Condition number: 1550.39256241135.
+Condition number: 1550.4073462513672.
+Condition number: 1550.4221331504884.
+Condition number: 1550.4369232110735.
+Condition number: 1550.451716543996.
+Condition number: 1550.4665132692526.
+Condition number: 1550.4813135166012.
+Condition number: 1550.4961174262442.
+Condition number: 1550.510925149517.
+Condition number: 1550.5257368496086.
+Condition number: 1550.5405527022997.
+Condition number: 1550.5553728967143.
+Condition number: 1550.5701976360576.
+Condition number: 1550.5850271383567.
+Condition number: 1550.5998616371899.
+Condition number: 1550.6147013823463.
+Condition number: 1550.6295466404792.
+Condition number: 1550.6443976956273.
+Condition number: 1550.6592548496817.
+Condition number: 1550.6741184226767.
+Condition number: 1550.6889887529537.
+Condition number: 1550.7038661970953.
+Condition number: 1550.718751129621.
+Condition number: 1550.7336439423977.
+Condition number: 1550.7485450436964.
+Condition number: 1550.7634548568697.
+Condition number: 1550.7783738185865.
+Condition number: 1550.7933023765765.
+Condition number: 1550.8082409868273.
+Condition number: 1550.8231901102188.
+Condition number: 1550.838150208563.
+Condition number: 1550.853121740005.
+Condition number: 1550.8681051538592.
+Condition number: 1550.8831008848447.
+Condition number: 1550.8981093468317.
+Condition number: 1550.9131309261927.
+Condition number: 1550.9281659748613.
+Condition number: 1550.9432148032938.
+Condition number: 1550.9582776735379.
+Condition number: 1550.9733547926144.
+Condition number: 1550.9884463064825.
+Condition number: 1551.0035522947946.
+Condition number: 1551.0186727667337.
+Condition number: 1551.033807658081.
+Condition number: 1551.0489568296973.
+Condition number: 1551.0641200674886.
+Condition number: 1551.0792970838863.
+Condition number: 1551.0944875207308.
+Condition number: 1551.1096909534278.
+Condition number: 1551.1249068961313.
+Condition number: 1551.140134807624.
+Condition number: 1551.1553740975962.
+Condition number: 1551.1706241329377.
+Condition number: 1551.1858842436886.
+Condition number: 1551.2011537283768.
+Condition number: 1551.2164318584717.
+Condition number: 1551.2317178818319.
+Condition number: 1551.2470110251404.
+Condition number: 1551.2623104953939.
+Condition number: 1551.2776154807618.
+Condition number: 1551.2929251511775.
+Condition number: 1551.3082386592114.
+Condition number: 1551.323555141872.
+Condition number: 1551.3388737238438.
+Condition number: 1551.3541935228875.
+Condition number: 1551.3695136575814.
+Condition number: 1551.3848332575762.
+Condition number: 1551.4001514759543.
+Condition number: 1551.4154675030159.
+Condition number: 1551.4307805803296.
+Condition number: 1551.4460900137508.
+Condition number: 1551.4613951840538.
+Condition number: 1551.4766955538757.
+Condition number: 1551.4919906702555.
+Condition number: 1551.5072801623198.
+Condition number: 1551.5225637342558.
+Condition number: 1551.5378411542483.
+Condition number: 1551.5531122402206.
+Condition number: 1551.5683768435526.
+Condition number: 1551.5836348318735.
+Condition number: 1551.5988860719938.
+Condition number: 1551.6141304138266.
+Condition number: 1551.6293676760665.
+Condition number: 1551.6445976341006.
+Condition number: 1551.6598200105716.
+Condition number: 1551.6750344689385.
+Condition number: 1551.690240610267.
+Condition number: 1551.7054379734877.
+Condition number: 1551.720626039369.
+Condition number: 1551.7358042383003.
+Condition number: 1551.7509719619925.
+Condition number: 1551.7661285789377.
+Condition number: 1551.7812734532877.
+Condition number: 1551.796405966512.
+Condition number: 1551.811525540792.
+Condition number: 1551.8266316629201.
+Condition number: 1551.8417239071466.
+Condition number: 1551.856801955401.
+Condition number: 1551.8718656133603.
+Condition number: 1551.8869148211654.
+Condition number: 1551.9019496580618.
+Condition number: 1551.9169703406774.
+Condition number: 1551.9319772153751.
+Condition number: 1551.94697074548.
+Condition number: 1551.9619514945841.
+Condition number: 1551.9769201073698.
+Condition number: 1551.99187728932.
+Condition number: 1552.0068237866226.
+Condition number: 1552.0217603672756.
+Condition number: 1552.0366878042068.
+Condition number: 1552.0516068608806.
+Condition number: 1552.0665182795055.
+Condition number: 1552.0814227720127.
+Condition number: 1552.0963210134664.
+Condition number: 1552.111213637764.
+Condition number: 1552.126101235242.
+Condition number: 1552.1409843518848.
+Condition number: 1552.1558634897758.
+Condition number: 1552.17073910853.
+Condition number: 1552.18561162741.
+Condition number: 1552.200481427938.
+Condition number: 1552.2153488568001.
+Condition number: 1552.2302142289223.
+Condition number: 1552.245077830597.
+Condition number: 1552.2599399226065.
+Condition number: 1552.2748007432388.
+Condition number: 1552.289660511259.
+Condition number: 1552.3045194286917.
+Condition number: 1552.3193776835208.
+Condition number: 1552.3342354522408.
+Condition number: 1552.3490929023.
+Condition number: 1552.363950194432.
+Condition number: 1552.3788074848892.
+Condition number: 1552.393664927638.
+Condition number: 1552.40852267645.
+Condition number: 1552.4233808870215.
+Condition number: 1552.4382397190102.
+Condition number: 1552.4530993381359.
+Condition number: 1552.4679599182425.
+Condition number: 1552.4828216434262.
+Condition number: 1552.4976847101802.
+Condition number: 1552.512549329578.
+Condition number: 1552.5274157295.
+Condition number: 1552.5422841568763.
+Condition number: 1552.5571548799458.
+Condition number: 1552.5720281904767.
+Condition number: 1552.586904405917.
+Condition number: 1552.6017838714358.
+Condition number: 1552.6166669617144.
+Condition number: 1552.63155408246.
+Condition number: 1552.6464456714325.
+Condition number: 1552.6613421989184.
+Condition number: 1552.6762441674025.
+Condition number: 1552.6911521102872.
+Condition number: 1552.7060665893707.
+Condition number: 1552.72098819095.
+Condition number: 1552.7359175202141.
+Condition number: 1552.7508551938217.
+Condition number: 1552.7658018303912.
+Condition number: 1552.7807580389522.
+Condition number: 1552.79572440527.
+Condition number: 1552.8107014762927.
+Condition number: 1552.8256897430365.
+Condition number: 1552.840689622437.
+Condition number: 1552.8557014389287.
+Condition number: 1552.8707254065628.
+Condition number: 1552.8857616127011.
+Condition number: 1550.099010506321.
+Condition number: 1550.1005956745125.
+Condition number: 1550.1021804329503.
+Condition number: 1550.1037647653038.
+Condition number: 1550.1053486562464.
+Condition number: 1550.106932091407.
+Condition number: 1550.1085150572794.
+Condition number: 1550.1100975411794.
+Condition number: 1550.111679531192.
+Condition number: 1550.1132610161048.
+Condition number: 1550.1148419853741.
+Condition number: 1550.1164224290715.
+Condition number: 1550.1180023378515.
+Condition number: 1550.119581702904.
+Condition number: 1550.121160515926.
+Condition number: 1550.122738769078.
+Condition number: 1550.1243164549674.
+Condition number: 1550.1258935666035.
+Condition number: 1550.1274700973897.
+Condition number: 1550.1290460410735.
+Condition number: 1550.130621391751.
+Condition number: 1550.132196143827.
+Condition number: 1550.1337702919964.
+Condition number: 1550.1353438312283.
+Condition number: 1550.1369167567564.
+Condition number: 1550.1384890640436.
+Condition number: 1550.1400607487892.
+Condition number: 1550.1416318068932.
+Condition number: 1550.1432022344625.
+Condition number: 1550.1447720277843.
+Condition number: 1550.1463411833188.
+Condition number: 1550.1479096976923.
+Condition number: 1550.1494775676867.
+Condition number: 1550.1510447902183.
+Condition number: 1550.15261136235.
+Condition number: 1550.154177281261.
+Condition number: 1550.1557425442522.
+Condition number: 1550.1573071487462.
+Condition number: 1550.1588710922597.
+Condition number: 1550.1604343724086.
+Condition number: 1550.1619969869096.
+Condition number: 1550.1635589335615.
+Condition number: 1550.1651202102464.
+Condition number: 1550.1666808149207.
+Condition number: 1550.1682407456237.
+Condition number: 1550.1698000004544.
+Condition number: 1550.1713585775813.
+Condition number: 1550.1729164752337.
+Condition number: 1550.1744736916994.
+Condition number: 1550.1760302253178.
+Condition number: 1550.177586074483.
+Condition number: 1550.1791412376344.
+Condition number: 1550.1806957132662.
+Condition number: 1550.1822494999049.
+Condition number: 1550.1838025961233.
+Condition number: 1550.1853550005333.
+Condition number: 1550.1869067117857.
+Condition number: 1550.188457728561.
+Condition number: 1550.1900080495773.
+Condition number: 1550.1915576735814.
+Condition number: 1550.1931065993479.
+Condition number: 1550.1946548256885.
+Condition number: 1550.1962023514284.
+Condition number: 1550.1977491754283.
+Condition number: 1550.1992952965704.
+Condition number: 1550.200840713753.
+Condition number: 1550.2023854259087.
+Condition number: 1550.2039294319811.
+Condition number: 1550.205472730936.
+Condition number: 1550.2070153217546.
+Condition number: 1550.2085572034434.
+Condition number: 1550.210098375018.
+Condition number: 1550.2116388355175.
+Condition number: 1550.213178583985.
+Condition number: 1550.2147176194924.
+Condition number: 1550.216255941114.
+Condition number: 1550.2177935479426.
+Condition number: 1550.2193304390814.
+Condition number: 1550.2208666136453.
+Condition number: 1550.2224020707683.
+Condition number: 1550.2239368095843.
+Condition number: 1550.2254708292442.
+Condition number: 1550.2270041289041.
+Condition number: 1550.2285367077372.
+Condition number: 1550.2300685649216.
+Condition number: 1550.23159969964.
+Condition number: 1550.233130111091.
+Condition number: 1550.2346597984754.
+Condition number: 1550.2361887610068.
+Condition number: 1550.2377169979025.
+Condition number: 1550.239244508386.
+Condition number: 1550.2407712916934.
+Condition number: 1550.2422973470627.
+Condition number: 1550.2438226737377.
+Condition number: 1550.2453472709706.
+Condition number: 1550.246871138015.
+Condition number: 1550.2483942741403.
+Condition number: 1550.249916678609.
+Condition number: 1550.2514383506968.
+Condition number: 1550.0953046887728.
+Condition number: 1550.1027164299287.
+Condition number: 1550.1064224686636.
+Condition number: 1550.110128632022.
+Condition number: 1550.1138349299436.
+Condition number: 1550.1175413728479.
+Condition number: 1550.1212479716385.
+Condition number: 1550.09159896864.
+Condition number: 1550.1049589663392.
+Condition number: 1550.1004745645798.
+Condition number: 1550.0982333756876.
+Condition number: 1550.0959928687255.
+Condition number: 1550.0937530492547.
+Condition number: 1550.091513922907.
+Condition number: 1550.0892754954034.
+Condition number: 1550.0870377725382.
+Condition number: 1550.0848007602044.
+Condition number: 1550.0825644643678.
+Condition number: 1550.0803288911006.
+Condition number: 1550.078094046546.
+Condition number: 1550.0758599369597.
+Condition number: 1550.0736265686749.
+Condition number: 1550.0713939481298.
+Condition number: 1550.0691620818623.
+Condition number: 1550.0669309765096.
+Condition number: 1550.0647006388065.
+Condition number: 1550.0624710756024.
+Condition number: 1550.0602422938482.
+Condition number: 1550.058014300601.
+Condition number: 1550.0557871030364.
+Condition number: 1550.0535607084416.
+Condition number: 1550.051335124217.
+Condition number: 1550.0491103578865.
+Condition number: 1550.046886417095.
+Condition number: 1550.0446633096085.
+Condition number: 1550.0424410433234.
+Condition number: 1550.0402196262648.
+Condition number: 1550.0379990665892.
+Condition number: 1550.0357793725846.
+Condition number: 1550.1072021684831.
+Condition number: 1550.109446031112.
+Condition number: 1550.1116905490535.
+Condition number: 1550.1139357171926.
+Condition number: 1550.1161815305015.
+Condition number: 1550.1184279840095.
+Condition number: 1550.120675072816.
+Condition number: 1550.122922792086.
+Condition number: 1550.125171137049.
+Condition number: 1550.1274201029978.
+Condition number: 1550.1296696852849.
+Condition number: 1550.1319198793258.
+Condition number: 1550.134170680598.
+Condition number: 1550.1364220846294.
+Condition number: 1550.138674087012.
+Condition number: 1550.140926683392.
+Condition number: 1550.1431798694675.
+Condition number: 1550.1454336409915.
+Condition number: 1550.147687993774.
+Condition number: 1550.1499429236744.
+Condition number: 1550.1521984265987.
+Condition number: 1550.154454498507.
+Condition number: 1550.1567111354057.
+Condition number: 1550.1589683333527.
+Condition number: 1550.1612260884472.
+Condition number: 1550.1634843968395.
+Condition number: 1550.16574325472.
+Condition number: 1550.1680026583317.
+Condition number: 1550.1702626039496.
+Condition number: 1550.1725230878985.
+Condition number: 1550.17478410654.
+Condition number: 1550.1770456562865.
+Condition number: 1550.0335605526896.
+Condition number: 1550.031342615464.
+Condition number: 1550.0291255696363.
+Condition number: 1550.0269094240598.
+Condition number: 1550.0246941877504.
+Condition number: 1550.0224798698798.
+
+
+
+
+Warmup [5]:  80%|████████  | 4/5 [06:24, 129.91s/it, step size=1.22e-04, acc. prob=0.148][A[A[A[A
+
+
+
+Warmup [5]: 100%|██████████| 5/5 [06:33, 86.25s/it, step size=1.22e-04, acc. prob=0.119] [A[A[A[ACondition number: 1569.7955810965143.
+Condition number: 1549.9412401989284.
+Condition number: 1549.9412401989284.
+Condition number: 1549.9412401989284.
+Condition number: 1549.9412401989284.
+Condition number: 1549.9412401989284.
+Condition number: 1536.4628055315495.
+Condition number: 1549.9412401989284.
+Condition number: 1500.1217016224998.
+Condition number: 1549.9412401989284.
+Condition number: 1579.6265223012779.
+Condition number: 1549.9412401989284.
+Condition number: 1549.5937780090962.
+Condition number: 1549.9412401989284.
+Condition number: 1553.978563518717.
+Condition number: 1549.9412401989284.
+Condition number: 1551.7861927679942.
+Condition number: 1549.9412401989284.
+Condition number: 1551.3869975635669.
+Condition number: 1549.9412401989284.
+Condition number: 1550.7532588947813.
+Condition number: 1549.9412401989284.
+Condition number: 1549.918627296403.
+Condition number: 1549.9412401989284.
+Condition number: 1550.0605901356419.
+Condition number: 1549.9412401989284.
+Condition number: 1550.0437553686018.
+Condition number: 1549.9412401989284.
+Condition number: 1549.9508681288344.
+Condition number: 1549.9412401989284.
+Condition number: 1549.9740830020594.
+Condition number: 1549.9412401989284.
+Condition number: 1549.9420077837387.
+Condition number: 1549.9487247452055.
+Condition number: 1549.9562092084789.
+Condition number: 1549.9636935855196.
+Condition number: 1549.9711778730818.
+Condition number: 1549.9642278884796.
+Condition number: 1549.9753339321937.
+Condition number: 1549.986973857743.
+Condition number: 1549.9986133592615.
+Condition number: 1550.0102524338492.
+Condition number: 1550.0218910786227.
+Condition number: 1550.0335292907055.
+Condition number: 1550.0451670672323.
+Condition number: 1549.952052820635.
+Condition number: 1549.940411640472.
+Condition number: 1549.9287700479686.
+Condition number: 1549.9171280460669.
+Condition number: 1549.9054856377245.
+Condition number: 1549.8938428258996.
+Condition number: 1549.8821996135614.
+Condition number: 1549.870556003689.
+Condition number: 1549.8589119992607.
+Condition number: 1549.847267603264.
+Condition number: 1549.8356228186924.
+Condition number: 1549.8239776485477.
+Condition number: 1549.8123320958248.
+Condition number: 1549.8006861635324.
+Condition number: 1549.7890398546729.
+Condition number: 1549.7773931722572.
+Condition number: 1549.7657461193005.
+Condition number: 1549.7540986988058.
+Condition number: 1549.7424509137911.
+Condition number: 1549.730802767261.
+Condition number: 1549.7191542622254.
+Condition number: 1549.7075054016948.
+Condition number: 1549.6958561886647.
+Condition number: 1549.6842066261368.
+Condition number: 1549.672556717107.
+Condition number: 1549.660906464554.
+Condition number: 1549.6492558714638.
+Condition number: 1549.6376049408084.
+Condition number: 1549.6259536755492.
+Condition number: 1549.6143020786358.
+Condition number: 1549.6026501530139.
+Condition number: 1549.5909979016026.
+Condition number: 1549.579345327325.
+Condition number: 1549.5676924330712.
+Condition number: 1549.5560392217253.
+Condition number: 1549.544385696147.
+Condition number: 1549.5327318591821.
+Condition number: 1549.5210777136467.
+Condition number: 1549.5094232623403.
+Condition number: 1549.4977685080296.
+Condition number: 1549.4861134534613.
+Condition number: 1549.4744581013465.
+Condition number: 1549.4628024543729.
+Condition number: 1549.4511465151807.
+Condition number: 1549.439490286383.
+Condition number: 1549.4278337705546.
+Condition number: 1549.4161769702262.
+Condition number: 1549.404519887878.
+Condition number: 1549.3928625259528.
+Condition number: 1549.381204886834.
+Condition number: 1549.3695469728557.
+Condition number: 1549.3578887862882.
+Condition number: 1549.3462303293477.
+Condition number: 1549.9777193912828.
+Condition number: 1549.9917483317872.
+Condition number: 1550.0057803971595.
+Condition number: 1550.019815577701.
+Condition number: 1550.0338538638637.
+Condition number: 1550.0478952462463.
+Condition number: 1550.061939715586.
+Condition number: 1550.07598726276.
+Condition number: 1550.0900378787749.
+Condition number: 1550.1040915547514.
+Condition number: 1550.1181482819406.
+Condition number: 1550.1322080516936.
+Condition number: 1550.1462708554748.
+Condition number: 1550.1603366848522.
+Condition number: 1550.1744055314923.
+Condition number: 1550.1884773871468.
+Condition number: 1550.2025522436634.
+Condition number: 1550.2166300929787.
+Condition number: 1550.2307109270962.
+Condition number: 1550.2447947381079.
+Condition number: 1550.2588815181741.
+Condition number: 1550.2729712595274.
+Condition number: 1550.2870639544587.
+Condition number: 1550.3011595953299.
+Condition number: 1550.3152581745544.
+Condition number: 1550.329359684607.
+Condition number: 1550.343464118008.
+Condition number: 1550.3575714673257.
+Condition number: 1550.3716817251807.
+Condition number: 1550.385794884227.
+Condition number: 1550.3999109371584.
+Condition number: 1550.4140298767018.
+Condition number: 1550.4281516956205.
+Condition number: 1550.4422763866926.
+Condition number: 1550.4564039427269.
+Condition number: 1550.4705343565447.
+Condition number: 1550.4846676209836.
+Condition number: 1550.4988037288817.
+Condition number: 1550.5129426730855.
+Condition number: 1550.5270844464317.
+Condition number: 1550.5412290417505.
+Condition number: 1550.5553764518424.
+Condition number: 1550.5695266694872.
+Condition number: 1550.5836796874278.
+Condition number: 1550.5978354983442.
+Condition number: 1550.6119940948633.
+Condition number: 1550.626155469522.
+Condition number: 1550.6403196147726.
+Condition number: 1550.654486522937.
+Condition number: 1550.6686561862036.
+Condition number: 1550.6828285965776.
+Condition number: 1550.6970037458698.
+Condition number: 1550.7111816256338.
+Condition number: 1550.7253622271337.
+Condition number: 1550.739545541285.
+Condition number: 1550.753731558574.
+Condition number: 1550.7679202689847.
+Condition number: 1550.7821116618925.
+Condition number: 1550.79630572595.
+Condition number: 1550.810502448923.
+Condition number: 1550.8247018175193.
+Condition number: 1550.8389038171545.
+Condition number: 1550.8531084316878.
+Condition number: 1550.867315643064.
+Condition number: 1550.8815254309031.
+Condition number: 1550.8957377719591.
+Condition number: 1550.9099526394962.
+Condition number: 1550.924170002453.
+Condition number: 1550.938389824469.
+Condition number: 1550.9526120626467.
+Condition number: 1550.9668366660446.
+Condition number: 1550.981063573849.
+Condition number: 1550.9952927131474.
+Condition number: 1551.0095239962957.
+Condition number: 1551.023757317819.
+Condition number: 1551.0379925508425.
+Condition number: 1551.052229543104.
+Condition number: 1551.0664681126384.
+Condition number: 1551.0807080433158.
+Condition number: 1551.0949490805583.
+Condition number: 1551.1091909276267.
+Condition number: 1551.1234332430163.
+Condition number: 1551.1376756396273.
+Condition number: 1551.1519176863026.
+Condition number: 1551.1661589123714.
+Condition number: 1551.1803988154993.
+Condition number: 1551.1946368729657.
+Condition number: 1551.2088725558274.
+Condition number: 1551.2231053451492.
+Condition number: 1551.2373347488972.
+Condition number: 1551.2515603178138.
+Condition number: 1551.2657816586704.
+Condition number: 1551.2799984433702.
+Condition number: 1551.2942104129404.
+Condition number: 1551.3084173760265.
+Condition number: 1551.322619202146.
+Condition number: 1551.3368158104595.
+Condition number: 1551.3510071552519.
+Condition number: 1551.3651932093815.
+Condition number: 1551.3793739470273.
+Condition number: 1551.3935493268782.
+Condition number: 1551.4077192766822.
+Condition number: 1551.4218836798714.
+Condition number: 1551.4360423647681.
+Condition number: 1551.450195096753.
+Condition number: 1551.46434157368.
+Condition number: 1551.4784814247544.
+Condition number: 1551.4926142131287.
+Condition number: 1551.5067394423381.
+Condition number: 1551.5208565666996.
+Condition number: 1551.5349650056637.
+Condition number: 1551.549064161777.
+Condition number: 1551.563153441795.
+Condition number: 1551.5772322800176.
+Condition number: 1551.5913001625904.
+Condition number: 1551.6053566513685.
+Condition number: 1551.619401405574.
+Condition number: 1551.6334341997435.
+Condition number: 1551.6474549365255.
+Condition number: 1551.6614636534134.
+Condition number: 1551.6754605230196.
+Condition number: 1551.6894458471156.
+Condition number: 1551.7034200451722.
+Condition number: 1551.717383638613.
+Condition number: 1551.7313372321426.
+Condition number: 1551.7452814936737.
+Condition number: 1551.7592171341728.
+Condition number: 1551.773144888563.
+Condition number: 1551.787065498525.
+Condition number: 1551.8009796977121.
+Condition number: 1551.8148881996701.
+Condition number: 1551.828791688395.
+Condition number: 1551.8426908115005.
+Condition number: 1551.8565861756142.
+Condition number: 1551.870478343752.
+Condition number: 1551.8843678342837.
+Condition number: 1551.8982551211598.
+Condition number: 1551.912140635123.
+Condition number: 1551.926024765588.
+Condition number: 1551.9399078629876.
+Condition number: 1551.9537902414002.
+Condition number: 1551.9676721813141.
+Condition number: 1551.9815539324024.
+Condition number: 1551.995435716256.
+Condition number: 1552.009317729002.
+Condition number: 1552.0232001437464.
+Condition number: 1552.0370831128816.
+Condition number: 1552.0509667701604.
+Condition number: 1552.0648512326268.
+Condition number: 1552.0787366023287.
+Condition number: 1552.092622967854.
+Condition number: 1552.106510405709.
+Condition number: 1552.120398981524.
+Condition number: 1552.1342887510964.
+Condition number: 1552.1481797613235.
+Condition number: 1552.1620720509757.
+Condition number: 1552.175965651354.
+Condition number: 1552.189860586871.
+Condition number: 1552.2037568754527.
+Condition number: 1552.217654528913.
+Condition number: 1552.2315535531916.
+Condition number: 1552.2454539485286.
+Condition number: 1552.2593557095051.
+Condition number: 1552.2732588250565.
+Condition number: 1552.2871632783394.
+Condition number: 1552.301069046541.
+Condition number: 1552.3149761005845.
+Condition number: 1552.3288844047513.
+Condition number: 1552.342793916147.
+Condition number: 1552.3567045841392.
+Condition number: 1552.3706163495904.
+Condition number: 1552.3845291440155.
+Condition number: 1552.3984428885722.
+Condition number: 1552.4123574929072.
+Condition number: 1552.42627285383.
+Condition number: 1552.440188853789.
+Condition number: 1552.454105359184.
+Condition number: 1552.4680222184206.
+Condition number: 1552.4819392597874.
+Condition number: 1552.4958562890497.
+Condition number: 1552.5097730868208.
+Condition number: 1552.523689405671.
+Condition number: 1552.5376049670026.
+Condition number: 1552.551519457675.
+Condition number: 1552.5654325264359.
+Condition number: 1552.579343780178.
+Condition number: 1552.593252780123.
+Condition number: 1552.6071590379904.
+Condition number: 1552.6210620122952.
+Condition number: 1552.6349611049552.
+Condition number: 1552.648855658398.
+Condition number: 1552.6627449534237.
+Condition number: 1552.676628208157.
+Condition number: 1552.6905045783838.
+Condition number: 1552.7043731597043.
+Condition number: 1552.718232991821.
+Condition number: 1552.7320830654326.
+Condition number: 1552.7459223319406.
+Condition number: 1552.7597497162956.
+Condition number: 1552.773564132963.
+Condition number: 1552.787364504925.
+Condition number: 1552.80114978531.
+Condition number: 1552.8149189809678.
+Condition number: 1552.8286711770909.
+Condition number: 1552.8424055616604.
+Condition number: 1552.856121448401.
+Condition number: 1552.8698182969167.
+Condition number: 1552.8834957285987.
+Condition number: 1552.8971535374314.
+Condition number: 1552.9107916948508.
+Condition number: 1552.9244103484484.
+Condition number: 1552.9380098147321.
+Condition number: 1552.9515905665064.
+Condition number: 1552.9651532158641.
+Condition number: 1552.9786984939287.
+Condition number: 1552.9922272286674.
+Condition number: 1553.005740321974.
+Condition number: 1553.0192387271557.
+Condition number: 1553.0327234277422.
+Condition number: 1553.0461954182888.
+Condition number: 1553.059655687641.
+Condition number: 1553.0731052048575.
+Condition number: 1553.086544907837.
+Condition number: 1553.0999756945732.
+Condition number: 1553.1133984167825.
+Condition number: 1553.1268138756595.
+Condition number: 1553.140222819456.
+Condition number: 1553.1536259425675.
+Condition number: 1553.1670238858148.
+Condition number: 1553.1804172376956.
+Condition number: 1553.1938065363204.
+Condition number: 1553.2071922718294.
+Condition number: 1553.220574889156.
+Condition number: 1553.2339547909733.
+Condition number: 1553.2473323406844.
+Condition number: 1553.2607078654457.
+Condition number: 1553.274081659083.
+Condition number: 1553.287453984899.
+Condition number: 1553.3008250783266.
+Condition number: 1553.3141951494295.
+Condition number: 1553.3275643851916.
+Condition number: 1553.340932951635.
+Condition number: 1553.3543009957743.
+Condition number: 1553.3676686473564.
+Condition number: 1553.3810360204334.
+Condition number: 1553.3944032148115.
+Condition number: 1553.40777031728.
+Condition number: 1553.4211374027414.
+Condition number: 1553.4345045351897.
+Condition number: 1553.4478717685588.
+Condition number: 1553.4612391474407.
+Condition number: 1553.4746067077265.
+Condition number: 1553.4879744770772.
+Condition number: 1553.5013424753754.
+Condition number: 1553.5147107150103.
+Condition number: 1553.5280792010974.
+Condition number: 1553.541447931619.
+Condition number: 1553.554816897466.
+Condition number: 1553.568186082375.
+Condition number: 1553.5815554628114.
+Condition number: 1553.594925007731.
+Condition number: 1553.6082946782747.
+Condition number: 1553.6216644273459.
+Condition number: 1553.6350341991035.
+Condition number: 1553.6484039283337.
+Condition number: 1553.6617735397365.
+Condition number: 1553.675142947065.
+Condition number: 1553.6885120521451.
+Condition number: 1553.701880743778.
+Condition number: 1553.7152488964618.
+Condition number: 1553.7286163689969.
+Condition number: 1553.7419830028887.
+Condition number: 1553.7553486205936.
+Condition number: 1553.7687130235906.
+Condition number: 1553.7820759902193.
+Condition number: 1553.7954372733577.
+Condition number: 1553.8087965978793.
+Condition number: 1553.8221536578842.
+Condition number: 1553.8355081137672.
+Condition number: 1553.8488595890583.
+Condition number: 1553.8622076671218.
+Condition number: 1553.8755518876983.
+Condition number: 1553.8888917433528.
+Condition number: 1553.9022266758898.
+Condition number: 1553.9155560728152.
+Condition number: 1553.9288792639084.
+Condition number: 1553.9421955180933.
+Condition number: 1553.9555040406947.
+Condition number: 1553.9688039712573.
+Condition number: 1553.9820943821903.
+Condition number: 1553.9953742783648.
+Condition number: 1554.0086425979723.
+Condition number: 1554.02189821485.
+Condition number: 1554.035139942548.
+Condition number: 1554.0483665402865.
+Condition number: 1554.0615767211134.
+Condition number: 1554.0747691621805.
+Condition number: 1554.0879425173496.
+Condition number: 1554.1010954319029.
+Condition number: 1554.1142265591545.
+Condition number: 1554.127334578615.
+Condition number: 1554.1404182151264.
+Condition number: 1554.1534762583167.
+Condition number: 1554.1665075815706.
+Condition number: 1554.1795111597028.
+Condition number: 1554.1924860843922.
+Condition number: 1554.2054315766798.
+Condition number: 1554.2183469957051.
+Condition number: 1554.231231843292.
+Condition number: 1554.244085764014.
+Condition number: 1554.2569085407333.
+Condition number: 1554.2697000858034.
+Condition number: 1554.2824604283758.
+Condition number: 1554.2951896984296.
+Condition number: 1554.3078881082556.
+Condition number: 1554.3205559322632.
+Condition number: 1554.3331934859182.
+Condition number: 1554.3458011046325.
+Condition number: 1554.3583791233773.
+Condition number: 1554.3709278576025.
+Condition number: 1554.3834475860697.
+Condition number: 1554.3959385359287.
+Condition number: 1554.4084008704067.
+Condition number: 1554.4208346792805.
+Condition number: 1554.4332399722603.
+Condition number: 1554.4456166753405.
+Condition number: 1554.457964630051.
+Condition number: 1554.470283595638.
+Condition number: 1554.4825732539664.
+Condition number: 1554.4948332170277.
+Condition number: 1554.507063036868.
+Condition number: 1554.5192622176419.
+Condition number: 1554.5314302295426.
+Condition number: 1554.5435665241832.
+Condition number: 1554.5556705511185.
+Condition number: 1554.567741774983.
+Condition number: 1554.5797796927793.
+Condition number: 1554.5917838508385.
+Condition number: 1554.6037538608825.
+Condition number: 1554.6156894147666.
+Condition number: 1554.6275902973646.
+Condition number: 1554.6394563972915.
+Condition number: 1554.6512877151051.
+Condition number: 1554.6630843687783.
+Condition number: 1554.6748465964015.
+Condition number: 1554.686574756078.
+Condition number: 1554.6982693231657.
+Condition number: 1554.7099308850727.
+Condition number: 1554.7215601339465.
+Condition number: 1554.7331578575322.
+Condition number: 1554.7447249287081.
+Condition number: 1554.7562622939945.
+Condition number: 1554.7677709615102.
+Condition number: 1554.7792519887178.
+Condition number: 1554.7907064702888.
+Condition number: 1554.8021355264143.
+Condition number: 1554.8135402917308.
+Condition number: 1554.8249219051058.
+Condition number: 1554.8362815003688.
+Condition number: 1554.8476201980698.
+Condition number: 1554.8589390983243.
+Condition number: 1554.8702392747105.
+Condition number: 1554.8815217692174.
+Condition number: 1554.8927875881454.
+Condition number: 1554.9040376989617.
+Condition number: 1554.9152730279486.
+Condition number: 1554.9264944586005.
+Condition number: 1554.937702830691.
+Condition number: 1554.9488989398974.
+Condition number: 1554.9600835378787.
+Condition number: 1554.971257332796.
+Condition number: 1554.9824209901344.
+Condition number: 1554.993575133787.
+Condition number: 1555.0047203473514.
+Condition number: 1555.0158571755594.
+Condition number: 1555.0269861258307.
+Condition number: 1555.0381076698795.
+Condition number: 1555.0492222453447.
+Condition number: 1555.0603302574596.
+Condition number: 1555.0714320806567.
+Condition number: 1555.0825280601705.
+Condition number: 1555.0936185135877.
+Condition number: 1555.1047037323117.
+Condition number: 1555.1157839829727.
+Condition number: 1555.1268595087681.
+Condition number: 1555.1379305306941.
+Condition number: 1555.1489972487109.
+Condition number: 1555.160059842817.
+Condition number: 1555.1711184740166.
+Condition number: 1555.1821732852334.
+Condition number: 1555.1932244020747.
+Condition number: 1555.2042719335848.
+Condition number: 1555.2153159728348.
+Condition number: 1555.226356597468.
+Condition number: 1555.2373938701562.
+Condition number: 1555.2484278389447.
+Condition number: 1555.2594585375502.
+Condition number: 1555.2704859855344.
+Condition number: 1555.2815101884323.
+Condition number: 1555.292531137777.
+Condition number: 1555.3035488110374.
+Condition number: 1555.3145631714935.
+Condition number: 1555.3255741680173.
+Condition number: 1555.3365817347615.
+Condition number: 1555.3475857908056.
+Condition number: 1555.3585862396633.
+Condition number: 1555.369582968758.
+Condition number: 1555.380575848778.
+Condition number: 1555.3915647329861.
+Condition number: 1555.402549456403.
+Condition number: 1555.4135298349486.
+Condition number: 1555.4245056644825.
+Condition number: 1555.4354767197663.
+Condition number: 1555.4464427533517.
+Condition number: 1555.4574034944073.
+Condition number: 1555.4683586474487.
+Condition number: 1555.4793078910398.
+Condition number: 1555.4902508764148.
+Condition number: 1555.501187226073.
+Condition number: 1555.5121165323214.
+Condition number: 1555.5230383558435.
+Condition number: 1555.5339522241886.
+Condition number: 1555.5448576303825.
+Condition number: 1555.555754031489.
+Condition number: 1555.566640847313.
+Condition number: 1555.57751745917.
+Condition number: 1555.5883832088139.
+Condition number: 1555.5992373975282.
+Condition number: 1555.610079285458.
+Condition number: 1555.6209080912026.
+Condition number: 1555.631722991736.
+Condition number: 1555.6425231226897.
+Condition number: 1555.6533075790687.
+Condition number: 1555.6640754164637.
+Condition number: 1555.674825652775.
+Condition number: 1555.6855572705404.
+Condition number: 1555.6962692198852.
+Condition number: 1555.706960422137.
+Condition number: 1555.7176297741446.
+Condition number: 1555.7282761533029.
+Condition number: 1555.7388984232705.
+Condition number: 1555.7494954404026.
+Condition number: 1555.760066060813.
+Condition number: 1555.7706091480325.
+Condition number: 1555.7811235811905.
+Condition number: 1555.7916082635834.
+Condition number: 1555.8020621315313.
+Condition number: 1555.8124841633964.
+Condition number: 1555.8228733885544.
+Condition number: 1555.8332288961997.
+Condition number: 1555.8435498437927.
+Condition number: 1555.8538354649602.
+Condition number: 1555.8640850767194.
+Condition number: 1555.8742980858196.
+Condition number: 1555.8844739941264.
+Condition number: 1555.8946124028762.
+Condition number: 1555.9047130157555.
+Condition number: 1555.914775640744.
+Condition number: 1555.9248001906901.
+Condition number: 1555.9347866826515.
+Condition number: 1555.9447352360164.
+Condition number: 1555.954646069503.
+Condition number: 1555.9645194971174.
+Condition number: 1555.9743559232172.
+Condition number: 1555.9841558367436.
+Condition number: 1555.9939198048642.
+Condition number: 1556.0036484660725.
+Condition number: 1556.013342522961.
+Condition number: 1556.0230027347682.
+Condition number: 1556.0326299098615.
+Condition number: 1556.0422248982482.
+Condition number: 1556.0517885842523.
+Condition number: 1556.061321879409.
+Condition number: 1556.0708257157128.
+Condition number: 1556.080301039219.
+Condition number: 1556.089748804094.
+Condition number: 1556.0991699671106.
+Condition number: 1556.1085654826636.
+Condition number: 1556.1179362982025.
+Condition number: 1556.127283350262.
+Condition number: 1556.136607560878.
+Condition number: 1556.145909834514.
+Condition number: 1556.1551910554401.
+Condition number: 1556.1644520855098.
+Condition number: 1556.1736937623318.
+Condition number: 1556.182916897815.
+Condition number: 1556.1921222770422.
+Condition number: 1556.2013106574138.
+Condition number: 1556.2104827681057.
+Condition number: 1556.2196393097329.
+Condition number: 1556.2287809542324.
+Condition number: 1556.2379083449339.
+Condition number: 1556.2470220967791.
+Condition number: 1556.2561227966878.
+Condition number: 1556.265211004019.
+Condition number: 1556.2742872511428.
+Condition number: 1556.2833520440786.
+Condition number: 1556.292405863206.
+Condition number: 1556.3014491639942.
+Condition number: 1556.3104823777971.
+Condition number: 1556.319505912652.
+Condition number: 1556.3285201540848.
+Condition number: 1556.3375254659509.
+Condition number: 1556.3465221912202.
+Condition number: 1556.355510652821.
+Condition number: 1556.3644911544072.
+Condition number: 1556.373463981139.
+Condition number: 1556.3824294004457.
+Condition number: 1556.3913876627414.
+Condition number: 1556.4003390021383.
+Condition number: 1556.4092836370942.
+Condition number: 1556.4182217710802.
+Condition number: 1556.4271535931755.
+Condition number: 1556.4360792786429.
+Condition number: 1556.4449989894756.
+Condition number: 1556.453912874897.
+Condition number: 1556.462821071852.
+Condition number: 1556.4717237054315.
+Condition number: 1556.4806208892971.
+Condition number: 1556.4895127260397.
+Condition number: 1556.4983993075364.
+Condition number: 1556.5072807152494.
+Condition number: 1556.5161570205205.
+Condition number: 1556.5250282847878.
+Condition number: 1556.5338945598312.
+Condition number: 1556.5427558879335.
+Condition number: 1556.5516123020436.
+Condition number: 1556.5604638259047.
+Condition number: 1556.5693104741326.
+Condition number: 1556.5781522522836.
+Condition number: 1556.5869891568918.
+Condition number: 1556.595821175478.
+Condition number: 1556.604648286513.
+Condition number: 1556.613470459365.
+Condition number: 1556.6222876542308.
+Condition number: 1556.6310998220165.
+Condition number: 1556.6399069041845.
+Condition number: 1556.648708832619.
+Condition number: 1556.6575055293924.
+Condition number: 1556.666296906576.
+Condition number: 1556.6750828659563.
+Condition number: 1556.6838632987728.
+Condition number: 1556.6926380854122.
+Condition number: 1556.7014070950468.
+Condition number: 1556.7101701853114.
+Condition number: 1556.7189272018668.
+Condition number: 1556.7276779780123.
+Condition number: 1556.7364223342304.
+Condition number: 1556.7451600777074.
+Condition number: 1556.7538910018598.
+Condition number: 1556.7626148857785.
+Condition number: 1556.7713314937264.
+Condition number: 1556.7800405745318.
+Condition number: 1556.7887418610399.
+Condition number: 1556.7974350694687.
+Condition number: 1556.8061198988378.
+Condition number: 1556.8147960302847.
+Condition number: 1556.8234631264613.
+Condition number: 1556.8321208308528.
+Condition number: 1556.8407687671383.
+Condition number: 1556.8494065385444.
+Condition number: 1556.8580337271742.
+Condition number: 1556.8666498933876.
+Condition number: 1556.8752545751809.
+Condition number: 1556.8838472875796.
+Condition number: 1556.8924275220836.
+Condition number: 1556.9009947461298.
+Condition number: 1556.9095484026213.
+Condition number: 1556.918087909487.
+Condition number: 1556.9266126593266.
+Condition number: 1556.935122019119.
+Condition number: 1556.943615330025.
+Condition number: 1556.9520919072597.
+Condition number: 1556.960551040101.
+Condition number: 1556.9689919920004.
+Condition number: 1556.977414000805.
+Condition number: 1556.9858162791538.
+Condition number: 1556.994198014967.
+Condition number: 1557.0025583721563.
+Condition number: 1557.0108964914466.
+Condition number: 1557.0192114913914.
+Condition number: 1557.0275024695748.
+Condition number: 1557.0357685039755.
+Condition number: 1557.044008654538.
+Condition number: 1557.052221964923.
+Condition number: 1557.0604074644311.
+Condition number: 1557.0685641701268.
+Condition number: 1557.0766910891282.
+Condition number: 1557.0847872210531.
+Condition number: 1557.092851560629.
+Condition number: 1557.1008831004442.
+Condition number: 1557.1088808337909.
+Condition number: 1557.11684375764.
+Condition number: 1557.1247708756737.
+Condition number: 1557.1326612013515.
+Condition number: 1557.1405137610275.
+Condition number: 1557.148327597036.
+Condition number: 1557.1561017707513.
+Condition number: 1557.1638353655617.
+Condition number: 1557.1715274897638.
+Condition number: 1557.1791772793115.
+Condition number: 1557.1867839004037.
+Condition number: 1557.1943465518937.
+Condition number: 1557.2018644674868.
+Condition number: 1557.2093369176757.
+Condition number: 1557.2167632114758.
+Condition number: 1557.2241426978198.
+Condition number: 1557.2314747667353.
+Condition number: 1557.238758850186.
+Condition number: 1557.245994422639.
+Condition number: 1557.253181001329.
+Condition number: 1557.2603181462475.
+Condition number: 1557.2674054598167.
+Condition number: 1557.2744425863164.
+Condition number: 1557.2814292110472.
+Condition number: 1557.288365059245.
+Condition number: 1557.2952498947845.
+Condition number: 1557.3020835186614.
+Condition number: 1557.3088657673081.
+Condition number: 1557.31559651077.
+Condition number: 1557.322275650716.
+Condition number: 1557.328903118368.
+Condition number: 1557.335478872333.
+Condition number: 1557.3420028963983.
+Condition number: 1557.3484751972483.
+Condition number: 1557.3548958022216.
+Condition number: 1557.3612647570205.
+Condition number: 1557.3675821234779.
+Condition number: 1557.3738479773529.
+Condition number: 1557.38006240619.
+Condition number: 1557.3862255072377.
+Condition number: 1557.3923373854557.
+Condition number: 1557.3983981516126.
+Condition number: 1557.4044079204998.
+Condition number: 1557.4103668092212.
+Condition number: 1557.4162749356217.
+Condition number: 1557.4221324168298.
+Condition number: 1557.4279393679064.
+Condition number: 1557.433695900638.
+Condition number: 1557.4394021224273.
+Condition number: 1557.4450581353112.
+Condition number: 1557.450664035117.
+Condition number: 1557.4562199107058.
+Condition number: 1557.4617258433452.
+Condition number: 1557.4671819061962.
+Condition number: 1557.47258816389.
+Condition number: 1557.4779446722232.
+Condition number: 1557.4832514779205.
+Condition number: 1557.4885086185332.
+Condition number: 1557.4937161223781.
+Condition number: 1557.4988740085735.
+Condition number: 1557.5039822871486.
+Condition number: 1557.509040959229.
+Condition number: 1557.5140500172602.
+Condition number: 1557.5190094453064.
+Condition number: 1557.5239192193947.
+Condition number: 1557.528779307901.
+Condition number: 1557.5335896719691.
+Condition number: 1557.5383502659874.
+Condition number: 1557.5430610380597.
+Condition number: 1557.5477219305194.
+Condition number: 1557.5523328804657.
+Condition number: 1557.5568938202973.
+Condition number: 1557.561404678271.
+Condition number: 1557.5658653790563.
+Condition number: 1557.570275844295.
+Condition number: 1557.5746359931604.
+Condition number: 1557.5789457428962.
+Condition number: 1557.5832050093807.
+Condition number: 1557.5874137076314.
+Condition number: 1557.5915717523458.
+Condition number: 1557.59567905838.
+Condition number: 1557.5997355412458.
+Condition number: 1557.603741117565.
+Condition number: 1557.6076957055054.
+Condition number: 1557.6115992251925.
+Condition number: 1557.6154515991132.
+Condition number: 1557.6192527524665.
+Condition number: 1557.6230026135113.
+Condition number: 1557.6267011138723.
+Condition number: 1557.6303481888224.
+Condition number: 1557.6339437775525.
+Condition number: 1557.6374878233823.
+Condition number: 1557.6409802739865.
+Condition number: 1557.6444210815512.
+Condition number: 1557.6478102029323.
+Condition number: 1557.6511475997825.
+Condition number: 1557.6544332386534.
+Condition number: 1557.6576670910574.
+Condition number: 1557.66084913354.
+Condition number: 1557.6639793476966.
+Condition number: 1557.6670577201855.
+Condition number: 1557.6700842427192.
+Condition number: 1557.673058912032.
+Condition number: 1557.6759817298291.
+Condition number: 1557.678852702731.
+Condition number: 1557.6816718421837.
+Condition number: 1557.6844391643624.
+Condition number: 1557.6871546900784.
+Condition number: 1557.689818444638.
+Condition number: 1557.6924304577242.
+Condition number: 1557.6949907632422.
+Condition number: 1557.697499399192.
+Condition number: 1557.6999564074754.
+Condition number: 1557.7023618337564.
+Condition number: 1557.7047157272848.
+Condition number: 1557.707018140706.
+Condition number: 1557.709269129896.
+Condition number: 1557.7114687537671.
+Condition number: 1557.7136170740757.
+Condition number: 1557.715714155251.
+Condition number: 1557.7177600641874.
+Condition number: 1557.7197548700562.
+Condition number: 1557.7216986441222.
+Condition number: 1557.723591459548.
+Condition number: 1557.7254333912094.
+Condition number: 1557.7272245155004.
+Condition number: 1557.7289649101538.
+Condition number: 1557.7306546540542.
+Condition number: 1557.7322938270634.
+Condition number: 1557.7338825098423.
+Condition number: 1557.7354207836672.
+Condition number: 1557.7369087302777.
+Condition number: 1557.738346431698.
+Condition number: 1557.7397339700758.
+Condition number: 1557.741071427532.
+Condition number: 1557.742358885998.
+Condition number: 1557.743596427078.
+Condition number: 1557.7447841318954.
+Condition number: 1557.7459220809535.
+Condition number: 1557.747010354013.
+Condition number: 1557.748049029948.
+Condition number: 1557.7490381866264.
+Condition number: 1557.7499779007899.
+Condition number: 1557.7508682479393.
+Condition number: 1557.7517093022245.
+Condition number: 1557.752501136338.
+Condition number: 1557.7532438213996.
+Condition number: 1557.7539374268897.
+Condition number: 1557.7545820205314.
+Condition number: 1557.7551776682146.
+Condition number: 1557.7557244339068.
+Condition number: 1557.7562223795815.
+Condition number: 1557.7566715651412.
+Condition number: 1557.7570720483454.
+Condition number: 1557.7574238847506.
+Condition number: 1557.7577271276348.
+Condition number: 1557.7579818279644.
+Condition number: 1557.7581880343132.
+Condition number: 1557.7583457928433.
+Condition number: 1557.7584551472282.
+Condition number: 1557.7585161386346.
+Condition number: 1557.7585288056694.
+Condition number: 1557.7584931843624.
+Condition number: 1557.7584093081166.
+Condition number: 1557.758277207694.
+Condition number: 1557.7580969111905.
+Condition number: 1557.7578684440086.
+Condition number: 1557.7575918288562.
+Condition number: 1557.7572670857135.
+Condition number: 1557.7568942318433.
+Condition number: 1557.7564732817668.
+Condition number: 1557.7560042472774.
+Condition number: 1557.755487137426.
+Condition number: 1557.754921958535.
+Condition number: 1557.754308714207.
+Condition number: 1557.75364740532.
+Condition number: 1557.752938030057.
+Condition number: 1557.7521805839217.
+Condition number: 1557.7513750597363.
+Condition number: 1557.7505214477044.
+Condition number: 1557.7496197353992.
+Condition number: 1557.7486699078177.
+Condition number: 1557.7476719474002.
+Condition number: 1557.7466258340783.
+Condition number: 1557.7455315453008.
+Condition number: 1557.7443890561.
+Condition number: 1557.7431983391082.
+Condition number: 1557.7419593646362.
+Condition number: 1557.7406721007064.
+Condition number: 1557.739336513122.
+Condition number: 1557.7379525655267.
+Condition number: 1557.736520219462.
+Condition number: 1557.7350394344442.
+Condition number: 1557.7335101680387.
+Condition number: 1557.7319323759175.
+Condition number: 1557.7303060119607.
+Condition number: 1557.7286310283298.
+Condition number: 1557.7269073755517.
+Condition number: 1557.7251350026188.
+Condition number: 1557.723313857074.
+Condition number: 1557.7214438851177.
+Condition number: 1557.71952503171.
+Condition number: 1557.7175572406697.
+Condition number: 1557.715540454798.
+Condition number: 1557.7134746159807.
+Condition number: 1557.7113596653178.
+Condition number: 1557.7091955432334.
+Condition number: 1557.7069821896227.
+Condition number: 1557.7047195439566.
+Condition number: 1557.7024075454378.
+Condition number: 1557.7000461331265.
+Condition number: 1557.6976352460883.
+Condition number: 1557.6951748235344.
+Condition number: 1557.6926648049778.
+Condition number: 1557.690105130366.
+Condition number: 1557.6874957402674.
+Condition number: 1557.6848365759981.
+Condition number: 1557.6821275797977.
+Condition number: 1557.6793686949914.
+Condition number: 1557.6765598661505.
+Condition number: 1557.6737010392628.
+Condition number: 1557.6707921618915.
+Condition number: 1557.6678331833639.
+Condition number: 1557.6648240549207.
+Condition number: 1557.6617647298976.
+Condition number: 1557.6586551638895.
+Condition number: 1557.6554953149366.
+Condition number: 1557.6522851436673.
+Condition number: 1557.649024613482.
+Condition number: 1557.6457136907215.
+Condition number: 1557.6423523448207.
+Condition number: 1557.6389405484647.
+Condition number: 1557.635478277757.
+Condition number: 1557.6319655123589.
+Condition number: 1557.6284022356301.
+Condition number: 1557.6247884347897.
+Condition number: 1557.621124101016.
+Condition number: 1557.6174092295994.
+Condition number: 1557.6136438200372.
+Condition number: 1557.6098278761435.
+Condition number: 1557.6059614061617.
+Condition number: 1557.6020444228134.
+Condition number: 1557.5980769434104.
+Condition number: 1557.5940589898858.
+Condition number: 1557.5899905888468.
+Condition number: 1557.5858717716158.
+Condition number: 1557.581702574227.
+Condition number: 1557.5774830374423.
+Condition number: 1557.5732132067253.
+Condition number: 1557.5688931322115.
+Condition number: 1557.56452286864.
+Condition number: 1557.5601024752991.
+Condition number: 1557.5556320159237.
+Condition number: 1557.5511115585841.
+Condition number: 1557.546541175543.
+Condition number: 1557.5419209431195.
+Condition number: 1557.5372509414983.
+Condition number: 1557.5325312545308.
+Condition number: 1557.5277619695382.
+Condition number: 1557.5229431770251.
+Condition number: 1557.518074970473.
+Condition number: 1557.5131574460156.
+Condition number: 1557.5081907021465.
+Condition number: 1557.5031748394024.
+Condition number: 1557.4981099600031.
+Condition number: 1557.4929961675173.
+Condition number: 1557.487833566437.
+Condition number: 1557.482622261822.
+Condition number: 1557.4773623588646.
+Condition number: 1557.4720539624718.
+Condition number: 1557.4666971768227.
+Condition number: 1557.4612921049109.
+Condition number: 1557.4558388481087.
+Condition number: 1557.450337505674.
+Condition number: 1557.4447881743072.
+Condition number: 1557.4391909476517.
+Condition number: 1557.4335459158515.
+Condition number: 1557.4278531650612.
+Condition number: 1557.4221127769974.
+Condition number: 1557.4163248284824.
+Condition number: 1557.410489390998.
+Condition number: 1557.4046065302684.
+Condition number: 1557.3986763058456.
+Condition number: 1557.3926987707332.
+Condition number: 1557.3866739710186.
+Condition number: 1557.3806019455467.
+Condition number: 1557.37448272562.
+Condition number: 1557.3683163347384.
+Condition number: 1557.3621027883803.
+Condition number: 1557.3558420938268.
+Condition number: 1557.3495342500205.
+Condition number: 1557.3431792474983.
+Condition number: 1557.3367770683735.
+Condition number: 1557.3303276863535.
+Condition number: 1557.3238310668573.
+Condition number: 1557.3172871671688.
+Condition number: 1557.310695936678.
+Condition number: 1557.304057317177.
+Condition number: 1557.2973712432454.
+Condition number: 1557.2906376427125.
+Condition number: 1557.2838564371975.
+Condition number: 1557.2770275427179.
+Condition number: 1557.2701508704074.
+Condition number: 1557.2632263272956.
+Condition number: 1557.2562538171928.
+Condition number: 1557.2492332416311.
+Condition number: 1557.2421645009383.
+Condition number: 1557.2350474953255.
+Condition number: 1557.2278821261364.
+Condition number: 1557.2206682971057.
+Condition number: 1557.2134059157315.
+Condition number: 1557.2060948947146.
+Condition number: 1557.1987351534444.
+Condition number: 1557.1913266195504.
+Condition number: 1557.1838692305353.
+Condition number: 1557.1763629353834.
+Condition number: 1557.1688076962814.
+Condition number: 1557.1612034902905.
+Condition number: 1557.1535503110877.
+Condition number: 1557.1458481706497.
+Condition number: 1557.1380971009878.
+Condition number: 1557.1302971557823.
+Condition number: 1557.1224484120455.
+Condition number: 1557.1145509716594.
+Condition number: 1557.1066049628957.
+Condition number: 1557.0986105418294.
+Condition number: 1557.0905678936158.
+Condition number: 1557.0824772337053.
+Condition number: 1557.0743388088981.
+Condition number: 1557.0661528982346.
+Condition number: 1557.0579198137607.
+Condition number: 1557.0496399010958.
+Condition number: 1557.041313539845.
+Condition number: 1557.0329411437945.
+Condition number: 1557.0245231609338.
+Condition number: 1557.0160600732759.
+Condition number: 1557.0075523964579.
+Condition number: 1556.9990006791593.
+Condition number: 1556.9904055023153.
+Condition number: 1556.9817674781384.
+Condition number: 1556.9730872489433.
+Condition number: 1556.9643654857957.
+Condition number: 1556.9556028870045.
+Condition number: 1556.946800176454.
+Condition number: 1556.937958101788.
+Condition number: 1556.9290774324834.
+Condition number: 1556.9201589578129.
+Condition number: 1556.9112034847244.
+Condition number: 1556.9022118356506.
+Condition number: 1556.8931848462566.
+Condition number: 1556.8841233631958.
+Condition number: 1556.8750282417964.
+Condition number: 1556.8659003438243.
+Condition number: 1556.856740535209.
+Condition number: 1556.8475496838626.
+Condition number: 1556.838328657506.
+Condition number: 1556.8290783216223.
+Condition number: 1556.8197995374398.
+Condition number: 1556.8104931600474.
+Condition number: 1556.8011600365958.
+Condition number: 1556.7918010046135.
+Condition number: 1556.78241689044.
+Condition number: 1556.7730085077758.
+Condition number: 1556.7635766563637.
+Condition number: 1556.7541221207919.
+Condition number: 1556.7446456694147.
+Condition number: 1556.7351480534078.
+Condition number: 1556.7256300059348.
+Condition number: 1556.7160922414341.
+Condition number: 1556.7065354550293.
+Condition number: 1556.6969603220273.
+Condition number: 1556.6873674975416.
+Condition number: 1556.6777576161908.
+Condition number: 1556.6681312919047.
+Condition number: 1556.6584891178195.
+Condition number: 1556.6488316662112.
+Condition number: 1556.6391594885565.
+Condition number: 1556.6294731156113.
+Condition number: 1556.619773057577.
+Condition number: 1556.6100598043015.
+Condition number: 1556.6003338255227.
+Condition number: 1556.5905955711671.
+Condition number: 1556.5808454716723.
+Condition number: 1556.5710839383378.
+Condition number: 1556.5613113636953.
+Condition number: 1556.5515281219064.
+Condition number: 1556.541734569168.
+Condition number: 1556.5319310441316.
+Condition number: 1556.5221178683182.
+Condition number: 1556.5122953465561.
+Condition number: 1556.5024637673964.
+Condition number: 1556.4926234035356.
+Condition number: 1556.4827745122416.
+Condition number: 1556.4729173357466.
+Condition number: 1556.4630521016559.
+Condition number: 1556.4531790233243.
+Condition number: 1556.443298300235.
+Condition number: 1556.4334101183517.
+Condition number: 1556.4235146504511.
+Condition number: 1556.413612056455.
+Condition number: 1556.4037024837237.
+Condition number: 1556.3937860673402.
+Condition number: 1556.3838629303668.
+Condition number: 1556.3739331841.
+Condition number: 1556.3639969282724.
+Condition number: 1556.3540542512458.
+Condition number: 1556.3441052302007.
+Condition number: 1556.3341499312721.
+Condition number: 1556.324188409671.
+Condition number: 1556.3142207098078.
+Condition number: 1556.3042468653393.
+Condition number: 1556.294266899242.
+Condition number: 1556.284280823833.
+Condition number: 1556.274288640775.
+Condition number: 1556.26429034105.
+Condition number: 1556.2542859049145.
+Condition number: 1556.24427530183.
+Condition number: 1556.234258490365.
+Condition number: 1556.2242354180657.
+Condition number: 1556.2142060213139.
+Condition number: 1556.2041702251527.
+Condition number: 1556.1941279430916.
+Condition number: 1556.1840790768676.
+Condition number: 1556.174023516228.
+Condition number: 1556.163961138628.
+Condition number: 1556.153891808953.
+Condition number: 1556.14381537919.
+Condition number: 1556.1337316880963.
+Condition number: 1556.123640560837.
+Condition number: 1556.1135418085876.
+Condition number: 1556.103435228147.
+Condition number: 1556.0933206015206.
+Condition number: 1549.970335035332.
+Condition number: 1549.976976946514.
+Condition number: 1549.983619313339.
+Condition number: 1549.9570526028829.
+Condition number: 1549.950412093344.
+Condition number: 1549.9437720629153.
+Condition number: 1549.9371325177171.
+Condition number: 1549.930493463975.
+Condition number: 1549.9238549080346.
+Condition number: 1549.9172168563484.
+Condition number: 1549.9105793154904.
+Condition number: 1549.9039422921583.
+Condition number: 1549.8973057931742.
+Condition number: 1549.8906698255007.
+Condition number: 1549.8840343962233.
+Condition number: 1549.877399512578.
+Condition number: 1549.8707651819389.
+Condition number: 1549.864131411833.
+Condition number: 1549.8574982099426.
+Condition number: 1549.8508655841051.
+Condition number: 1549.8442335423308.
+Condition number: 1549.8376020927924.
+Condition number: 1549.8309712438463.
+Condition number: 1549.8243410040247.
+Condition number: 1549.8177113820577.
+Condition number: 1549.8110823868547.
+Condition number: 1549.804454027547.
+Condition number: 1549.7978263134548.
+Condition number: 1549.7911992541276.
+Condition number: 1549.7845728593297.
+Condition number: 1549.7779471390613.
+Condition number: 1549.99026213018.
+Condition number: 1549.9969053915013.
+Condition number: 1550.0035490918433.
+Condition number: 1550.0101932258442.
+Condition number: 1550.0168377882096.
+Condition number: 1550.023482773736.
+Condition number: 1550.0301281772868.
+Condition number: 1550.0367739938058.
+Condition number: 1550.0434202183033.
+Condition number: 1550.0500668458626.
+Condition number: 1550.0567138716315.
+Condition number: 1550.0633612908243.
+Condition number: 1550.0700090987189.
+Condition number: 1550.0766572906539.
+Condition number: 1550.0833058620274.
+Condition number: 1550.0899548082916.
+Condition number: 1550.0966041249642.
+Condition number: 1550.1032538076026.
+Condition number: 1550.1099038518284.
+Condition number: 1550.116554253311.
+Condition number: 1550.1232050077656.
+Condition number: 1550.1298561109552.
+Condition number: 1550.1365075586975.
+Condition number: 1550.1431593468449.
+Condition number: 1550.1498114712992.
+Condition number: 1550.1564639280018.
+Condition number: 1550.1631167129365.
+Condition number: 1550.169769822127.
+Condition number: 1550.1764232516355.
+Condition number: 1550.1830769975595.
+Condition number: 1550.1897310560307.
+Condition number: 1550.1963854232304.
+Condition number: 1549.771322103554.
+Condition number: 1549.7646977632983.
+Condition number: 1549.758074129024.
+Warmup [1]: 100%|██████████| 5/5 [06:33, 78.61s/it, step size=2.44e-04, acc. prob=0.105]
+Warmup [2]: 100%|██████████| 5/5 [06:33, 78.61s/it, step size=1.22e-04, acc. prob=0.054]
+Warmup [3]: 100%|██████████| 5/5 [06:33, 78.61s/it, step size=2.44e-04, acc. prob=0.093]
+Warmup [4]: 100%|██████████| 5/5 [06:33, 78.61s/it, step size=1.22e-04, acc. prob=0.057]
+Warmup [5]: 100%|██████████| 5/5 [06:33, 78.61s/it, step size=1.22e-04, acc. prob=0.119]
+Warmup [6]: 100%|██████████| 5/5 [06:33, 78.61s/it, step size=1.22e-04, acc. prob=0.152]
+Warmup [7]: 100%|██████████| 5/5 [06:33, 78.61s/it, step size=1.22e-04, acc. prob=0.099]
+Warmup [8]: 100%|██████████| 5/5 [06:33, 78.61s/it, step size=2.44e-04, acc. prob=0.019]
+Warmup [9]: 100%|██████████| 5/5 [06:33, 78.61s/it, step size=1.22e-04, acc. prob=0.069]
+Warmup [10]: 100%|██████████| 5/5 [06:33, 78.61s/it, step size=2.44e-04, acc. prob=0.044]
+
+
+
+
+
+
+
+
+
+
+/home/jt925938/anaconda3/envs/gempy_pyro/lib/python3.10/site-packages/arviz/data/base.py:265: UserWarning: More chains (10) than draws (5). Passed array should have shape (chains, draws, *shape)
+  warnings.warn(
+/home/jt925938/anaconda3/envs/gempy_pyro/lib/python3.10/site-packages/arviz/data/io_pyro.py:158: UserWarning: Could not get vectorized trace, log_likelihood group will be omitted. Check your model vectorization or set log_likelihood=False
+  warnings.warn(
+/home/jt925938/anaconda3/envs/gempy_pyro/lib/python3.10/site-packages/arviz/data/base.py:265: UserWarning: More chains (10) than draws (5). Passed array should have shape (chains, draws, *shape)
+  warnings.warn(
+/home/jt925938/anaconda3/envs/gempy_pyro/lib/python3.10/site-packages/arviz/stats/density_utils.py:488: UserWarning: Your data appears to have a single value or no finite values
+  warnings.warn("Your data appears to have a single value or no finite values")
+/home/jt925938/anaconda3/envs/gempy_pyro/lib/python3.10/site-packages/arviz/stats/density_utils.py:488: UserWarning: Your data appears to have a single value or no finite values
+  warnings.warn("Your data appears to have a single value or no finite values")
+/home/jt925938/anaconda3/envs/gempy_pyro/lib/python3.10/site-packages/arviz/stats/density_utils.py:488: UserWarning: Your data appears to have a single value or no finite values
+  warnings.warn("Your data appears to have a single value or no finite values")
+/home/jt925938/anaconda3/envs/gempy_pyro/lib/python3.10/site-packages/arviz/stats/density_utils.py:488: UserWarning: Your data appears to have a single value or no finite values
+  warnings.warn("Your data appears to have a single value or no finite values")
+/home/jt925938/anaconda3/envs/gempy_pyro/lib/python3.10/site-packages/arviz/stats/density_utils.py:488: UserWarning: Your data appears to have a single value or no finite values
+  warnings.warn("Your data appears to have a single value or no finite values")
+/home/jt925938/anaconda3/envs/gempy_pyro/lib/python3.10/site-packages/arviz/stats/density_utils.py:488: UserWarning: Your data appears to have a single value or no finite values
+  warnings.warn("Your data appears to have a single value or no finite values")
+/home/jt925938/anaconda3/envs/gempy_pyro/lib/python3.10/site-packages/arviz/stats/density_utils.py:488: UserWarning: Your data appears to have a single value or no finite values
+  warnings.warn("Your data appears to have a single value or no finite values")
+/home/jt925938/anaconda3/envs/gempy_pyro/lib/python3.10/site-packages/arviz/stats/density_utils.py:488: UserWarning: Your data appears to have a single value or no finite values
+  warnings.warn("Your data appears to have a single value or no finite values")
+/home/jt925938/anaconda3/envs/gempy_pyro/lib/python3.10/site-packages/arviz/stats/density_utils.py:488: UserWarning: Your data appears to have a single value or no finite values
+  warnings.warn("Your data appears to have a single value or no finite values")
+/home/jt925938/anaconda3/envs/gempy_pyro/lib/python3.10/site-packages/arviz/stats/density_utils.py:488: UserWarning: Your data appears to have a single value or no finite values
+  warnings.warn("Your data appears to have a single value or no finite values")
+/home/jt925938/anaconda3/envs/gempy_pyro/lib/python3.10/site-packages/arviz/stats/density_utils.py:488: UserWarning: Your data appears to have a single value or no finite values
+  warnings.warn("Your data appears to have a single value or no finite values")
+/home/jt925938/anaconda3/envs/gempy_pyro/lib/python3.10/site-packages/arviz/stats/density_utils.py:488: UserWarning: Your data appears to have a single value or no finite values
+  warnings.warn("Your data appears to have a single value or no finite values")
+/home/jt925938/anaconda3/envs/gempy_pyro/lib/python3.10/site-packages/arviz/stats/density_utils.py:488: UserWarning: Your data appears to have a single value or no finite values
+  warnings.warn("Your data appears to have a single value or no finite values")
+/home/jt925938/anaconda3/envs/gempy_pyro/lib/python3.10/site-packages/arviz/stats/density_utils.py:488: UserWarning: Your data appears to have a single value or no finite values
+  warnings.warn("Your data appears to have a single value or no finite values")
+/home/jt925938/anaconda3/envs/gempy_pyro/lib/python3.10/site-packages/arviz/stats/density_utils.py:488: UserWarning: Your data appears to have a single value or no finite values
+  warnings.warn("Your data appears to have a single value or no finite values")
+/home/jt925938/anaconda3/envs/gempy_pyro/lib/python3.10/site-packages/arviz/stats/density_utils.py:488: UserWarning: Your data appears to have a single value or no finite values
+  warnings.warn("Your data appears to have a single value or no finite values")
+/home/jt925938/anaconda3/envs/gempy_pyro/lib/python3.10/site-packages/gempy/core/data/geo_model.py:164: UserWarning: You are using refinement and passing a regular grid. The resolution of the regular grid will be overwritten
+  warnings.warn(
+/home/jt925938/anaconda3/envs/gempy_pyro/lib/python3.10/site-packages/gempy/core/data/geo_model.py:164: UserWarning: You are using refinement and passing a regular grid. The resolution of the regular grid will be overwritten
+  warnings.warn(
+Condition number: 1560.9447699274224.
+Condition number: 1549.9412401989284.
+Condition number: 1549.9412401989284.
+Condition number: 1549.9412401989284.
+Condition number: 1549.9412401989284.
+Condition number: 1549.9412401989284.
+Condition number: 1664.4403837069776.
+Condition number: 1549.9412401989284.
+Condition number: 1483.8579061135013.
+Condition number: 1549.9412401989284.
+Condition number: 1528.8594279598913.
+Condition number: 1549.9412401989284.
+Condition number: 1538.0417690998293.
+Condition number: 1549.9412401989284.
+Condition number: 1559.0833542545106.
+Condition number: 1549.9412401989284.
+Condition number: 1548.6219819564656.
+Condition number: 1549.9412401989284.
+Condition number: 1546.6796594038808.
+Condition number: 1549.9412401989284.
+Condition number: 1549.6381806565448.
+Condition number: 1549.9412401989284.
+Condition number: 1549.3106423918202.
+Condition number: 1549.9412401989284.
+Condition number: 1550.0920094155244.
+Condition number: 1549.9412401989284.
+Condition number: 1549.925409139534.
+Condition number: 1549.9412401989284.
+Condition number: 1549.8634071409856.
+Condition number: 1549.9412401989284.
+Condition number: 1549.978572882802.
+Condition number: 1549.9412401989284.
+Condition number: 1549.922973547169.
+cov_eigen_values_1
+cov_eigen_values_2
+cov_eigen_values_3
+cov_eigen_values_4
+cov_eigen_values_5
+cov_eigen_values_6
+mean_data_1
+mean_data_2
+mean_data_3
+mean_data_4
+mean_data_5
+mean_data_6
+mu_1
+mu_2
+mu_3
+mu_4
+MCMC summary results
+
+                           mean       std    median      5.0%     95.0%     n_eff     r_hat
+cov_eigen_values_1[0]      0.42      0.00      0.42      0.42      0.42      8.86      2.10
+cov_eigen_values_1[1]      0.08      0.00      0.08      0.08      0.08      8.54      2.22
+cov_eigen_values_1[2]      0.05      0.00      0.05      0.04      0.05      8.31      2.53
+cov_eigen_values_1[3]      0.03      0.00      0.03      0.03      0.03     10.61      5.39
+cov_eigen_values_1[4]      0.02      0.00      0.02      0.02      0.02      9.47      1.66
+cov_eigen_values_1[5]      0.00      0.00      0.00      0.00      0.00      8.27      3.50
+cov_eigen_values_1[6]      0.01      0.00      0.01      0.01      0.02      9.62      1.72
+cov_eigen_values_1[7]      0.01      0.00      0.01      0.01      0.01      7.34      6.48
+cov_eigen_values_2[0]      0.56      0.00      0.56      0.56      0.56     10.71      1.61
+cov_eigen_values_2[1]      0.07      0.00      0.07      0.07      0.07      8.67      2.00
+cov_eigen_values_2[2]      0.06      0.00      0.06      0.06      0.06      8.93      2.18
+cov_eigen_values_2[3]      0.05      0.00      0.05      0.05      0.05      9.25      3.39
+cov_eigen_values_2[4]      0.05      0.00      0.05      0.04      0.05      8.44      2.55
+cov_eigen_values_2[5]      0.01      0.00      0.01      0.01      0.01      9.19      2.11
+cov_eigen_values_2[6]      0.02      0.00      0.02      0.02      0.02      7.86      2.80
+cov_eigen_values_2[7]      0.03      0.00      0.03      0.03      0.03      9.10      1.68
+cov_eigen_values_3[0]      0.32      0.00      0.32      0.32      0.32      8.47      2.83
+cov_eigen_values_3[1]      0.14      0.00      0.14      0.14      0.14      7.96      2.80
+cov_eigen_values_3[2]      0.00      0.00      0.00      0.00      0.00      8.31      2.68
+cov_eigen_values_3[3]      0.02      0.00      0.02      0.02      0.02     10.17      2.56
+cov_eigen_values_3[4]      0.07      0.00      0.07      0.07      0.07      8.94      1.99
+cov_eigen_values_3[5]      0.05      0.00      0.05      0.05      0.05      9.40      1.97
+cov_eigen_values_3[6]      0.06      0.00      0.06      0.06      0.06      9.13      2.61
+cov_eigen_values_3[7]      0.06      0.00      0.06      0.06      0.06      8.20      2.52
+cov_eigen_values_4[0]      0.19      0.00      0.19      0.19      0.19      8.54      2.37
+cov_eigen_values_4[1]      0.08      0.00      0.08      0.08      0.08      9.24      1.79
+cov_eigen_values_4[2]      0.05      0.00      0.05      0.05      0.05      9.51      1.76
+cov_eigen_values_4[3]      0.04      0.00      0.04      0.03      0.04      7.80      3.36
+cov_eigen_values_4[4]      0.02      0.00      0.02      0.02      0.02      7.92      2.82
+cov_eigen_values_4[5]      0.00      0.00      0.00      0.00      0.00      7.45      4.53
+cov_eigen_values_4[6]      0.02      0.00      0.02      0.01      0.02      9.56      4.47
+cov_eigen_values_4[7]      0.01      0.00      0.01      0.01      0.01      9.91      1.79
+cov_eigen_values_5[0]      0.54      0.00      0.54      0.54      0.54      8.47      2.01
+cov_eigen_values_5[1]      0.07      0.00      0.07      0.07      0.07      9.55      2.28
+cov_eigen_values_5[2]      0.06      0.00      0.06      0.06      0.06      8.51      2.15
+cov_eigen_values_5[3]      0.03      0.00      0.03      0.03      0.03      9.42      1.82
+cov_eigen_values_5[4]      0.02      0.00      0.02      0.02      0.02      8.29      3.48
+cov_eigen_values_5[5]      0.01      0.00      0.01      0.01      0.01      7.63      3.35
+cov_eigen_values_5[6]      0.00      0.00      0.00      0.00      0.00     11.45      3.51
+cov_eigen_values_5[7]      0.00      0.00     -0.00     -0.00      0.00     12.24      1.50
+cov_eigen_values_6[0]      0.13      0.00      0.13      0.13      0.13      8.69      3.01
+cov_eigen_values_6[1]      0.04      0.00      0.04      0.04      0.04      9.60      2.02
+cov_eigen_values_6[2]      0.02      0.00      0.02      0.02      0.02      7.96      2.93
+cov_eigen_values_6[3]      0.02      0.00      0.02      0.02      0.02      8.04      3.29
+cov_eigen_values_6[4]      0.01      0.00      0.01      0.01      0.01      8.00      4.64
+cov_eigen_values_6[5]      0.00      0.00      0.00      0.00      0.00      7.74      3.20
+cov_eigen_values_6[6]      0.00      0.00      0.00      0.00      0.00      9.23      2.16
+cov_eigen_values_6[7]      0.00      0.00      0.00      0.00      0.00      8.33      2.72
+       mean_data_1[0]     -3.72      0.00     -3.72     -3.72     -3.72      8.23      3.19
+       mean_data_1[1]      0.46      0.00      0.46      0.46      0.46      9.12      1.95
+       mean_data_1[2]      0.38      0.00      0.38      0.38      0.38      8.22      2.72
+       mean_data_1[3]     -0.13      0.00     -0.13     -0.13     -0.13      8.11      2.83
+       mean_data_1[4]     -0.03      0.00     -0.03     -0.03     -0.03      9.70      1.60
+       mean_data_1[5]      0.08      0.00      0.08      0.08      0.08      8.13      2.76
+       mean_data_1[6]     -0.06      0.00     -0.06     -0.06     -0.06      9.57      2.94
+       mean_data_1[7]      0.02      0.00      0.02      0.02      0.02      9.37      1.86
+       mean_data_2[0]     -1.05      0.00     -1.05     -1.05     -1.05      7.69      3.31
+       mean_data_2[1]      0.56      0.00      0.56      0.56      0.56      8.07      2.45
+       mean_data_2[2]      0.53      0.00      0.53      0.53      0.53      7.32      5.54
+       mean_data_2[3]     -0.00      0.00     -0.00     -0.00     -0.00      7.80      3.32
+       mean_data_2[4]      0.05      0.00      0.05      0.05      0.05      7.69      8.31
+       mean_data_2[5]     -0.04      0.00     -0.04     -0.04     -0.04      8.48      3.17
+       mean_data_2[6]      0.02      0.00      0.02      0.02      0.02     13.55      1.54
+       mean_data_2[7]     -0.01      0.00     -0.01     -0.01     -0.01     10.19      1.65
+       mean_data_3[0]      3.92      0.00      3.92      3.92      3.92      8.03      3.22
+       mean_data_3[1]     -0.44      0.00     -0.44     -0.44     -0.44      8.15      2.68
+       mean_data_3[2]     -0.10      0.00     -0.10     -0.10     -0.09      8.69      2.09
+       mean_data_3[3]     -0.02      0.00     -0.02     -0.02     -0.02      9.55      3.32
+       mean_data_3[4]      0.03      0.00      0.03      0.03      0.03      8.44      2.78
+       mean_data_3[5]      0.00      0.00      0.00      0.00      0.00      7.66      5.23
+       mean_data_3[6]     -0.01      0.00     -0.01     -0.01     -0.01     12.66      2.00
+       mean_data_3[7]     -0.00      0.00     -0.00     -0.00     -0.00      7.53      4.94
+       mean_data_4[0]      2.69      0.00      2.69      2.69      2.69      9.22      1.98
+       mean_data_4[1]     -0.03      0.00     -0.02     -0.03     -0.02      7.47      5.46
+       mean_data_4[2]      0.20      0.00      0.20      0.20      0.20      7.92      2.97
+       mean_data_4[3]      0.09      0.00      0.09      0.08      0.09      8.66      1.88
+       mean_data_4[4]     -0.11      0.00     -0.11     -0.11     -0.11      9.11      1.96
+       mean_data_4[5]      0.00      0.00      0.00      0.00      0.01      8.80      1.84
+       mean_data_4[6]      0.02      0.00      0.02      0.02      0.02     16.82      2.06
+       mean_data_4[7]      0.01      0.00      0.01      0.01      0.01      9.02      1.90
+       mean_data_5[0]      0.73      0.00      0.73      0.73      0.73      8.87      1.99
+       mean_data_5[1]      1.44      0.00      1.44      1.44      1.44      8.83      1.90
+       mean_data_5[2]     -1.07      0.00     -1.07     -1.07     -1.07      7.51      3.69
+       mean_data_5[3]      0.01      0.00      0.01      0.01      0.01      7.77      4.33
+       mean_data_5[4]      0.00      0.00      0.00      0.00      0.00      8.76      3.51
+       mean_data_5[5]     -0.00      0.00     -0.00     -0.00     -0.00      9.08      1.87
+       mean_data_5[6]      0.01      0.00      0.01      0.01      0.01      9.69      1.52
+       mean_data_5[7]      0.00      0.00      0.00     -0.00      0.00      9.21      1.96
+       mean_data_6[0]     -6.85      0.00     -6.85     -6.85     -6.85      8.78      1.99
+       mean_data_6[1]     -0.65      0.00     -0.65     -0.65     -0.65      9.17      1.89
+       mean_data_6[2]     -0.29      0.00     -0.29     -0.29     -0.29     11.60      3.23
+       mean_data_6[3]      0.04      0.00      0.04      0.04      0.04     10.82      2.56
+       mean_data_6[4]     -0.00      0.00     -0.00     -0.00     -0.00      9.40      3.25
+       mean_data_6[5]     -0.01      0.00     -0.01     -0.01     -0.01      7.53      3.96
+       mean_data_6[6]      0.01      0.00      0.01      0.01      0.01      8.50      2.71
+       mean_data_6[7]     -0.00      0.00     -0.00     -0.00     -0.00      8.78      1.98
+                 mu_1      3.20      0.00      3.20      3.20      3.20      8.61      2.04
+                 mu_2      2.30      0.00      2.30      2.30      2.30      7.61      4.02
+                 mu_3      1.25      0.00      1.25      1.25      1.25      9.28      1.81
+                 mu_4      0.00      0.00      0.00     -0.00      0.00      7.42      4.43
+
+Number of divergences: 45
+
+{'cov_eigen_values_1': tensor([[0.4181, 0.0771, 0.0447, 0.0325, 0.0194, 0.0019, 0.0147, 0.0098],
+        [0.4181, 0.0771, 0.0447, 0.0325, 0.0194, 0.0019, 0.0147, 0.0098],
+        [0.4181, 0.0771, 0.0447, 0.0325, 0.0194, 0.0019, 0.0147, 0.0098],
+        [0.4181, 0.0771, 0.0447, 0.0325, 0.0194, 0.0019, 0.0147, 0.0098],
+        [0.4181, 0.0771, 0.0447, 0.0325, 0.0194, 0.0019, 0.0147, 0.0098]],
+       dtype=torch.float64), 'cov_eigen_values_2': tensor([[0.5572, 0.0689, 0.0649, 0.0486, 0.0456, 0.0065, 0.0184, 0.0301],
+        [0.5572, 0.0689, 0.0649, 0.0486, 0.0456, 0.0065, 0.0184, 0.0301],
+        [0.5572, 0.0689, 0.0649, 0.0486, 0.0456, 0.0065, 0.0184, 0.0301],
+        [0.5572, 0.0689, 0.0649, 0.0486, 0.0456, 0.0065, 0.0184, 0.0301],
+        [0.5572, 0.0689, 0.0649, 0.0486, 0.0456, 0.0065, 0.0184, 0.0301]],
+       dtype=torch.float64), 'cov_eigen_values_3': tensor([[0.3163, 0.1359, 0.0040, 0.0185, 0.0691, 0.0459, 0.0625, 0.0558],
+        [0.3163, 0.1359, 0.0040, 0.0185, 0.0691, 0.0459, 0.0625, 0.0558],
+        [0.3163, 0.1359, 0.0040, 0.0185, 0.0691, 0.0459, 0.0625, 0.0558],
+        [0.3163, 0.1359, 0.0040, 0.0185, 0.0691, 0.0459, 0.0625, 0.0558],
+        [0.3163, 0.1359, 0.0040, 0.0185, 0.0691, 0.0459, 0.0625, 0.0558]],
+       dtype=torch.float64), 'cov_eigen_values_4': tensor([[0.1933, 0.0785, 0.0522, 0.0348, 0.0232, 0.0027, 0.0158, 0.0099],
+        [0.1933, 0.0785, 0.0522, 0.0348, 0.0232, 0.0027, 0.0158, 0.0099],
+        [0.1933, 0.0785, 0.0522, 0.0348, 0.0232, 0.0027, 0.0158, 0.0099],
+        [0.1933, 0.0785, 0.0522, 0.0348, 0.0232, 0.0027, 0.0158, 0.0099],
+        [0.1933, 0.0785, 0.0522, 0.0348, 0.0232, 0.0027, 0.0158, 0.0099]],
+       dtype=torch.float64), 'cov_eigen_values_5': tensor([[0.5354, 0.0676, 0.0586, 0.0336, 0.0219, 0.0099, 0.0034, 0.0007],
+        [0.5354, 0.0676, 0.0586, 0.0336, 0.0219, 0.0099, 0.0034, 0.0007],
+        [0.5354, 0.0676, 0.0586, 0.0336, 0.0219, 0.0099, 0.0034, 0.0007],
+        [0.5354, 0.0676, 0.0586, 0.0336, 0.0219, 0.0099, 0.0034, 0.0007],
+        [0.5354, 0.0676, 0.0586, 0.0336, 0.0219, 0.0099, 0.0034, 0.0007]],
+       dtype=torch.float64), 'cov_eigen_values_6': tensor([[0.1312, 0.0358, 0.0219, 0.0162, 0.0115, 0.0038, 0.0007, 0.0029],
+        [0.1312, 0.0358, 0.0219, 0.0162, 0.0115, 0.0038, 0.0007, 0.0029],
+        [0.1312, 0.0358, 0.0219, 0.0162, 0.0115, 0.0038, 0.0007, 0.0029],
+        [0.1312, 0.0358, 0.0219, 0.0162, 0.0115, 0.0038, 0.0007, 0.0029],
+        [0.1312, 0.0358, 0.0219, 0.0162, 0.0115, 0.0038, 0.0007, 0.0029]],
+       dtype=torch.float64), 'mean_data_1': tensor([[-3.7210,  0.4622,  0.3836, -0.1340, -0.0309,  0.0813, -0.0630,  0.0176],
+        [-3.7210,  0.4622,  0.3836, -0.1340, -0.0309,  0.0813, -0.0630,  0.0176],
+        [-3.7210,  0.4622,  0.3836, -0.1340, -0.0309,  0.0813, -0.0630,  0.0176],
+        [-3.7210,  0.4622,  0.3836, -0.1340, -0.0309,  0.0813, -0.0630,  0.0176],
+        [-3.7210,  0.4622,  0.3836, -0.1340, -0.0309,  0.0813, -0.0630,  0.0176]],
+       dtype=torch.float64), 'mean_data_2': tensor([[-1.0523,  0.5559,  0.5255, -0.0021,  0.0469, -0.0403,  0.0211, -0.0132],
+        [-1.0523,  0.5559,  0.5255, -0.0021,  0.0469, -0.0403,  0.0211, -0.0132],
+        [-1.0523,  0.5559,  0.5255, -0.0021,  0.0469, -0.0403,  0.0211, -0.0132],
+        [-1.0523,  0.5559,  0.5255, -0.0021,  0.0469, -0.0403,  0.0211, -0.0132],
+        [-1.0523,  0.5559,  0.5255, -0.0021,  0.0469, -0.0403,  0.0211, -0.0132]],
+       dtype=torch.float64), 'mean_data_3': tensor([[ 3.9213e+00, -4.4331e-01, -9.6419e-02, -2.1450e-02,  2.5821e-02,
+          4.1807e-03, -9.8211e-03, -2.4372e-03],
+        [ 3.9213e+00, -4.4331e-01, -9.6419e-02, -2.1450e-02,  2.5821e-02,
+          4.1807e-03, -9.8211e-03, -2.4372e-03],
+        [ 3.9213e+00, -4.4331e-01, -9.6419e-02, -2.1450e-02,  2.5821e-02,
+          4.1807e-03, -9.8211e-03, -2.4372e-03],
+        [ 3.9213e+00, -4.4331e-01, -9.6419e-02, -2.1450e-02,  2.5821e-02,
+          4.1807e-03, -9.8211e-03, -2.4372e-03],
+        [ 3.9213e+00, -4.4331e-01, -9.6419e-02, -2.1450e-02,  2.5821e-02,
+          4.1807e-03, -9.8211e-03, -2.4372e-03]], dtype=torch.float64), 'mean_data_4': tensor([[ 2.6889, -0.0258,  0.2042,  0.0857, -0.1068,  0.0046,  0.0182,  0.0129],
+        [ 2.6889, -0.0258,  0.2042,  0.0857, -0.1068,  0.0046,  0.0182,  0.0129],
+        [ 2.6889, -0.0258,  0.2042,  0.0857, -0.1068,  0.0046,  0.0182,  0.0129],
+        [ 2.6889, -0.0258,  0.2042,  0.0857, -0.1068,  0.0046,  0.0182,  0.0129],
+        [ 2.6889, -0.0258,  0.2042,  0.0857, -0.1068,  0.0046,  0.0182,  0.0129]],
+       dtype=torch.float64), 'mean_data_5': tensor([[ 7.3024e-01,  1.4417e+00, -1.0685e+00,  1.2820e-02,  3.0489e-03,
+         -1.1570e-03,  8.9046e-03,  2.8007e-04],
+        [ 7.3024e-01,  1.4417e+00, -1.0685e+00,  1.2820e-02,  3.0489e-03,
+         -1.1570e-03,  8.9046e-03,  2.8007e-04],
+        [ 7.3024e-01,  1.4417e+00, -1.0685e+00,  1.2820e-02,  3.0489e-03,
+         -1.1570e-03,  8.9046e-03,  2.8007e-04],
+        [ 7.3024e-01,  1.4417e+00, -1.0685e+00,  1.2820e-02,  3.0489e-03,
+         -1.1570e-03,  8.9046e-03,  2.8007e-04],
+        [ 7.3024e-01,  1.4417e+00, -1.0685e+00,  1.2820e-02,  3.0489e-03,
+         -1.1570e-03,  8.9046e-03,  2.8007e-04]], dtype=torch.float64), 'mean_data_6': tensor([[-6.8528e+00, -6.5350e-01, -2.9103e-01,  3.6942e-02, -1.5138e-03,
+         -8.1885e-03,  8.5827e-03, -8.8499e-04],
+        [-6.8528e+00, -6.5350e-01, -2.9103e-01,  3.6942e-02, -1.5138e-03,
+         -8.1885e-03,  8.5827e-03, -8.8499e-04],
+        [-6.8528e+00, -6.5350e-01, -2.9103e-01,  3.6942e-02, -1.5138e-03,
+         -8.1885e-03,  8.5827e-03, -8.8499e-04],
+        [-6.8528e+00, -6.5350e-01, -2.9103e-01,  3.6942e-02, -1.5138e-03,
+         -8.1885e-03,  8.5827e-03, -8.8499e-04],
+        [-6.8528e+00, -6.5350e-01, -2.9103e-01,  3.6942e-02, -1.5138e-03,
+         -8.1885e-03,  8.5827e-03, -8.8499e-04]], dtype=torch.float64), 'mu_1': tensor([3.1998, 3.1998, 3.1998, 3.1998, 3.1998], dtype=torch.float64), 'mu_2': tensor([2.3001, 2.3001, 2.3001, 2.3001, 2.3001], dtype=torch.float64), 'mu_3': tensor([1.2499, 1.2499, 1.2499, 1.2499, 1.2499], dtype=torch.float64), 'mu_4': tensor([-6.3371e-05, -6.3371e-05, -6.3371e-05, -6.3371e-05, -6.3371e-05],
+       dtype=torch.float64)}
+Condition number: 1557.1063864805042.
+Condition number: 1534.0973312189944.
+Condition number: 1549.9382290559183.
+Condition number: 1549.9382290559183.
+Condition number: 1549.9382290559183.
+Condition number: 1549.9382290559183.
+Condition number: 1549.9382290559183.
+Condition number: 1549.9402256176425.
+Condition number: 1549.942655743869.
+Condition number: 1549.942655743869.
+Condition number: 1549.942655743869.
+Condition number: 1549.942655743869.
+Condition number: 1549.9445354609024.
+Condition number: 1549.9603361693107.
+Condition number: 1549.9603361693107.
+Condition number: 1549.9603361693107.
+Condition number: 1549.9603361693107.
+Condition number: 1549.9325294258851.
+Condition number: 1549.9325294258851.
+Condition number: 1549.9325294258851.
+Condition number: 1549.9308411382085.
+Condition number: 1549.9308411382085.
+Condition number: 1549.9636935855196.
+Condition number: 1549.9636935855196.
+Condition number: 1549.9636935855196.
+Condition number: 1549.9636935855196.
+Condition number: 1549.9636935855196.
+Condition number: 1549.874580192896.
+Condition number: 1549.874580192896.
+Condition number: 1549.874580192896.
+Condition number: 1549.874580192896.
+Condition number: 1549.874580192896.
+Condition number: 1549.9852034714152.
+Condition number: 1550.017626628301.
+Condition number: 1550.017626628301.
+Condition number: 1550.017626628301.
+Condition number: 1550.017626628301.
+Condition number: 1549.931461598094.
+Condition number: 1549.9442884681418.
+Condition number: 1549.9442884681418.
+Condition number: 1549.9442884681418.
+Condition number: 1549.9442884681418.
+Condition number: 1549.9354732387537.
+Condition number: 1550.0974249457947.
+Condition number: 1550.0990105063215.
+Condition number: 1550.1027164299296.
+Condition number: 1550.1049589663403.
+Condition number: 1549.9661696027658.
+Condition number: 1549.9661696027658.
+Condition number: 1549.9661696027658.
+Condition number: 1549.9661696027658.
+Condition number: 1549.9661696027658.
+Condition number: 1538.0729991640758.
+Condition number: 1556.2080695533073.
+Condition number: 1544.042838980407.
+Directory './Results/Salinas/posterior_condition_3_alpha_1000000.0_beta_1000.0_slope_gempy_50.0scale_10.0/MAP' already exists.
+Posterior 3 reached
+Condition number: 1549.9382290559172.
+Condition number: 1549.9382290559172.
+Condition number: 1549.9382290559172.
+Condition number: 1549.9382290559172.
+Condition number: 1549.9382290559172.
+Condition number: 1549.9402256176422.
+Condition number: 1549.9426557438685.
+Condition number: 1549.9426557438685.
+Condition number: 1549.9426557438685.
+Condition number: 1549.9426557438685.
+Condition number: 1549.9445354609024.
+Condition number: 1549.960336169311.
+Condition number: 1549.960336169311.
+Condition number: 1549.960336169311.
+Condition number: 1549.960336169311.
+Condition number: 1549.9325294258851.
+Condition number: 1549.9325294258851.
+Condition number: 1549.9325294258851.
+Condition number: 1549.9308411382083.
+Condition number: 1549.9308411382083.
+Condition number: 1549.9636935855196.
+Condition number: 1549.9636935855196.
+Condition number: 1549.9636935855196.
+Condition number: 1549.9636935855196.
+Condition number: 1549.9636935855196.
+Condition number: 1549.8745801928962.
+Condition number: 1549.8745801928962.
+Condition number: 1549.8745801928962.
+Condition number: 1549.8745801928962.
+Condition number: 1549.8745801928962.
+Condition number: 1549.9852034714152.
+Condition number: 1550.017626628301.
+Condition number: 1550.017626628301.
+Condition number: 1550.017626628301.
+Condition number: 1550.017626628301.
+Condition number: 1549.9314615980936.
+Condition number: 1549.9442884681418.
+Condition number: 1549.9442884681418.
+Condition number: 1549.9442884681418.
+Condition number: 1549.9442884681418.
+Condition number: 1549.9354732387533.
+Condition number: 1550.0974249457947.
+Condition number: 1550.099010506321.
+Condition number: 1550.1027164299287.
+Condition number: 1550.1049589663392.
+Condition number: 1549.9661696027663.
+Condition number: 1549.9661696027663.
+Condition number: 1549.9661696027663.
+Condition number: 1549.9661696027663.
+Condition number: 1549.9661696027663.
+MAP_sample_index
+ tensor(30)
+Condition number: 1549.9852034714152.
+Active grids: ['custom']
+Setting Backend To: AvailableBackends.numpy
+MAP index
+ tensor(30)
+entropy_prior_gmm
+ 1.1512992383663035e-08 
+ entropy_MAP_gmm
+ 1.1512926e-08
+entropy_z_nk_prior
+ 0.0010043481942177436
+entropy_MAP_z_nk
+ 0.0010129172301774824
+entropy_mixing_prior
+ 53.75278407684164
+entropy_MAP_mixing
+ 1.7137514763330526
+accuracy_init:  tensor(0.7722) accuracy_final:  tensor(1.)
+Directory './Results/Salinas/posterior_condition_3_alpha_1000000.0_beta_1000.0_slope_gempy_50.0scale_10.0/Mean' already exists.
+Setting Backend To: AvailableBackends.PYTORCH
+Condition number: 1549.9594625305965.
+Active grids: ['custom']
+Setting Backend To: AvailableBackends.numpy
+entropy_prior_gmm
+ 1.1512992383663035e-08 
+ entropy_Mean_gmm
+ 1.1512926e-08
+entropy_z_nk_prior
+ 0.0010043481942177436
+entropy_Mean_z_nk
+ 0.0010111070395605313
+entropy_mixing_prior
+ 53.75278407684164
+entropy_Mean_mixing
+ 1.7137514212603842
+accuracy_init:  tensor(0.7722) accuracy_final_mean:  tensor(1.)
+Script ended...
+Elapsed time: 0:08:13.107197
