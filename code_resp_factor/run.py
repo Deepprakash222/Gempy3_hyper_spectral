@@ -46,12 +46,12 @@ parser.add_argument('--cluster', metavar='cluster', type=int, default=6, help='t
 parser.add_argument('--dimred', metavar='dimred', type=str , default="pca", help='type of dimensionality reduction')
 parser.add_argument('--plot_dimred', metavar='plot_dimred', type=str , default="tsne", help='type of dimensionality reduction for plotting after data is alread reduced in a smaller dimension')
 parser.add_argument('--prior_number_samples', metavar='prior_number_samples', type=int , default=100, help='number of samples for prior')
-parser.add_argument('--posterior_number_samples', metavar='posterior_number_samples', type=int , default=50, help='number of samples for posterior')
-parser.add_argument('--posterior_warmup_steps', metavar='posterior_warmup_steps', type=int , default=50, help='number of  warmup steps for posterior')
+parser.add_argument('--posterior_number_samples', metavar='posterior_number_samples', type=int , default=500, help='number of samples for posterior')
+parser.add_argument('--posterior_warmup_steps', metavar='posterior_warmup_steps', type=int , default=200, help='number of  warmup steps for posterior')
 parser.add_argument('--directory_path', metavar='directory_path', type=str , default="./Results", help='name of the directory in which result should be stored')
 parser.add_argument('--dataset', metavar='dataset', type=str , default="Salinas", help='name of the dataset (Salinas, KSL, KSL_layer3 or other)')
-parser.add_argument('--posterior_num_chain', metavar='posterior_num_chain', type=int , default=1, help='number of chain')
-parser.add_argument('--posterior_condition',metavar='posterior_condition', type=int , default=3, help='1-Deterministic for mean and covariance for hsi data, 2-Deterministic for covariance but a prior on mean ,3-Prior on mean and covariance')
+parser.add_argument('--posterior_num_chain', metavar='posterior_num_chain', type=int , default=4, help='number of chain')
+parser.add_argument('--posterior_condition',metavar='posterior_condition', type=int , default=1, help='1-Deterministic for mean and covariance for hsi data, 2-Deterministic for covariance but a prior on mean ,3-Prior on mean and covariance')
 #parser.add_argument('--num_layers',metavar='num_layers', type=int , default=4, help='number of points used to model layer information')
 parser.add_argument('--slope_gempy', metavar='slope_gempy', type=float , default=45.0, help='slope for gempy')
 parser.add_argument('--factor', metavar='factor', type=float , default=1000.0, help='scaling factor to avoid collaspe of covariance')
@@ -200,11 +200,11 @@ def main():
     pyro.set_rng_seed(42)
     
     if posterior_condition==1:
-        directory_path = directory_path + "/" + dataset + "/posterior_condition_" + str(posterior_condition) + "_slope_gempy_" + str(slope_gempy) + "scale_" + str(scale)
+        directory_path = directory_path + "/" + dataset + "/posterior_condition_" + str(posterior_condition) + "_slope_gempy_" + str(slope_gempy) + "_scale_" + str(scale) +"_chain_" + str(posterior_num_chain)
     elif posterior_condition==2:
-        directory_path = directory_path + "/" + dataset + "/posterior_condition_" + str(posterior_condition) + "_alpha_" + str(alpha) + "_slope_gempy_" + str(slope_gempy) + "scale_" + str(scale)
+        directory_path = directory_path + "/" + dataset + "/posterior_condition_" + str(posterior_condition) + "_alpha_" + str(alpha) + "_slope_gempy_" + str(slope_gempy) + "_scale_" + str(scale) + "_chain_" + str(posterior_num_chain)
     elif (posterior_condition==3) or (posterior_condition==4):
-        directory_path = directory_path + "/" + dataset + "/posterior_condition_" + str(posterior_condition) + "_alpha_" + str(alpha) + "_beta_"+str(beta) + "_slope_gempy_" + str(slope_gempy) + "scale_" + str(scale)
+        directory_path = directory_path + "/" + dataset + "/posterior_condition_" + str(posterior_condition) + "_alpha_" + str(alpha) + "_beta_"+str(beta) + "_slope_gempy_" + str(slope_gempy) + "_scale_" + str(scale) +"_chain_" + str(posterior_num_chain)
     # Check if the directory exists
    
     if not os.path.exists(directory_path):
@@ -576,7 +576,7 @@ def main():
     # Posterior 
     ################################################################################
     pyro.primitives.enable_validation(is_validate=True)
-    nuts_kernel = NUTS(model.model_test, step_size=0.0085, adapt_step_size=True, target_accept_prob=0.9, max_tree_depth=10, init_strategy=init_to_mean)
+    nuts_kernel = NUTS(model.model_test, step_size=0.0085, adapt_step_size=True, target_accept_prob=0.75, max_tree_depth=10, init_strategy=init_to_mean)
     mcmc = MCMC(nuts_kernel, num_samples=posterior_number_samples,mp_context="fork", warmup_steps=posterior_warmup_steps,num_chains=posterior_num_chain, disable_validation=False)
     mcmc.run(normalised_hsi,test_list,geo_model_test,mean_init,cov_init,factor,num_layers,posterior_condition,scale, cluster, alpha, beta,dtype,device)
     

@@ -33,7 +33,7 @@ class MyModel(PyroModule):
     def __init__(self):
         super(MyModel, self).__init__()
     
-    @config_enumerate
+    #@config_enumerate
     def model_test(self, obs_data,interpolation_input_,geo_model_test,mean_init,cov_init,factor,num_layers,posterior_condition, scale, cluster, alpha, beta, dtype, device):
             """
             This Pyro model represents the probabilistic aspects of the geological model.

@@ -11,5 +11,3 @@ module load CUDA
 
 # Print some debug information
 echo; export; echo; nvidia-smi; echo
-
-
