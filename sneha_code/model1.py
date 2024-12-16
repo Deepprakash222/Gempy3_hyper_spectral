@@ -28,12 +28,14 @@ from sklearn.mixture import BayesianGaussianMixture
 from sklearn.cluster import KMeans
 
 from pyro.nn import PyroModule, PyroSample
+# Change the backend to PyTorch for probabilistic modeling
+BackendTensor.change_backend_gempy(engine_backend=gp.data.AvailableBackends.PYTORCH)
 
 class MyModel(PyroModule):
     def __init__(self):
         super(MyModel, self).__init__()
     
-    @config_enumerate
+    #@config_enumerate
     def model_test(self, obs_data,interpolation_input_,geo_model_test,mean_init,cov_init,factor,num_layers,posterior_condition, scale, cluster, alpha, beta):
             """
             This Pyro model represents the probabilistic aspects of the geological model.
@@ -237,6 +239,20 @@ class MyModel(PyroModule):
             cov_tensor = torch.stack(cov, dim=0)
             
             
-            with pyro.plate('N='+str(obs_data.shape[0]), obs_data.shape[0]):
-                assignment = pyro.sample("assignment", dist.Categorical(pi_k))
-                obs = pyro.sample("obs", dist.MultivariateNormal(loc=mean_tensor[assignment],covariance_matrix = cov_tensor[assignment]), obs=obs_data)
+            # with pyro.plate('N='+str(obs_data.shape[0]), obs_data.shape[0]):
+            #     assignment = pyro.sample("assignment", dist.Categorical(pi_k))
+            #     obs = pyro.sample("obs", dist.MultivariateNormal(loc=mean_tensor[assignment],covariance_matrix = cov_tensor[assignment]), obs=obs_data)
+            
+            ## create a factor for spawn to work
+            
+            
+            
+            
+            gaussian_density_individual = torch.exp(dist.MultivariateNormal(mean_tensor, cov_tensor).log_prob(obs_data.unsqueeze(1)))  # (N, K)
+            
+            log_likelihood= torch.log(torch.sum(pi_k.unsqueeze(0) * gaussian_density_individual, axis=1))
+            
+            # Always write pyro.factor outside the pyro plate, otherwise the likelihood will be multiplied with number of plate dim
+            pyro.factor("log_likelihood", log_likelihood.sum())  # Scalar log joint 
+            
+            

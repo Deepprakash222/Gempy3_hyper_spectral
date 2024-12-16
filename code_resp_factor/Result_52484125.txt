@@ -1,0 +1,1416 @@
+[INFO] Module CUDA/12.3.0 loaded.
+/home/jt925938/anaconda3/envs/gempy_pyro/lib/python3.10/site-packages/gempy/core/data/geo_model.py:164: UserWarning: You are using refinement and passing a regular grid. The resolution of the regular grid will be overwritten
+  warnings.warn(
+/home/jt925938/anaconda3/envs/gempy_pyro/lib/python3.10/site-packages/gempy/core/data/geo_model.py:164: UserWarning: You are using refinement and passing a regular grid. The resolution of the regular grid will be overwritten
+  warnings.warn(
+Setting Backend To: AvailableBackends.numpy
+Setting Backend To: AvailableBackends.PYTORCH
+cpu
+Script started...
+Directory './Results/Salinas/posterior_condition_1_slope_gempy_45.0_scale_10.0_chain_4' already exists.
+Setting Backend To: AvailableBackends.numpy
+Setting Backend To: AvailableBackends.numpy
+Active grids: ['custom']
+Setting Backend To: AvailableBackends.numpy
+Setting Backend To: AvailableBackends.numpy
+entropy_gmm_prior
+ 0.0008925289686521954
+Intial accuracy
+ tensor(0.7752)
+Optimal number of components: 12
+Optimal number of components: 19
+Setting Backend To: AvailableBackends.PYTORCH
+Condition number: 1553.9750196410391.
+Condition number: 1553.9750196410391.
+Condition number: 1553.9798452296588.
+Condition number: 1550.2353795531287.
+Condition number: 1535.2964504909196.
+Condition number: 1542.2972698450192.
+Condition number: 1536.813911809392.
+Condition number: 1569.7500009383766.
+Condition number: 1546.1185622067405.
+Condition number: 1570.1773300704776.
+Condition number: 1545.7683537334337.
+Condition number: 1568.7212152195114.
+Condition number: 1534.183256995492.
+Condition number: 1579.786858211361.
+Condition number: 1559.903675680994.
+Condition number: 1547.934374548543.
+Condition number: 1563.4706894925532.
+Condition number: 1551.3148504528494.
+Condition number: 1526.4479772368882.
+Condition number: 1568.8435102268654.
+Condition number: 1521.3799729962002.
+Condition number: 1538.7443674264134.
+Condition number: 1523.6167275378793.
+Condition number: 1552.2765138476964.
+Condition number: 1555.3252789179062.
+Condition number: 1542.2111616870457.
+Condition number: 1555.8582080351377.
+Condition number: 1545.9867436354018.
+Condition number: 1566.4736255767216.
+Condition number: 1556.5671429700467.
+Condition number: 1549.013242254709.
+Condition number: 1529.3975256488372.
+Condition number: 1563.0053704997665.
+Condition number: 1572.3059330088463.
+Condition number: 1533.0039124512646.
+Condition number: 1551.9860750579955.
+Condition number: 1559.0548900041688.
+Condition number: 1566.582828431406.
+Condition number: 1568.9759640091333.
+Condition number: 1568.8902037175696.
+Condition number: 1522.2697822599916.
+Condition number: 1566.4688608036042.
+Condition number: 1542.4404913161152.
+Condition number: 1560.0092728646368.
+Condition number: 1553.6340563057179.
+Condition number: 1582.8628074719811.
+Condition number: 1544.6452054697475.
+Condition number: 1569.8815492185438.
+Condition number: 1517.5183313860427.
+Condition number: 1529.6129211708549.
+Condition number: 1549.5994459279877.
+Condition number: 1542.9753844797378.
+Condition number: 1537.483422296541.
+Condition number: 1589.3824507498389.
+Condition number: 1562.1243612389223.
+Condition number: 1547.2800830729857.
+Condition number: 1531.8672782317415.
+Condition number: 1532.6681089475665.
+Condition number: 1528.4430818944984.
+Condition number: 1574.7138414444848.
+Condition number: 1551.0713209233745.
+Condition number: 1562.4596003346937.
+Condition number: 1558.8710712607879.
+Condition number: 1568.9649527586396.
+Condition number: 1539.4727378335317.
+Condition number: 1544.9744131011541.
+Condition number: 1546.5596692712843.
+Condition number: 1533.4889959991074.
+Condition number: 1544.482992107629.
+Condition number: 1571.713368249028.
+Condition number: 1557.819097313654.
+Condition number: 1556.9499479360254.
+Condition number: 1561.5360691328167.
+Condition number: 1536.888230697025.
+Condition number: 1580.4145276225122.
+Condition number: 1549.794947704894.
+Condition number: 1529.979452751974.
+Condition number: 1539.6247215720991.
+Condition number: 1523.9405591631823.
+Condition number: 1555.321161758394.
+Condition number: 1536.8506038498676.
+Condition number: 1543.297757125446.
+Condition number: 1549.1025837030734.
+Condition number: 1529.3248039614818.
+Condition number: 1531.6185184508681.
+Condition number: 1542.437826930888.
+Condition number: 1581.840500561232.
+Condition number: 1553.0698463547233.
+Condition number: 1560.9813839182846.
+Condition number: 1538.8956050907595.
+Condition number: 1549.8048791949827.
+Condition number: 1529.5647235290712.
+Condition number: 1523.1372162622513.
+Condition number: 1561.4707840855929.
+Condition number: 1541.6044882093338.
+Condition number: 1533.8381291721353.
+Condition number: 1537.703879123007.
+Condition number: 1549.423109693006.
+Condition number: 1548.5622601804735.
+Condition number: 1542.432283885304.
+Condition number: 1557.718144335555.
+Condition number: 1559.861755547378.
+Condition number: 1570.3023374354339.
+Condition number: 1546.0016812478275.
+Condition number: 1525.070684235631.
+Condition number: 1558.9967851967351.
+Condition number: 1550.9678830545304.
+Condition number: 1563.9085614398816.
+Condition number: 1554.3339523170528.
+Condition number: 1566.490782074308.
+Condition number: 1556.730731753977.
+Condition number: 1565.3783760642268.
+Condition number: 1552.0857524619623.
+Condition number: 1525.9508844905079.
+Condition number: 1542.5132391937987.
+Condition number: 1542.0832688919807.
+Condition number: 1561.0603322989427.
+Condition number: 1547.400388812444.
+Condition number: 1515.2167987631155.
+Condition number: 1541.0173761241895.
+Condition number: 1531.075747406993.
+Condition number: 1543.133749279514.
+Condition number: 1557.193601531926.
+Condition number: 1536.4754707123482.
+Condition number: 1536.5712989622214.
+Condition number: 1551.953045173467.
+Condition number: 1555.3729134355194.
+Condition number: 1553.9609510005923.
+Condition number: 1551.0155682120096.
+Condition number: 1515.4905964317813.
+Condition number: 1555.1662084548916.
+Condition number: 1538.1948912843982.
+Condition number: 1529.6737056891436.
+Condition number: 1547.0079966912592.
+Condition number: 1521.9297556246006.
+Condition number: 1535.9713294298413.
+Condition number: 1541.8471831113413.
+Condition number: 1529.896269420954.
+Condition number: 1576.524631254121.
+Condition number: 1580.8002477016294.
+Condition number: 1522.442246739293.
+Condition number: 1536.591422557497.
+Condition number: 1543.6962001556603.
+Condition number: 1577.600005798693.
+Condition number: 1553.6380928206127.
+Condition number: 1566.2910813787744.
+Condition number: 1548.9422681836195.
+Condition number: 1549.0994880561045.
+Condition number: 1563.6486387314408.
+Condition number: 1546.1624478949348.
+Condition number: 1559.9145349784649.
+Condition number: 1532.4542796354492.
+Condition number: 1533.9474911506372.
+Condition number: 1560.8515872464632.
+Condition number: 1557.1693213864012.
+Condition number: 1573.273903928991.
+Condition number: 1540.2022795124662.
+Condition number: 1553.6750747125247.
+Condition number: 1566.5556812787188.
+Condition number: 1545.2313198773304.
+Condition number: 1533.6940303343497.
+Condition number: 1544.1668453189961.
+Condition number: 1524.4574788127277.
+Condition number: 1546.6349179524316.
+Condition number: 1552.1327397138243.
+Condition number: 1556.0009496488178.
+Condition number: 1543.276205065023.
+Condition number: 1561.7064565168732.
+Condition number: 1558.3319353797083.
+Condition number: 1545.382852799779.
+Condition number: 1555.9463838309243.
+Condition number: 1539.9293904021338.
+Condition number: 1596.3848688911062.
+Condition number: 1541.5041719102544.
+Condition number: 1550.195613394785.
+Condition number: 1526.2712551533673.
+Condition number: 1582.553799151379.
+Condition number: 1571.4537862872432.
+Condition number: 1557.1063864805042.
+Condition number: 1523.4785974901247.
+Condition number: 1563.0367870757625.
+Condition number: 1553.1064713658516.
+Condition number: 1528.0565116644639.
+Condition number: 1547.2082675350925.
+Condition number: 1568.2249914101803.
+Condition number: 1543.7858002517664.
+Condition number: 1536.9826007244874.
+Condition number: 1518.7080995712856.
+Condition number: 1536.1027652032571.
+Condition number: 1574.9545738754268.
+Condition number: 1545.0432491482934.
+Condition number: 1547.9190593730987.
+Condition number: 1571.894035192813.
+Condition number: 1513.890003718801.
+Condition number: 1560.117402642065.
+Condition number: 1583.827173806784.
+Condition number: 1562.1198170216196.
+Condition number: 1554.5094942758512.
+Condition number: 1551.950503538578.
+Condition number: 1518.0046718779865.
+Condition number: 1518.5913272994221.
+Condition number: 1569.5468317659113.
+Condition number: 1550.1051391934964.
+Condition number: 1568.2260348363673.
+Condition number: 1547.0974573984736.
+Condition number: 1515.3621620104964.
+Condition number: 1577.6001574275085.
+Condition number: 1530.0315778140323.
+Condition number: 1554.0065356853456.
+Condition number: 1529.588448213893.
+Condition number: 1520.0339662340489.
+Condition number: 1565.772307939261.
+Condition number: 1522.681775073299.
+Condition number: 1531.75349992419.
+Condition number: 1540.8321092838603.
+Condition number: 1552.8546200086378.
+Condition number: 1537.131197180576.
+Condition number: 1546.364028581826.
+Condition number: 1552.406575216503.
+Condition number: 1563.2528066371367.
+Condition number: 1550.9772183001926.
+Condition number: 1520.8888780403242.
+Condition number: 1535.6934979398982.
+Condition number: 1560.3418990917087.
+Condition number: 1539.779539716182.
+Condition number: 1533.6770287762024.
+Condition number: 1560.339524965966.
+Condition number: 1540.009716707748.
+Condition number: 1539.4411768444747.
+Condition number: 1540.3477402639664.
+Condition number: 1560.4287132639547.
+Condition number: 1510.9594287269738.
+Condition number: 1558.4806053378727.
+Condition number: 1531.5275882152891.
+Condition number: 1584.53992171461.
+Condition number: 1566.669386348337.
+Condition number: 1525.2381099717527.
+Condition number: 1563.952653901124.
+Condition number: 1556.2802769379452.
+Condition number: 1547.7931525017482.
+Condition number: 1531.3533383815611.
+Condition number: 1544.5854922790447.
+Condition number: 1562.4481343646594.
+Condition number: 1543.784211917598.
+Condition number: 1521.8574109594335.
+Condition number: 1575.4529319713567.
+Condition number: 1544.4772145192494.
+Condition number: 1582.3682476322124.
+Condition number: 1554.8136132802165.
+Condition number: 1546.2497673832881.
+Condition number: 1553.048903764182.
+Condition number: 1580.7772934747397.
+Condition number: 1561.1270734467678.
+Condition number: 1549.7264983702103.
+Condition number: 1576.6790520458733.
+Condition number: 1565.8817583088821.
+Condition number: 1543.2637111062777.
+Condition number: 1546.1888226054011.
+Condition number: 1526.4153805633166.
+Condition number: 1530.420237480896.
+Condition number: 1532.0135563759818.
+Condition number: 1553.7870554308392.
+Condition number: 1529.7608888826933.
+Condition number: 1543.667354682203.
+Condition number: 1556.405310263262.
+Condition number: 1566.1225162061603.
+Condition number: 1555.3925994340343.
+Condition number: 1552.2139620096732.
+Condition number: 1545.7302063401964.
+Condition number: 1555.1449179139295.
+Condition number: 1517.8431940520586.
+Condition number: 1559.7713821251807.
+Condition number: 1533.9947326230572.
+Condition number: 1567.5642257355298.
+Condition number: 1542.4111945064753.
+Condition number: 1551.1839544116426.
+Condition number: 1548.7159958549248.
+Condition number: 1534.8188561785926.
+Condition number: 1541.08814008581.
+Condition number: 1550.0172185418905.
+Condition number: 1540.1432323301578.
+Condition number: 1549.1926649730465.
+Condition number: 1534.3703286960604.
+Condition number: 1541.2128524413336.
+Condition number: 1556.3121632895898.
+Condition number: 1574.994807452239.
+Condition number: 1537.3360166052926.
+Condition number: 1530.9212541383208.
+Condition number: 1538.1479033849039.
+Condition number: 1543.929104760933.
+Condition number: 1558.3067303759344.
+Condition number: 1552.4745982526556.
+Condition number: 1551.6745093485258.
+Condition number: 1546.8608472192248.
+Condition number: 1547.7301625290695.
+Condition number: 1540.869983503492.
+Condition number: 1540.9708572903364.
+Condition number: 1559.6364632546642.
+Condition number: 1538.9451481392114.
+Condition number: 1559.601395734842.
+Condition number: 1539.3305099321826.
+Condition number: 1568.9344497706156.
+Condition number: 1534.9914662943415.
+Condition number: 1569.8685393808796.
+Condition number: 1547.6228839184732.
+Condition number: 1542.0514732842096.
+Condition number: 1555.3119561135268.
+Condition number: 1566.7313380888922.
+Condition number: 1531.9244295850829.
+Condition number: 1515.798919296689.
+Condition number: 1568.3763140501628.
+Condition number: 1562.4755232229556.
+Condition number: 1557.3545772779446.
+Condition number: 1560.7573459255823.
+Condition number: 1540.9650876115916.
+Condition number: 1547.3203681934676.
+Condition number: 1536.230868127037.
+Condition number: 1542.5336098698363.
+Condition number: 1544.4038758956435.
+Condition number: 1532.391785746222.
+Condition number: 1520.7610519342722.
+Condition number: 1556.2903067499967.
+Condition number: 1542.1285464870466.
+Condition number: 1530.237668327122.
+Condition number: 1530.0081538695788.
+Condition number: 1572.4610217225397.
+Condition number: 1571.895890075586.
+Condition number: 1553.2969536076962.
+Condition number: 1554.3704570995321.
+Condition number: 1535.9175913973418.
+Condition number: 1559.9885434783216.
+Condition number: 1560.5365552388491.
+Condition number: 1581.7172977564935.
+Condition number: 1559.0498865524676.
+Condition number: 1511.5796361238097.
+Condition number: 1554.138781828717.
+Condition number: 1602.961222265091.
+Condition number: 1528.5930735894754.
+Condition number: 1577.7394434683708.
+Condition number: 1539.1842883025258.
+Condition number: 1544.7098670259136.
+Condition number: 1568.431277259256.
+Condition number: 1543.0043932065971.
+Condition number: 1530.747398346663.
+Condition number: 1569.2163492521004.
+Condition number: 1575.9604987114985.
+Condition number: 1541.5254285655556.
+Condition number: 1541.8945028057858.
+Condition number: 1522.3998354073321.
+Condition number: 1529.715417486298.
+Condition number: 1525.6733344081163.
+Condition number: 1563.4775054603492.
+Condition number: 1538.4656369020163.
+Condition number: 1547.5224946788458.
+Condition number: 1555.2723200294693.
+Condition number: 1555.8400796754675.
+Condition number: 1617.6717435081196.
+Condition number: 1553.75394528228.
+Condition number: 1563.383046646304.
+Condition number: 1547.153912644193.
+Condition number: 1574.2458567468955.
+Condition number: 1553.2809861004375.
+Condition number: 1558.7764166771203.
+Condition number: 1551.4324696549131.
+Condition number: 1503.7939035614127.
+Condition number: 1557.7559966931904.
+Condition number: 1557.0861648868856.
+Condition number: 1561.2825980355715.
+Condition number: 1524.8871299918508.
+Condition number: 1563.0868833693796.
+Condition number: 1509.2478148037428.
+Condition number: 1562.8600741375144.
+Condition number: 1558.9580787845362.
+Condition number: 1526.1400518546168.
+Condition number: 1565.6937883955175.
+Condition number: 1544.1858817636237.
+Condition number: 1568.291820524069.
+Condition number: 1541.915168976534.
+Condition number: 1519.7935899336148.
+Condition number: 1545.816389574169.
+Condition number: 1547.1561840300212.
+Condition number: 1581.193425196402.
+Condition number: 1520.5388868673203.
+Condition number: 1560.8229108882376.
+Condition number: 1568.7378844285722.
+Condition number: 1555.1370032342702.
+Condition number: 1555.8742883070238.
+Condition number: 1546.9957413259374.
+Condition number: 1547.8619981446564.
+Condition number: 1519.8737096642449.
+Condition number: 1537.995209752091.
+Condition number: 1551.5176938487648.
+Condition number: 1581.2763229372895.
+Condition number: 1522.6822292049173.
+Condition number: 1533.7417705893217.
+Condition number: 1549.7277960283495.
+Condition number: 1553.0562116077529.
+Condition number: 1567.9801090653475.
+Condition number: 1557.8225199304675.
+Condition number: 1544.479973803013.
+Condition number: 1544.7258322784498.
+Condition number: 1522.421401814485.
+Condition number: 1527.1773502075557.
+Condition number: 1553.863264469724.
+Condition number: 1531.9968534867012.
+Condition number: 1560.5552099552665.
+Condition number: 1554.6251790933884.
+Condition number: 1573.5267712567968.
+Condition number: 1564.7552630743448.
+Condition number: 1537.862630556121.
+Condition number: 1544.6131277225861.
+Condition number: 1576.0479836278705.
+Condition number: 1555.8643386174258.
+Condition number: 1553.549263162728.
+Condition number: 1540.5768255915475.
+Condition number: 1535.2397187839847.
+Condition number: 1528.5963796898482.
+Condition number: 1545.7823173784848.
+Condition number: 1547.8857426349896.
+Condition number: 1555.6551462761527.
+Condition number: 1555.7592194647393.
+Condition number: 1537.278126877118.
+Condition number: 1527.176408165922.
+Condition number: 1525.6962913928799.
+Condition number: 1550.7313251770959.
+Condition number: 1576.2377273652846.
+Condition number: 1542.9364407763037.
+Condition number: 1545.6229007180918.
+Condition number: 1559.5879703682624.
+Condition number: 1540.5095883913482.
+Condition number: 1579.9467931808142.
+Condition number: 1533.9471383974765.
+Condition number: 1544.2869195859057.
+Condition number: 1536.9956036056099.
+Condition number: 1563.917733264616.
+Condition number: 1555.7841429413609.
+Condition number: 1530.7662761474548.
+Condition number: 1525.967772951856.
+Condition number: 1561.9190833380549.
+Condition number: 1548.6934901997276.
+Condition number: 1573.6801946591836.
+Condition number: 1548.6043316474031.
+Condition number: 1530.0029596528148.
+Condition number: 1523.871487502661.
+Condition number: 1522.187685253648.
+Condition number: 1548.5180842626248.
+Condition number: 1523.731335335413.
+Condition number: 1597.6906047720106.
+Condition number: 1543.3641388139176.
+Condition number: 1558.4858872215548.
+Condition number: 1561.9636860298292.
+Condition number: 1573.000877600488.
+Condition number: 1548.496158256074.
+Condition number: 1564.3482038324405.
+Condition number: 1553.9709850164065.
+Condition number: 1563.315609537093.
+Condition number: 1546.5150438395447.
+Condition number: 1546.8383246719452.
+Condition number: 1551.8230208193597.
+Condition number: 1538.3181798128107.
+Condition number: 1523.7688068190635.
+Condition number: 1558.099451398361.
+Condition number: 1534.263405274293.
+Condition number: 1574.8833279414578.
+Condition number: 1544.3101418034903.
+Condition number: 1551.172011158907.
+Condition number: 1528.2038038953117.
+Condition number: 1555.012307280891.
+Condition number: 1554.0365228590204.
+Condition number: 1531.441873679578.
+Condition number: 1552.0054973568956.
+Condition number: 1532.4466034795885.
+Condition number: 1561.4150090124247.
+Condition number: 1542.3603365027125.
+Condition number: 1526.7017704057669.
+Condition number: 1566.6132863394246.
+Condition number: 1543.647316761078.
+Condition number: 1535.7507213026438.
+Condition number: 1540.442957264835.
+Condition number: 1528.38377625639.
+Condition number: 1569.841125354375.
+Condition number: 1556.8376519264132.
+Condition number: 1540.421365595881.
+Condition number: 1541.7375620900712.
+Condition number: 1551.635886579135.
+Condition number: 1542.7414410861095.
+Condition number: 1567.6222350268674.
+Condition number: 1567.6962584426465.
+Condition number: 1553.8331374894638.
+Condition number: 1556.8564713534668.
+Condition number: 1550.3140264892006.
+Condition number: 1563.9876387892575.
+Condition number: 1550.5254901199776.
+Condition number: 1568.7822392439887.
+Condition number: 1564.5631244191636.
+Condition number: 1538.8809113583404.
+Condition number: 1570.522005582062.
+Condition number: 1545.739325630963.
+Condition number: 1546.4476207135237.
+Condition number: 1571.5441738884751.
+Condition number: 1553.1041445340666.
+Condition number: 1541.7559346278279.
+Condition number: 1558.840186990038.
+Condition number: 1542.2072494480444.
+Condition number: 1550.1556909144215.
+Condition number: 1556.9874559786904.
+Condition number: 1537.8392130097739.
+Condition number: 1558.361210472991.
+Condition number: 1542.0798497878136.
+Condition number: 1554.0087048145615.
+Condition number: 1542.6903484181062.
+Condition number: 1525.802992077936.
+Condition number: 1505.7587303779283.
+Condition number: 1552.7653614635897.
+Condition number: 1548.061330469638.
+Condition number: 1515.5887579652856.
+Condition number: 1535.2802885523256.
+Condition number: 1569.7942627329035.
+Condition number: 1568.1414128892247.
+Condition number: 1561.2690000187247.
+Condition number: 1546.7965508842285.
+Condition number: 1540.156589502276.
+Condition number: 1558.3018816035892.
+Condition number: 1559.4796017285005.
+Condition number: 1527.4203331634403.
+Condition number: 1548.7401960510406.
+Condition number: 1558.7133572746636.
+Condition number: 1548.4679743312881.
+Condition number: 1581.5225379006595.
+Condition number: 1542.7275141830237.
+Condition number: 1533.777616187101.
+Condition number: 1556.047058297103.
+Condition number: 1585.2992865576687.
+Condition number: 1533.741739277459.
+Condition number: 1545.909403306472.
+Condition number: 1551.2361347824428.
+Condition number: 1554.519092086711.
+Condition number: 1519.9395731751345.
+Condition number: 1545.8421971252556.
+Condition number: 1550.0865056585656.
+Condition number: 1599.3422284864318.
+Condition number: 1515.7216814182973.
+Condition number: 1536.0892869911331.
+Condition number: 1541.4126378130388.
+Condition number: 1536.4125772653115.
+Condition number: 1570.6621122214453.
+Condition number: 1536.7153474027177.
+Condition number: 1532.2908498707047.
+Condition number: 1559.3749885668233.
+Condition number: 1536.795725838066.
+Condition number: 1545.8401647346507.
+Condition number: 1550.8567458529674.
+Condition number: 1556.005062612059.
+Condition number: 1532.6990968486755.
+Condition number: 1564.370753936323.
+Condition number: 1540.2964141176622.
+Condition number: 1551.3550688960484.
+Condition number: 1537.3315335190066.
+Condition number: 1543.3944097089402.
+Condition number: 1555.3526765616893.
+Condition number: 1540.7469281007252.
+Condition number: 1547.2139749886417.
+Condition number: 1532.62273442902.
+Condition number: 1530.7783137257227.
+Condition number: 1552.1413770630775.
+Condition number: 1558.4480254319926.
+Condition number: 1551.0050957759204.
+Condition number: 1518.1482811937176.
+Condition number: 1521.9404300152728.
+Condition number: 1548.1884233699304.
+Condition number: 1525.2848384967344.
+Condition number: 1547.6764651918418.
+Condition number: 1531.247106734353.
+Condition number: 1541.640975794496.
+Condition number: 1566.3644168634694.
+Condition number: 1575.7742384365886.
+Condition number: 1540.669255349463.
+Condition number: 1553.7871670322425.
+Condition number: 1542.4567921653302.
+Condition number: 1523.0709493018758.
+Condition number: 1566.8574507151163.
+Condition number: 1542.8691381977594.
+Condition number: 1543.6079997407119.
+Condition number: 1538.7276649542644.
+Condition number: 1532.7379503712311.
+Condition number: 1534.953353152862.
+Condition number: 1552.8347927650834.
+Condition number: 1527.8980844631378.
+Condition number: 1563.1638309772052.
+Condition number: 1553.971075722892.
+Condition number: 1549.2268120303343.
+Condition number: 1543.210955090512.
+Condition number: 1531.6084420525726.
+Condition number: 1542.0040630878548.
+Condition number: 1556.2962444975126.
+Condition number: 1510.5502299314617.
+Condition number: 1559.8740509095146.
+Condition number: 1563.4763547374005.
+Condition number: 1569.2316600530396.
+Condition number: 1542.1361836752924.
+Condition number: 1551.0695216566764.
+Condition number: 1544.2311120209217.
+Condition number: 1562.219052147095.
+Condition number: 1505.6093197850487.
+Condition number: 1551.7099650707207.
+Condition number: 1561.494589402134.
+Condition number: 1553.3973924887052.
+Condition number: 1547.4038483326337.
+Condition number: 1557.5121994334238.
+Condition number: 1565.8392015240988.
+Condition number: 1540.8490688372697.
+Condition number: 1543.7191156688887.
+Condition number: 1542.668553433423.
+Condition number: 1566.4599747923962.
+Condition number: 1537.0287422188387.
+Condition number: 1545.4714877847434.
+Condition number: 1554.6044246459005.
+Condition number: 1558.519640090446.
+Condition number: 1538.91665593077.
+Condition number: 1527.1742543743258.
+Condition number: 1564.0768893658333.
+Condition number: 1545.5582325761916.
+Condition number: 1550.5878460095723.
+Condition number: 1529.5055713562922.
+Condition number: 1544.7375378524127.
+Condition number: 1559.6126471801078.
+Condition number: 1552.642180062335.
+Condition number: 1553.635498239272.
+Condition number: 1552.4658143950612.
+Condition number: 1540.983789411492.
+Condition number: 1572.8464714883712.
+Condition number: 1534.7695894681726.
+Condition number: 1562.545974430808.
+Condition number: 1572.8646906542167.
+Condition number: 1533.6427385741288.
+Condition number: 1521.8647740626209.
+Condition number: 1554.8617544834033.
+Condition number: 1568.3909826169815.
+Condition number: 1549.5759433973265.
+Condition number: 1549.1918103082196.
+Condition number: 1566.6666650854197.
+Condition number: 1545.1301444549813.
+Condition number: 1526.440649152897.
+Condition number: 1535.8797572946091.
+Condition number: 1535.2915736486277.
+Condition number: 1542.7755796317547.
+Condition number: 1551.8775915875221.
+Condition number: 1550.4157532721958.
+Condition number: 1573.288792975124.
+Condition number: 1530.7755569035862.
+Condition number: 1554.0442759018695.
+Condition number: 1567.0469497346471.
+Condition number: 1545.4076608927821.
+Condition number: 1536.0097522744425.
+Condition number: 1552.616044208519.
+Condition number: 1556.5007078173194.
+Condition number: 1537.3547529507316.
+Condition number: 1562.2754124217445.
+Condition number: 1538.882534120152.
+Condition number: 1532.999931435994.
+Condition number: 1551.331400530629.
+Condition number: 1577.2258573538807.
+Condition number: 1558.35752632539.
+Condition number: 1540.9515799894361.
+Condition number: 1569.688441508411.
+Condition number: 1554.919856295012.
+Condition number: 1567.2902649784166.
+Condition number: 1575.5996348489246.
+Condition number: 1561.4598581249932.
+Condition number: 1545.2642138230713.
+Condition number: 1552.784155277973.
+Condition number: 1553.7807659795724.
+Condition number: 1545.1874843986293.
+Condition number: 1549.7741056663785.
+Condition number: 1563.8995754948432.
+Condition number: 1604.6445368045293.
+Condition number: 1566.5508782438592.
+Condition number: 1566.9210364325675.
+Condition number: 1538.5328747381438.
+Condition number: 1534.3272416377488.
+Condition number: 1565.1404199525773.
+Condition number: 1542.7842141750991.
+Condition number: 1530.4835486026152.
+Condition number: 1562.700677689458.
+Condition number: 1543.0182236441754.
+Condition number: 1564.2085819700353.
+Condition number: 1537.4540880119366.
+Condition number: 1530.7503871454464.
+Condition number: 1558.0018992612017.
+Condition number: 1529.0541504756472.
+Condition number: 1565.4464151999412.
+Condition number: 1557.1343533483719.
+Condition number: 1542.839537264348.
+Condition number: 1522.7907881072915.
+Condition number: 1573.1228331145664.
+Condition number: 1560.0114770071946.
+Condition number: 1576.8655910486127.
+Condition number: 1537.2209856631637.
+Condition number: 1570.811376555098.
+Condition number: 1561.5076938654686.
+Condition number: 1535.245153237494.
+Condition number: 1525.3449819806467.
+Condition number: 1549.0778057856191.
+Condition number: 1523.4746385641877.
+Condition number: 1530.1477744289593.
+Condition number: 1557.219661691724.
+Condition number: 1564.6075818565803.
+Condition number: 1546.0263483630033.
+Condition number: 1537.876448564915.
+Condition number: 1556.723422321602.
+Condition number: 1558.4371709634097.
+Condition number: 1524.8211220355452.
+Condition number: 1554.1081713767292.
+Condition number: 1533.5888650287009.
+Condition number: 1573.587425868004.
+Condition number: 1577.2534407392955.
+Condition number: 1554.1872396765948.
+Condition number: 1560.0183138053526.
+Condition number: 1521.3342059421987.
+Condition number: 1544.9538820806306.
+Condition number: 1548.0108707692987.
+Condition number: 1569.904609463163.
+Condition number: 1538.197366454491.
+Condition number: 1547.8669072050689.
+Condition number: 1547.0318837977004.
+Condition number: 1557.7649687056346.
+Condition number: 1550.5842453151395.
+Condition number: 1562.0095483495932.
+Condition number: 1537.8069727437528.
+Condition number: 1537.545318508485.
+Condition number: 1578.0869789371084.
+Condition number: 1530.1483240849545.
+Condition number: 1543.711134587264.
+Condition number: 1521.6845629102172.
+Condition number: 1548.8718883461552.
+Condition number: 1585.3588563284616.
+Condition number: 1566.8322506186305.
+Condition number: 1545.0378892029657.
+Condition number: 1575.1583964637912.
+Condition number: 1541.6595501395755.
+Condition number: 1533.5717609894382.
+Condition number: 1534.5967737340416.
+Condition number: 1554.5801709214936.
+Condition number: 1518.7950610352157.
+Condition number: 1531.9017157576407.
+Condition number: 1570.22658550112.
+Condition number: 1549.299339602249.
+Condition number: 1552.4440334218712.
+Condition number: 1570.624926919783.
+Condition number: 1528.2003932761688.
+Condition number: 1552.6794916698884.
+Condition number: 1562.4079276318837.
+Condition number: 1533.0122918321022.
+Condition number: 1567.5996912912226.
+Condition number: 1552.5389452656686.
+Condition number: 1549.655724654544.
+Condition number: 1558.4295483333622.
+Condition number: 1516.0077112763363.
+Condition number: 1522.388491402795.
+Condition number: 1535.0848279918714.
+Condition number: 1562.985257122455.
+Condition number: 1547.673085160798.
+Condition number: 1534.5880012830296.
+Condition number: 1540.6042931560457.
+Condition number: 1579.5172577805545.
+Condition number: 1554.1243265997505.
+Condition number: 1524.13963127497.
+Condition number: 1521.5390608219313.
+Condition number: 1550.5386455012422.
+Condition number: 1531.9739375667136.
+Condition number: 1528.9824673904377.
+Condition number: 1518.2627725165928.
+Condition number: 1536.7667193012899.
+Condition number: 1529.0802014358017.
+Condition number: 1540.3010206218428.
+Condition number: 1554.5536100870543.
+Condition number: 1561.655044090379.
+Condition number: 1559.0485282620643.
+Condition number: 1555.9604283640922.
+Condition number: 1544.0699990696655.
+Condition number: 1548.4636781365562.
+Condition number: 1533.6605857155876.
+Condition number: 1553.668673552217.
+Condition number: 1570.3033891538291.
+Condition number: 1526.2666806731963.
+Condition number: 1563.6942988396563.
+Condition number: 1526.2576903812208.
+Condition number: 1558.8698669991768.
+Condition number: 1571.6009391257955.
+Condition number: 1536.8728035297327.
+Condition number: 1584.2294933881954.
+Condition number: 1559.327281112992.
+Condition number: 1537.4169551881862.
+Condition number: 1543.4757147052655.
+Condition number: 1551.2760648443762.
+Condition number: 1519.2118494340482.
+Condition number: 1574.9473416857861.
+Condition number: 1543.2245648361675.
+Condition number: 1533.7364856113957.
+Condition number: 1556.3813143181358.
+Condition number: 1540.43962113687.
+Condition number: 1553.6615948020394.
+Condition number: 1529.8376328829293.
+Condition number: 1563.7139946762195.
+Condition number: 1563.531860525166.
+Condition number: 1562.4691919654208.
+Condition number: 1526.1152477330713.
+Condition number: 1557.797113597651.
+Condition number: 1525.3988335476465.
+Condition number: 1559.0013079156743.
+Condition number: 1532.9419008362636.
+Condition number: 1557.9793033265369.
+Condition number: 1551.7579726959948.
+Condition number: 1530.745637721799.
+Condition number: 1546.7671548399576.
+Condition number: 1547.9315523655357.
+Condition number: 1573.3116770247468.
+Condition number: 1541.0480260684146.
+Condition number: 1519.800859558457.
+Condition number: 1566.2447978189437.
+Condition number: 1568.171817295906.
+Condition number: 1533.6532618984884.
+Condition number: 1560.3247992008435.
+Condition number: 1538.0354124291.
+Condition number: 1566.9558482383106.
+Condition number: 1560.928551872766.
+Condition number: 1545.3143322697395.
+Condition number: 1545.4242124222126.
+Condition number: 1557.3962134697417.
+Condition number: 1592.8406927618228.
+Condition number: 1543.5709654342136.
+Condition number: 1570.8995333968542.
+Condition number: 1525.0966255463607.
+Condition number: 1560.6280659853473.
+Condition number: 1525.9244248672267.
+Condition number: 1559.6258414775368.
+Condition number: 1541.9083188109455.
+Condition number: 1542.692665569503.
+Condition number: 1539.3035305235858.
+Condition number: 1539.7264340700633.
+Condition number: 1536.8978944464902.
+Condition number: 1533.1165129964259.
+Condition number: 1578.964975384614.
+Condition number: 1540.7011859576546.
+Condition number: 1564.1372611586119.
+Condition number: 1564.4150148896315.
+Condition number: 1533.6775441193024.
+Condition number: 1561.8387043047355.
+Condition number: 1543.4678833923167.
+Condition number: 1543.6741160761158.
+Condition number: 1542.660491437257.
+Condition number: 1527.403430365571.
+Condition number: 1538.436209135603.
+Condition number: 1561.6585196029453.
+Condition number: 1539.432507160379.
+Condition number: 1554.0275307876075.
+Condition number: 1566.7491495661895.
+Condition number: 1539.6250671468306.
+Condition number: 1539.5708600492096.
+Condition number: 1549.4136971044466.
+Condition number: 1555.3771666872549.
+Condition number: 1525.7820633306271.
+Condition number: 1571.735737991171.
+Condition number: 1528.4224500918658.
+Condition number: 1563.4761597207748.
+Condition number: 1524.7301418494778.
+Condition number: 1548.338694235765.
+Condition number: 1565.9092361480432.
+Condition number: 1511.1426142839503.
+Condition number: 1528.2979504279904.
+Condition number: 1546.4651776023402.
+Condition number: 1544.6131580147367.
+Condition number: 1547.1200985555947.
+Condition number: 1527.9193049951023.
+Condition number: 1572.4676373853713.
+Condition number: 1543.3775678793197.
+Condition number: 1541.8856700891233.
+Condition number: 1575.0460876222453.
+Condition number: 1562.428952003557.
+Condition number: 1535.5955171248484.
+Condition number: 1548.6574678087377.
+Condition number: 1582.7881170856726.
+Condition number: 1564.7958437512784.
+Condition number: 1536.8278606881556.
+Condition number: 1541.587612438839.
+Condition number: 1554.7558679308922.
+Condition number: 1557.522956263496.
+Condition number: 1527.0403647193075.
+Condition number: 1533.4663351492186.
+Condition number: 1544.9488730770777.
+Condition number: 1579.815962497659.
+Condition number: 1539.4276782060526.
+Condition number: 1514.894398638782.
+Condition number: 1561.7848808954734.
+Condition number: 1540.1978670431142.
+Condition number: 1562.7770966554647.
+Condition number: 1579.0417801432395.
+Condition number: 1576.9914466041648.
+Condition number: 1545.2000996732845.
+Condition number: 1551.760259107958.
+Condition number: 1536.4513471573346.
+Condition number: 1547.2856450286797.
+Condition number: 1544.0490450981533.
+Condition number: 1551.8222297870066.
+Condition number: 1537.7358494223654.
+Condition number: 1566.4053439024237.
+Condition number: 1569.6091583866032.
+Condition number: 1533.9589342610575.
+Condition number: 1558.4231482163545.
+Condition number: 1563.675023833879.
+Condition number: 1550.0007036506925.
+Condition number: 1541.5799265774974.
+Condition number: 1564.9463771478427.
+Condition number: 1527.3789116682856.
+Condition number: 1520.382053790345.
+Condition number: 1546.5676174130967.
+Condition number: 1540.2596549214716.
+Condition number: 1536.9875895981404.
+Condition number: 1545.8231518247337.
+Condition number: 1560.3334267407538.
+Condition number: 1590.3001103095885.
+Condition number: 1548.4569026888566.
+Condition number: 1534.3463785218194.
+Condition number: 1553.1473578484345.
+Condition number: 1540.9815300601388.
+Condition number: 1569.6365106528492.
+Condition number: 1531.9461474949012.
+Condition number: 1533.525681063539.
+Condition number: 1549.6597756594372.
+Condition number: 1558.0881959526148.
+Condition number: 1548.07952442209.
+Condition number: 1542.049003113503.
+Condition number: 1576.9111037551863.
+Condition number: 1528.3036637335285.
+Condition number: 1547.9021666900198.
+Condition number: 1557.8312584857345.
+Condition number: 1529.336049058422.
+Condition number: 1546.7712359156499.
+Condition number: 1579.4428730571178.
+Condition number: 1544.6518836833045.
+Condition number: 1542.2162498235366.
+Condition number: 1553.4257600745134.
+Condition number: 1516.5700532242595.
+Condition number: 1570.9900958286282.
+Condition number: 1563.1888541211881.
+Condition number: 1567.420564275799.
+Condition number: 1542.3975826728538.
+Condition number: 1565.9836546437348.
+Condition number: 1526.6865981355502.
+Condition number: 1540.4957945723747.
+Condition number: 1562.7022583803516.
+Condition number: 1558.0073186193263.
+Condition number: 1557.1207923667228.
+Condition number: 1543.931315534733.
+Condition number: 1566.6059752949452.
+Condition number: 1544.0467390124754.
+Condition number: 1540.077228533841.
+Condition number: 1538.2569125090347.
+Condition number: 1580.434961545679.
+Condition number: 1561.3622698307822.
+Condition number: 1550.0674369024568.
+Condition number: 1537.9122877528196.
+Condition number: 1549.9566768293917.
+Condition number: 1550.6144981044836.
+Condition number: 1552.2655443418635.
+Condition number: 1520.324863224611.
+Condition number: 1542.419683787041.
+Condition number: 1557.4006132882876.
+Condition number: 1553.1432321435489.
+Condition number: 1533.7861866860283.
+Condition number: 1514.255897598299.
+Condition number: 1534.385218465596.
+Condition number: 1552.214513004275.
+Condition number: 1537.230138907973.
+Condition number: 1538.979707572496.
+Condition number: 1553.643454075985.
+Condition number: 1543.0903207847036.
+Condition number: 1527.7321560576486.
+Condition number: 1540.276311509947.
+Condition number: 1553.8650854790658.
+Condition number: 1562.482702449435.
+Condition number: 1549.5664868615606.
+Condition number: 1525.4131677475475.
+Condition number: 1591.6251591198745.
+Condition number: 1524.7248729413473.
+Condition number: 1524.7349626728944.
+Condition number: 1551.0051263149112.
+Condition number: 1579.259246812405.
+Condition number: 1533.3433103336604.
+Condition number: 1573.5699211306862.
+Condition number: 1548.5523228039178.
+Condition number: 1572.169755154568.
+Condition number: 1550.8746615113087.
+Condition number: 1566.9992129259829.
+Condition number: 1549.2283763269165.
+Condition number: 1548.614972069173.
+Condition number: 1531.1798467631647.
+Condition number: 1549.0300161802406.
+Condition number: 1577.2045404213127.
+Condition number: 1549.1512343766476.
+Condition number: 1568.0093172956042.
+Condition number: 1536.2372300344314.
+Condition number: 1532.9386896125663.
+Warmup [1]:   0%|          | 0/2000 [00:00, ?it/s]
+Warmup [2]:   0%|          | 0/2000 [00:00, ?it/s][A
+
+Warmup [3]:   0%|          | 0/2000 [00:00, ?it/s][A[A
+
+
+Warmup [4]:   0%|          | 0/2000 [00:00, ?it/s][A[A[A
+Warmup [2]:   0%|          | 1/2000 [08:04, 484.03s/it, step size=1.92e-02, acc. prob=0.694][A
+
+Warmup [3]:   0%|          | 1/2000 [08:04, 484.25s/it, step size=6.74e-03, acc. prob=0.500][A[A
+Warmup [2]:   0%|          | 2/2000 [08:04, 199.62s/it, step size=3.18e-03, acc. prob=0.347][A
+
+Warmup [3]:   0%|          | 2/2000 [08:04, 199.72s/it, step size=1.01e-03, acc. prob=0.250][A[A
+
+Warmup [3]:   0%|          | 3/2000 [08:06, 109.47s/it, step size=5.92e-04, acc. prob=0.389][A[AWarmup [1]:   0%|          | 1/2000 [08:08, 488.96s/it, step size=2.52e-03, acc. prob=0.339]Warmup [1]:   0%|          | 2/2000 [08:09, 201.41s/it, step size=3.44e-04, acc. prob=0.169]Warmup [1]:   0%|          | 3/2000 [08:09, 109.51s/it, step size=4.36e-04, acc. prob=0.437]Warmup [1]:   0%|          | 4/2000 [08:09, 66.42s/it, step size=9.93e-05, acc. prob=0.402] 
+Warmup [2]:   0%|          | 3/2000 [08:10, 110.97s/it, step size=7.21e-04, acc. prob=0.327][AWarmup [1]:   0%|          | 5/2000 [08:12, 43.56s/it, step size=1.40e-04, acc. prob=0.506]
+Warmup [2]:   0%|          | 4/2000 [08:12, 68.20s/it, step size=1.15e-03, acc. prob=0.495] [AWarmup [1]:   0%|          | 6/2000 [08:13, 28.89s/it, step size=2.67e-04, acc. prob=0.587]Warmup [1]:   0%|          | 7/2000 [08:14, 19.84s/it, step size=3.25e-04, acc. prob=0.622]
+
+
+Warmup [4]:   0%|          | 1/2000 [08:14, 494.95s/it, step size=2.28e-03, acc. prob=0.667][A[A[A
+
+
+Warmup [4]:   0%|          | 2/2000 [08:15, 204.04s/it, step size=3.73e-04, acc. prob=0.333][A[A[AWarmup [1]:   0%|          | 8/2000 [08:16, 14.15s/it, step size=1.88e-04, acc. prob=0.617]
+Warmup [2]:   0%|          | 5/2000 [08:18, 45.55s/it, step size=4.55e-04, acc. prob=0.492][A
+
+Warmup [3]:   0%|          | 4/2000 [08:18, 70.99s/it, step size=2.59e-04, acc. prob=0.425] [A[A
+
+
+Warmup [4]:   0%|          | 3/2000 [08:19, 112.55s/it, step size=4.02e-04, acc. prob=0.514][A[A[A
+Warmup [2]:   0%|          | 6/2000 [08:20, 30.84s/it, step size=7.03e-05, acc. prob=0.439][AWarmup [1]:   0%|          | 9/2000 [08:20, 11.03s/it, step size=1.52e-04, acc. prob=0.625]Warmup [1]:   0%|          | 10/2000 [08:22,  8.41s/it, step size=2.42e-04, acc. prob=0.652]Warmup [1]:   1%|          | 11/2000 [08:25,  6.66s/it, step size=1.20e-04, acc. prob=0.641]Warmup [1]:   1%|          | 12/2000 [08:26,  5.02s/it, step size=7.12e-05, acc. prob=0.636]Warmup [1]:   1%|          | 13/2000 [08:28,  3.88s/it, step size=5.91e-05, acc. prob=0.640]
+Warmup [2]:   0%|          | 7/2000 [08:31, 24.35s/it, step size=1.14e-04, acc. prob=0.510][AWarmup [1]:   1%|          | 14/2000 [08:34,  4.49s/it, step size=4.05e-05, acc. prob=0.638]Warmup [1]:   1%|          | 15/2000 [08:34,  3.31s/it, step size=9.07e-05, acc. prob=0.662]Warmup [1]:   1%|          | 16/2000 [08:35,  2.70s/it, step size=1.70e-04, acc. prob=0.680]Warmup [1]:   1%|          | 17/2000 [08:36,  1.94s/it, step size=3.74e-04, acc. prob=0.699]
+
+
+Warmup [4]:   0%|          | 4/2000 [08:36, 74.87s/it, step size=4.46e-04, acc. prob=0.594] [A[A[A
+Warmup [2]:   0%|          | 8/2000 [08:36, 18.19s/it, step size=2.38e-04, acc. prob=0.571][AWarmup [1]:   1%|          | 18/2000 [08:36,  1.52s/it, step size=1.08e-04, acc. prob=0.679]
+
+
+Warmup [4]:   0%|          | 5/2000 [08:37, 48.37s/it, step size=1.19e-04, acc. prob=0.542][A[A[AWarmup [1]:   1%|          | 19/2000 [08:37,  1.44s/it, step size=9.55e-05, acc. prob=0.680]Warmup [1]:   1%|          | 20/2000 [08:38,  1.17s/it, step size=2.08e-04, acc. prob=0.696]
+
+
+Warmup [4]:   0%|          | 6/2000 [08:38, 32.39s/it, step size=2.35e-04, acc. prob=0.618][A[A[AWarmup [1]:   1%|          | 21/2000 [08:38,  1.03it/s, step size=1.67e-04, acc. prob=0.694]
+
+
+Warmup [4]:   0%|          | 7/2000 [08:40, 22.25s/it, step size=4.92e-04, acc. prob=0.673][A[A[AWarmup [1]:   1%|          | 22/2000 [08:41,  1.33s/it, step size=7.39e-05, acc. prob=0.684]
+
+Warmup [3]:   0%|          | 5/2000 [08:41, 53.55s/it, step size=9.89e-05, acc. prob=0.436][A[AWarmup [1]:   1%|          | 23/2000 [08:41,  1.09s/it, step size=1.58e-04, acc. prob=0.697]
+
+
+Warmup [4]:   0%|          | 8/2000 [08:41, 15.61s/it, step size=1.31e-04, acc. prob=0.630][A[A[AWarmup [1]:   1%|          | 24/2000 [08:42,  1.14s/it, step size=1.47e-04, acc. prob=0.698]
+
+
+Warmup [4]:   0%|          | 9/2000 [08:43, 11.16s/it, step size=2.84e-04, acc. prob=0.671][A[A[AWarmup [1]:   1%|▏         | 25/2000 [08:43,  1.04it/s, step size=3.10e-04, acc. prob=0.710]Warmup [1]:   1%|▏         | 26/2000 [08:43,  1.21it/s, step size=2.51e-04, acc. prob=0.709]Warmup [1]:   1%|▏         | 27/2000 [08:44,  1.35it/s, step size=2.51e-04, acc. prob=0.710]
+
+
+Warmup [4]:   0%|          | 10/2000 [08:44,  8.17s/it, step size=6.24e-04, acc. prob=0.704][A[A[A
+
+
+Warmup [4]:   1%|          | 11/2000 [08:44,  5.81s/it, step size=5.85e-05, acc. prob=0.640][A[A[A
+Warmup [2]:   0%|          | 9/2000 [08:47, 15.85s/it, step size=1.61e-04, acc. prob=0.578][A
+
+
+Warmup [4]:   1%|          | 12/2000 [08:47,  4.88s/it, step size=1.30e-04, acc. prob=0.670][A[A[A
+
+
+Warmup [4]:   1%|          | 13/2000 [08:48,  3.73s/it, step size=2.88e-04, acc. prob=0.696][A[A[A
+
+
+Warmup [4]:   1%|          | 14/2000 [08:49,  2.95s/it, step size=1.31e-04, acc. prob=0.681][A[A[AWarmup [1]:   1%|▏         | 28/2000 [08:50,  2.37s/it, step size=2.76e-04, acc. prob=0.712]Warmup [1]:   1%|▏         | 29/2000 [08:52,  2.07s/it, step size=5.05e-04, acc. prob=0.721]
+Warmup [2]:   0%|          | 10/2000 [08:52, 12.49s/it, step size=2.38e-04, acc. prob=0.608][A
+
+Warmup [3]:   0%|          | 6/2000 [08:52, 38.93s/it, step size=1.87e-04, acc. prob=0.530][A[A
+
+
+Warmup [4]:   1%|          | 15/2000 [08:52,  2.83s/it, step size=9.00e-05, acc. prob=0.677][A[A[AWarmup [1]:   2%|▏         | 30/2000 [08:53,  1.87s/it, step size=4.43e-04, acc. prob=0.720]
+
+
+Warmup [4]:   1%|          | 16/2000 [08:53,  2.31s/it, step size=1.52e-04, acc. prob=0.692][A[A[AWarmup [1]:   2%|▏         | 31/2000 [08:54,  1.63s/it, step size=3.21e-04, acc. prob=0.717]
+
+
+Warmup [4]:   1%|          | 17/2000 [08:54,  1.95s/it, step size=1.18e-04, acc. prob=0.690][A[A[AWarmup [1]:   2%|▏         | 32/2000 [08:55,  1.53s/it, step size=4.09e-04, acc. prob=0.720]
+
+
+Warmup [4]:   1%|          | 18/2000 [08:55,  1.70s/it, step size=1.54e-04, acc. prob=0.698][A[A[A
+Warmup [2]:   1%|          | 11/2000 [08:56, 10.11s/it, step size=2.03e-04, acc. prob=0.616][AWarmup [1]:   2%|▏         | 33/2000 [08:57,  1.48s/it, step size=5.12e-04, acc. prob=0.723]Warmup [1]:   2%|▏         | 34/2000 [08:58,  1.44s/it, step size=6.51e-04, acc. prob=0.727]Warmup [1]:   2%|▏         | 35/2000 [08:59,  1.22s/it, step size=5.32e-04, acc. prob=0.725]Warmup [1]:   2%|▏         | 36/2000 [08:59,  1.06s/it, step size=4.12e-04, acc. prob=0.723]Warmup [1]:   2%|▏         | 37/2000 [09:00,  1.08s/it, step size=4.74e-04, acc. prob=0.725]
+Warmup [2]:   1%|          | 12/2000 [09:01,  8.48s/it, step size=1.87e-04, acc. prob=0.625][AWarmup [1]:   2%|▏         | 38/2000 [09:01,  1.03it/s, step size=3.75e-04, acc. prob=0.723]Warmup [1]:   2%|▏         | 39/2000 [09:03,  1.08s/it, step size=4.66e-04, acc. prob=0.726]Warmup [1]:   2%|▏         | 40/2000 [09:03,  1.03s/it, step size=4.71e-04, acc. prob=0.726]Warmup [1]:   2%|▏         | 41/2000 [09:04,  1.27it/s, step size=7.30e-05, acc. prob=0.708]Warmup [1]:   2%|▏         | 42/2000 [09:04,  1.46it/s, step size=4.04e-05, acc. prob=0.703]
+Warmup [2]:   1%|          | 13/2000 [09:06,  7.33s/it, step size=1.88e-04, acc. prob=0.634][AWarmup [1]:   2%|▏         | 43/2000 [09:06,  1.08s/it, step size=5.90e-05, acc. prob=0.708]
+
+
+Warmup [4]:   1%|          | 19/2000 [09:07,  4.61s/it, step size=1.15e-04, acc. prob=0.695][A[A[AWarmup [1]:   2%|▏         | 44/2000 [09:07,  1.16s/it, step size=7.48e-05, acc. prob=0.711]Warmup [1]:   2%|▏         | 45/2000 [09:08,  1.01s/it, step size=6.29e-05, acc. prob=0.710]Warmup [1]:   2%|▏         | 46/2000 [09:10,  1.24s/it, step size=8.78e-05, acc. prob=0.713]
+Warmup [2]:   1%|          | 14/2000 [09:10,  6.53s/it, step size=2.24e-04, acc. prob=0.646][AWarmup [1]:   2%|▏         | 47/2000 [09:11,  1.21s/it, step size=1.02e-04, acc. prob=0.715]Warmup [1]:   2%|▏         | 48/2000 [09:12,  1.12s/it, step size=1.05e-04, acc. prob=0.716]
+
+
+Warmup [4]:   1%|          | 20/2000 [09:12,  4.86s/it, step size=2.49e-04, acc. prob=0.710][A[A[A
+Warmup [2]:   1%|          | 15/2000 [09:12,  5.16s/it, step size=2.41e-04, acc. prob=0.654][A
+
+Warmup [3]:   0%|          | 7/2000 [09:12, 33.01s/it, step size=2.32e-04, acc. prob=0.575][A[AWarmup [1]:   2%|▏         | 49/2000 [09:12,  1.08it/s, step size=5.94e-05, acc. prob=0.711]Warmup [1]:   2%|▎         | 50/2000 [09:14,  1.02it/s, step size=6.88e-05, acc. prob=0.713]Warmup [1]:   3%|▎         | 51/2000 [09:15,  1.16s/it, step size=9.10e-05, acc. prob=0.716]Warmup [1]:   3%|▎         | 52/2000 [09:16,  1.21s/it, step size=1.13e-04, acc. prob=0.718]
+
+Warmup [3]:   0%|          | 8/2000 [09:17, 24.00s/it, step size=4.91e-04, acc. prob=0.628][A[AWarmup [1]:   3%|▎         | 53/2000 [09:18,  1.25s/it, step size=1.41e-04, acc. prob=0.720]
+
+
+Warmup [4]:   1%|          | 21/2000 [09:18,  5.12s/it, step size=5.32e-04, acc. prob=0.724][A[A[AWarmup [1]:   3%|▎         | 54/2000 [09:19,  1.22s/it, step size=1.62e-04, acc. prob=0.722]
+
+
+Warmup [4]:   1%|          | 22/2000 [09:19,  3.96s/it, step size=1.12e-03, acc. prob=0.737][A[A[AWarmup [1]:   3%|▎         | 55/2000 [09:20,  1.06s/it, step size=1.37e-04, acc. prob=0.721]
+
+
+Warmup [4]:   1%|          | 23/2000 [09:20,  3.14s/it, step size=2.34e-03, acc. prob=0.748][A[A[AWarmup [1]:   3%|▎         | 56/2000 [09:20,  1.01s/it, step size=1.40e-04, acc. prob=0.721]Warmup [1]:   3%|▎         | 57/2000 [09:21,  1.19it/s, step size=8.15e-05, acc. prob=0.717]
+Warmup [2]:   1%|          | 16/2000 [09:22,  6.61s/it, step size=1.16e-04, acc. prob=0.644][A
+
+
+Warmup [4]:   1%|          | 24/2000 [09:22,  2.78s/it, step size=1.84e-03, acc. prob=0.745][A[A[AWarmup [1]:   3%|▎         | 58/2000 [09:22,  1.00s/it, step size=6.94e-05, acc. prob=0.717]
+
+
+Warmup [4]:   1%|▏         | 25/2000 [09:23,  2.19s/it, step size=3.77e-03, acc. prob=0.755][A[A[AWarmup [1]:   3%|▎         | 59/2000 [09:24,  1.19s/it, step size=9.04e-05, acc. prob=0.719]Warmup [1]:   3%|▎         | 60/2000 [09:24,  1.03it/s, step size=5.32e-05, acc. prob=0.715]
+
+
+Warmup [4]:   1%|▏         | 26/2000 [09:25,  2.13s/it, step size=1.01e-03, acc. prob=0.737][A[A[AWarmup [1]:   3%|▎         | 61/2000 [09:26,  1.02s/it, step size=6.11e-05, acc. prob=0.717]
+Warmup [2]:   1%|          | 17/2000 [09:26,  5.75s/it, step size=2.38e-04, acc. prob=0.663][A
+
+Warmup [3]:   0%|          | 9/2000 [09:26, 19.31s/it, step size=3.17e-04, acc. prob=0.626][A[AWarmup [1]:   3%|▎         | 62/2000 [09:26,  1.02it/s, step size=6.27e-05, acc. prob=0.717]Warmup [1]:   3%|▎         | 63/2000 [09:28,  1.16s/it, step size=8.12e-05, acc. prob=0.719]
+
+
+Warmup [4]:   1%|▏         | 27/2000 [09:29,  2.72s/it, step size=1.00e-03, acc. prob=0.737][A[A[A
+
+Warmup [3]:   0%|          | 10/2000 [09:29, 14.36s/it, step size=4.10e-04, acc. prob=0.647][A[A
+Warmup [2]:   1%|          | 18/2000 [09:30,  5.15s/it, step size=3.10e-04, acc. prob=0.673][A
+
+
+Warmup [4]:   1%|▏         | 28/2000 [09:30,  2.15s/it, step size=1.25e-04, acc. prob=0.711][A[A[AWarmup [1]:   3%|▎         | 64/2000 [09:30,  1.48s/it, step size=1.15e-04, acc. prob=0.722]Warmup [1]:   3%|▎         | 65/2000 [09:31,  1.17s/it, step size=6.87e-05, acc. prob=0.719]Warmup [1]:   3%|▎         | 66/2000 [09:32,  1.15s/it, step size=7.83e-05, acc. prob=0.720]
+
+
+Warmup [4]:   1%|▏         | 29/2000 [09:32,  2.08s/it, step size=2.49e-04, acc. prob=0.720][A[A[AWarmup [1]:   3%|▎         | 67/2000 [09:32,  1.06it/s, step size=4.71e-05, acc. prob=0.717]
+
+Warmup [3]:   1%|          | 11/2000 [09:33, 11.09s/it, step size=5.78e-04, acc. prob=0.666][A[A
+Warmup [2]:   1%|          | 19/2000 [09:34,  4.72s/it, step size=2.64e-04, acc. prob=0.673][AWarmup [1]:   3%|▎         | 68/2000 [09:34,  1.20s/it, step size=6.30e-05, acc. prob=0.719]Warmup [1]:   3%|▎         | 69/2000 [09:34,  1.03it/s, step size=3.81e-05, acc. prob=0.716]
+
+Warmup [3]:   1%|          | 12/2000 [09:35,  8.21s/it, step size=4.48e-04, acc. prob=0.666][A[AWarmup [1]:   4%|▎         | 70/2000 [09:35,  1.36it/s, step size=8.15e-06, acc. prob=0.706]Warmup [1]:   4%|▎         | 71/2000 [09:35,  1.76it/s, step size=1.77e-06, acc. prob=0.696]
+
+Warmup [3]:   1%|          | 13/2000 [09:36,  6.20s/it, step size=3.50e-04, acc. prob=0.666][A[AWarmup [1]:   4%|▎         | 72/2000 [09:37,  1.08it/s, step size=2.39e-06, acc. prob=0.698]
+Warmup [2]:   1%|          | 20/2000 [09:37,  4.41s/it, step size=2.09e-04, acc. prob=0.672][A
+
+Warmup [3]:   1%|          | 14/2000 [09:38,  4.80s/it, step size=2.70e-04, acc. prob=0.666][A[AWarmup [1]:   4%|▎         | 73/2000 [09:38,  1.18s/it, step size=3.22e-06, acc. prob=0.701]Warmup [1]:   4%|▎         | 74/2000 [09:39,  1.02s/it, step size=2.82e-06, acc. prob=0.700]Warmup [1]:   4%|▍         | 75/2000 [09:40,  1.09it/s, step size=2.48e-06, acc. prob=0.700]
+
+
+Warmup [4]:   2%|▏         | 30/2000 [09:40,  3.97s/it, step size=1.84e-04, acc. prob=0.718][A[A[A
+
+Warmup [3]:   1%|          | 15/2000 [09:41,  4.31s/it, step size=3.58e-04, acc. prob=0.677][A[AWarmup [1]:   4%|▍         | 76/2000 [09:41,  1.13s/it, step size=3.32e-06, acc. prob=0.702]Warmup [1]:   4%|▍         | 77/2000 [09:42,  1.01it/s, step size=2.91e-06, acc. prob=0.702]
+
+
+Warmup [4]:   2%|▏         | 31/2000 [09:42,  3.35s/it, step size=3.67e-04, acc. prob=0.726][A[A[AWarmup [1]:   4%|▍         | 78/2000 [09:43,  1.02it/s, step size=3.57e-06, acc. prob=0.703]
+
+Warmup [3]:   1%|          | 16/2000 [09:43,  3.65s/it, step size=3.43e-04, acc. prob=0.680][A[AWarmup [1]:   4%|▍         | 79/2000 [09:43,  1.24it/s, step size=2.25e-06, acc. prob=0.701]
+
+
+Warmup [4]:   2%|▏         | 32/2000 [09:44,  2.92s/it, step size=3.29e-04, acc. prob=0.726][A[A[A
+
+
+Warmup [4]:   2%|▏         | 33/2000 [09:45,  2.29s/it, step size=6.53e-04, acc. prob=0.734][A[A[AWarmup [1]:   4%|▍         | 80/2000 [09:45,  1.14s/it, step size=3.14e-06, acc. prob=0.703]
+
+Warmup [3]:   1%|          | 17/2000 [09:46,  3.35s/it, step size=4.10e-04, acc. prob=0.687][A[A
+
+
+Warmup [4]:   2%|▏         | 34/2000 [09:46,  1.85s/it, step size=7.34e-04, acc. prob=0.736][A[A[A
+
+
+Warmup [4]:   2%|▏         | 35/2000 [09:47,  1.54s/it, step size=4.59e-04, acc. prob=0.731][A[A[A
+
+Warmup [3]:   1%|          | 18/2000 [09:47,  2.82s/it, step size=3.27e-04, acc. prob=0.686][A[A
+
+Warmup [3]:   1%|          | 19/2000 [09:48,  2.30s/it, step size=1.58e-04, acc. prob=0.676][A[AWarmup [1]:   4%|▍         | 81/2000 [09:49,  1.95s/it, step size=4.84e-06, acc. prob=0.706]
+
+Warmup [3]:   1%|          | 20/2000 [09:51,  2.26s/it, step size=1.64e-04, acc. prob=0.680][A[A
+
+
+Warmup [4]:   2%|▏         | 36/2000 [09:51,  2.35s/it, step size=2.13e-04, acc. prob=0.723][A[A[A
+
+Warmup [3]:   1%|          | 21/2000 [09:51,  1.76s/it, step size=1.85e-05, acc. prob=0.648][A[A
+Warmup [2]:   1%|          | 21/2000 [09:54,  8.04s/it, step size=1.75e-04, acc. prob=0.673][A
+
+
+Warmup [4]:   2%|▏         | 37/2000 [09:55,  2.92s/it, step size=3.36e-04, acc. prob=0.728][A[A[AWarmup [1]:   4%|▍         | 82/2000 [09:57,  3.70s/it, step size=7.81e-06, acc. prob=0.710]
+
+
+Warmup [4]:   2%|▏         | 38/2000 [09:57,  2.62s/it, step size=5.19e-04, acc. prob=0.733][A[A[A
+Warmup [2]:   1%|          | 22/2000 [09:57,  6.75s/it, step size=3.80e-04, acc. prob=0.688][A
+
+
+Warmup [4]:   2%|▏         | 39/2000 [09:59,  2.42s/it, step size=5.28e-04, acc. prob=0.734][A[A[AWarmup [1]:   4%|▍         | 83/2000 [09:59,  3.26s/it, step size=1.10e-05, acc. prob=0.712]
+
+
+Warmup [4]:   2%|▏         | 40/2000 [10:01,  2.27s/it, step size=5.44e-04, acc. prob=0.734][A[A[AWarmup [1]:   4%|▍         | 84/2000 [10:02,  3.01s/it, step size=1.60e-05, acc. prob=0.715]
+Warmup [2]:   1%|          | 23/2000 [10:02,  5.97s/it, step size=3.80e-04, acc. prob=0.690][A
+
+
+Warmup [4]:   2%|▏         | 41/2000 [10:02,  1.84s/it, step size=6.90e-04, acc. prob=0.737][A[A[AWarmup [1]:   4%|▍         | 85/2000 [10:03,  2.44s/it, step size=1.94e-05, acc. prob=0.716]Warmup [1]:   4%|▍         | 86/2000 [10:03,  1.84s/it, step size=1.23e-05, acc. prob=0.713]
+
+
+Warmup [4]:   2%|▏         | 42/2000 [10:04,  1.86s/it, step size=5.26e-04, acc. prob=0.735][A[A[AWarmup [1]:   4%|▍         | 87/2000 [10:04,  1.57s/it, step size=1.26e-05, acc. prob=0.714]
+
+Warmup [3]:   1%|          | 22/2000 [10:05,  5.23s/it, step size=3.59e-05, acc. prob=0.662][A[A
+
+
+Warmup [4]:   2%|▏         | 43/2000 [10:05,  1.79s/it, step size=4.36e-04, acc. prob=0.733][A[A[A
+Warmup [2]:   1%|          | 24/2000 [10:06,  5.40s/it, step size=1.77e-04, acc. prob=0.681][A
+
+
+Warmup [4]:   2%|▏         | 44/2000 [10:07,  1.75s/it, step size=3.34e-04, acc. prob=0.731][A[A[AWarmup [1]:   4%|▍         | 88/2000 [10:07,  2.08s/it, step size=1.87e-05, acc. prob=0.716]Warmup [1]:   4%|▍         | 89/2000 [10:08,  1.63s/it, step size=1.64e-05, acc. prob=0.716]Warmup [1]:   4%|▍         | 90/2000 [10:08,  1.26s/it, step size=1.43e-05, acc. prob=0.715]
+
+
+Warmup [4]:   2%|▏         | 45/2000 [10:09,  1.79s/it, step size=4.48e-04, acc. prob=0.734][A[A[AWarmup [1]:   5%|▍         | 91/2000 [10:09,  1.05s/it, step size=1.47e-05, acc. prob=0.716]Warmup [1]:   5%|▍         | 92/2000 [10:10,  1.01s/it, step size=1.66e-05, acc. prob=0.717]
+
+Warmup [3]:   1%|          | 23/2000 [10:10,  5.40s/it, step size=5.83e-05, acc. prob=0.672][A[A
+
+
+Warmup [4]:   2%|▏         | 46/2000 [10:11,  1.83s/it, step size=3.49e-04, acc. prob=0.732][A[A[AWarmup [1]:   5%|▍         | 93/2000 [10:11,  1.01it/s, step size=1.87e-05, acc. prob=0.718]Warmup [1]:   5%|▍         | 94/2000 [10:11,  1.31it/s, step size=4.73e-06, acc. prob=0.710]
+
+
+Warmup [4]:   2%|▏         | 47/2000 [10:12,  1.53s/it, step size=3.78e-04, acc. prob=0.733][A[A[AWarmup [1]:   5%|▍         | 95/2000 [10:13,  1.27s/it, step size=6.54e-06, acc. prob=0.712]
+
+
+Warmup [4]:   2%|▏         | 48/2000 [10:13,  1.64s/it, step size=3.71e-04, acc. prob=0.733][A[A[A
+Warmup [2]:   1%|▏         | 25/2000 [10:14,  6.38s/it, step size=1.82e-04, acc. prob=0.683][A
+
+
+Warmup [4]:   2%|▏         | 49/2000 [10:15,  1.56s/it, step size=3.76e-04, acc. prob=0.733][A[A[A
+
+Warmup [3]:   1%|          | 24/2000 [10:16,  5.35s/it, step size=9.09e-05, acc. prob=0.681][A[A
+
+
+Warmup [4]:   2%|▎         | 50/2000 [10:17,  1.66s/it, step size=4.91e-04, acc. prob=0.736][A[A[AWarmup [1]:   5%|▍         | 96/2000 [10:18,  2.24s/it, step size=9.74e-06, acc. prob=0.714]
+
+
+Warmup [4]:   3%|▎         | 51/2000 [10:18,  1.65s/it, step size=6.03e-04, acc. prob=0.738][A[A[A
+Warmup [2]:   1%|▏         | 26/2000 [10:18,  5.68s/it, step size=2.03e-04, acc. prob=0.687][A
+
+
+Warmup [4]:   3%|▎         | 52/2000 [10:20,  1.57s/it, step size=6.84e-04, acc. prob=0.739][A[A[A
+
+
+Warmup [4]:   3%|▎         | 53/2000 [10:21,  1.34s/it, step size=1.18e-03, acc. prob=0.743][A[A[A
+
+Warmup [3]:   1%|▏         | 25/2000 [10:21,  5.28s/it, step size=1.41e-04, acc. prob=0.689][A[A
+
+
+Warmup [4]:   3%|▎         | 54/2000 [10:21,  1.02s/it, step size=2.12e-04, acc. prob=0.730][A[A[A
+
+Warmup [3]:   1%|▏         | 26/2000 [10:22,  4.19s/it, step size=1.15e-04, acc. prob=0.689][A[A
+
+
+Warmup [4]:   3%|▎         | 55/2000 [10:24,  1.63s/it, step size=3.09e-04, acc. prob=0.733][A[A[A
+
+Warmup [3]:   1%|▏         | 27/2000 [10:24,  3.41s/it, step size=9.48e-05, acc. prob=0.688][A[AWarmup [1]:   5%|▍         | 97/2000 [10:25,  3.62s/it, step size=1.50e-05, acc. prob=0.717]
+
+
+Warmup [4]:   3%|▎         | 56/2000 [10:25,  1.57s/it, step size=3.50e-04, acc. prob=0.734][A[A[A
+Warmup [2]:   1%|▏         | 27/2000 [10:26,  6.37s/it, step size=3.06e-04, acc. prob=0.694][A
+
+
+Warmup [4]:   3%|▎         | 57/2000 [10:26,  1.43s/it, step size=3.54e-04, acc. prob=0.734][A[A[A
+
+
+Warmup [4]:   3%|▎         | 58/2000 [10:27,  1.24s/it, step size=2.97e-04, acc. prob=0.733][A[A[A
+
+Warmup [3]:   1%|▏         | 28/2000 [10:28,  3.51s/it, step size=1.33e-04, acc. prob=0.694][A[A
+
+
+Warmup [4]:   3%|▎         | 59/2000 [10:28,  1.20s/it, step size=3.01e-04, acc. prob=0.733][A[A[AWarmup [1]:   5%|▍         | 98/2000 [10:28,  3.62s/it, step size=2.22e-05, acc. prob=0.720]
+
+
+Warmup [4]:   3%|▎         | 60/2000 [10:30,  1.25s/it, step size=3.41e-04, acc. prob=0.735][A[A[A
+
+
+Warmup [4]:   3%|▎         | 61/2000 [10:30,  1.04s/it, step size=1.99e-04, acc. prob=0.731][A[A[A
+
+Warmup [3]:   1%|▏         | 29/2000 [10:31,  3.57s/it, step size=1.84e-04, acc. prob=0.699][A[A
+
+
+Warmup [4]:   3%|▎         | 62/2000 [10:33,  1.53s/it, step size=2.55e-04, acc. prob=0.733][A[A[A
+
+Warmup [3]:   2%|▏         | 30/2000 [10:34,  3.17s/it, step size=1.90e-04, acc. prob=0.701][A[A
+
+
+Warmup [4]:   3%|▎         | 63/2000 [10:34,  1.36s/it, step size=2.16e-04, acc. prob=0.732][A[A[A
+
+Warmup [3]:   2%|▏         | 31/2000 [10:35,  2.54s/it, step size=9.87e-05, acc. prob=0.694][A[A
+
+
+Warmup [4]:   3%|▎         | 64/2000 [10:35,  1.24s/it, step size=1.83e-04, acc. prob=0.731][A[A[A
+
+
+Warmup [4]:   3%|▎         | 65/2000 [10:36,  1.25s/it, step size=1.86e-04, acc. prob=0.731][A[A[A
+
+Warmup [3]:   2%|▏         | 32/2000 [10:37,  2.42s/it, step size=1.02e-04, acc. prob=0.696][A[A
+
+
+Warmup [4]:   3%|▎         | 66/2000 [10:37,  1.16s/it, step size=1.58e-04, acc. prob=0.730][A[A[A
+
+
+Warmup [4]:   3%|▎         | 67/2000 [10:38,  1.10s/it, step size=1.34e-04, acc. prob=0.729][A[A[A
+
+
+Warmup [4]:   3%|▎         | 68/2000 [10:39,  1.15s/it, step size=1.36e-04, acc. prob=0.729][A[A[A
+
+Warmup [3]:   2%|▏         | 33/2000 [10:40,  2.64s/it, step size=1.33e-04, acc. prob=0.700][A[A
+
+
+Warmup [4]:   3%|▎         | 69/2000 [10:41,  1.28s/it, step size=1.54e-04, acc. prob=0.730][A[A[A
+
+
+Warmup [4]:   4%|▎         | 70/2000 [10:43,  1.47s/it, step size=1.86e-04, acc. prob=0.732][A[A[A
+Warmup [2]:   1%|▏         | 28/2000 [10:43,  9.38s/it, step size=2.07e-04, acc. prob=0.691][A
+
+Warmup [3]:   2%|▏         | 34/2000 [10:44,  3.09s/it, step size=1.90e-04, acc. prob=0.705][A[AWarmup [1]:   5%|▍         | 99/2000 [10:44,  7.29s/it, step size=3.54e-02, acc. prob=0.722]
+
+
+Warmup [4]:   4%|▎         | 71/2000 [10:44,  1.50s/it, step size=2.09e-04, acc. prob=0.733][A[A[AWarmup [1]:   5%|▌         | 100/2000 [10:44,  5.17s/it, step size=9.06e-02, acc. prob=0.715]Warmup [1]:   5%|▌         | 101/2000 [10:45,  3.69s/it, step size=1.03e-02, acc. prob=0.708]
+
+
+Warmup [4]:   4%|▎         | 72/2000 [10:45,  1.34s/it, step size=1.79e-04, acc. prob=0.732][A[A[A
+
+Warmup [3]:   2%|▏         | 35/2000 [10:45,  2.59s/it, step size=1.57e-04, acc. prob=0.704][A[AWarmup [1]:   5%|▌         | 102/2000 [10:46,  3.00s/it, step size=8.12e-03, acc. prob=0.709]
+
+
+Warmup [4]:   4%|▎         | 73/2000 [10:47,  1.41s/it, step size=2.01e-04, acc. prob=0.733][A[A[AWarmup [1]:   5%|▌         | 103/2000 [10:48,  2.58s/it, step size=8.40e-03, acc. prob=0.711]
+
+
+Warmup [4]:   4%|▎         | 74/2000 [10:48,  1.37s/it, step size=2.03e-04, acc. prob=0.733][A[A[A
+
+Warmup [3]:   2%|▏         | 36/2000 [10:48,  2.62s/it, step size=2.02e-04, acc. prob=0.708][A[A
+
+Warmup [3]:   2%|▏         | 37/2000 [10:49,  2.10s/it, step size=1.09e-04, acc. prob=0.702][A[A
+
+
+Warmup [4]:   4%|▍         | 75/2000 [10:49,  1.35s/it, step size=2.06e-04, acc. prob=0.733][A[A[AWarmup [1]:   5%|▌         | 104/2000 [10:50,  2.42s/it, step size=1.08e-02, acc. prob=0.712]
+
+
+Warmup [4]:   4%|▍         | 76/2000 [10:50,  1.24s/it, step size=1.76e-04, acc. prob=0.732][A[A[AWarmup [1]:   5%|▌         | 105/2000 [10:51,  2.03s/it, step size=1.15e-02, acc. prob=0.713]Warmup [1]:   5%|▌         | 106/2000 [10:51,  1.48s/it, step size=1.05e-03, acc. prob=0.706]Warmup [1]:   5%|▌         | 107/2000 [10:52,  1.31s/it, step size=1.16e-03, acc. prob=0.707]
+
+
+Warmup [4]:   4%|▍         | 77/2000 [10:52,  1.35s/it, step size=1.98e-04, acc. prob=0.733][A[A[A
+
+
+Warmup [4]:   4%|▍         | 78/2000 [10:52,  1.04s/it, step size=4.44e-05, acc. prob=0.724][A[A[A
+
+Warmup [3]:   2%|▏         | 38/2000 [10:53,  2.51s/it, step size=1.53e-04, acc. prob=0.707][A[A
+
+Warmup [3]:   2%|▏         | 39/2000 [10:53,  2.00s/it, step size=8.31e-05, acc. prob=0.701][A[A
+
+
+Warmup [4]:   4%|▍         | 79/2000 [10:54,  1.31s/it, step size=5.36e-05, acc. prob=0.725][A[A[AWarmup [1]:   5%|▌         | 108/2000 [10:55,  1.90s/it, step size=2.01e-03, acc. prob=0.709]
+Warmup [2]:   1%|▏         | 29/2000 [10:56, 10.54s/it, step size=3.12e-04, acc. prob=0.697][A
+
+Warmup [3]:   2%|▏         | 40/2000 [10:56,  2.32s/it, step size=1.18e-04, acc. prob=0.706][A[AWarmup [1]:   5%|▌         | 109/2000 [10:58,  2.16s/it, step size=3.38e-03, acc. prob=0.711]
+
+Warmup [3]:   2%|▏         | 41/2000 [10:59,  2.44s/it, step size=1.60e-04, acc. prob=0.709][A[AWarmup [1]:   6%|▌         | 110/2000 [10:59,  1.93s/it, step size=4.42e-03, acc. prob=0.712]
+
+Warmup [3]:   2%|▏         | 42/2000 [11:00,  2.05s/it, step size=1.34e-04, acc. prob=0.708][A[A
+
+
+Warmup [4]:   4%|▍         | 80/2000 [11:01,  2.80s/it, step size=8.08e-05, acc. prob=0.728][A[A[AWarmup [1]:   6%|▌         | 111/2000 [11:01,  1.83s/it, step size=6.28e-03, acc. prob=0.714]
+
+Warmup [3]:   2%|▏         | 43/2000 [11:01,  1.66s/it, step size=7.42e-05, acc. prob=0.703][A[A
+Warmup [2]:   2%|▏         | 30/2000 [11:01,  8.98s/it, step size=3.54e-04, acc. prob=0.700][AWarmup [1]:   6%|▌         | 112/2000 [11:02,  1.55s/it, step size=6.40e-03, acc. prob=0.714]Warmup [1]:   6%|▌         | 113/2000 [11:03,  1.36s/it, step size=6.54e-03, acc. prob=0.714]Warmup [1]:   6%|▌         | 114/2000 [11:03,  1.09s/it, step size=3.09e-03, acc. prob=0.712]Warmup [1]:   6%|▌         | 115/2000 [11:04,  1.10it/s, step size=1.48e-03, acc. prob=0.711]
+Warmup [2]:   2%|▏         | 31/2000 [11:04,  7.08s/it, step size=3.75e-04, acc. prob=0.702][A
+
+
+Warmup [4]:   4%|▍         | 81/2000 [11:04,  3.02s/it, step size=1.13e-04, acc. prob=0.730][A[A[AWarmup [1]:   6%|▌         | 116/2000 [11:04,  1.30it/s, step size=7.18e-04, acc. prob=0.709]
+
+
+Warmup [4]:   4%|▍         | 82/2000 [11:05,  2.50s/it, step size=1.14e-04, acc. prob=0.731][A[A[A
+
+
+Warmup [4]:   4%|▍         | 83/2000 [11:06,  1.94s/it, step size=7.11e-05, acc. prob=0.728][A[A[A
+
+Warmup [3]:   2%|▏         | 44/2000 [11:06,  2.77s/it, step size=1.18e-04, acc. prob=0.708][A[AWarmup [1]:   6%|▌         | 117/2000 [11:06,  1.22s/it, step size=1.19e-03, acc. prob=0.710]
+Warmup [2]:   2%|▏         | 32/2000 [11:07,  5.76s/it, step size=3.79e-04, acc. prob=0.703][A
+
+
+Warmup [4]:   4%|▍         | 84/2000 [11:08,  1.84s/it, step size=7.97e-05, acc. prob=0.729][A[A[A
+
+
+Warmup [4]:   4%|▍         | 85/2000 [11:08,  1.38s/it, step size=1.89e-05, acc. prob=0.720][A[A[A
+
+Warmup [3]:   2%|▏         | 45/2000 [11:08,  2.51s/it, step size=1.37e-04, acc. prob=0.710][A[A
+Warmup [2]:   2%|▏         | 33/2000 [11:09,  4.82s/it, step size=3.32e-04, acc. prob=0.703][AWarmup [1]:   6%|▌         | 118/2000 [11:10,  1.88s/it, step size=2.16e-03, acc. prob=0.712]
+
+
+Warmup [4]:   4%|▍         | 86/2000 [11:10,  1.65s/it, step size=2.38e-05, acc. prob=0.722][A[A[A
+
+Warmup [3]:   2%|▏         | 46/2000 [11:10,  2.33s/it, step size=1.58e-04, acc. prob=0.712][A[A
+Warmup [2]:   2%|▏         | 34/2000 [11:10,  3.72s/it, step size=6.67e-04, acc. prob=0.712][AWarmup [1]:   6%|▌         | 119/2000 [11:11,  1.53s/it, step size=1.75e-03, acc. prob=0.712]slurmstepd: error: *** JOB 52484125 ON w23g0004 CANCELLED AT 2024-12-12T01:45:22 DUE TO TIME LIMIT ***

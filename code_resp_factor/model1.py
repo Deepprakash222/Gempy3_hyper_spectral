@@ -28,6 +28,8 @@ from sklearn.mixture import BayesianGaussianMixture
 from sklearn.cluster import KMeans
 
 from pyro.nn import PyroModule, PyroSample
+# Change the backend to PyTorch for probabilistic modeling
+BackendTensor.change_backend_gempy(engine_backend=gp.data.AvailableBackends.PYTORCH)
 
 class MyModel(PyroModule):
     def __init__(self):
@@ -55,7 +57,7 @@ class MyModel(PyroModule):
 
 
             Random_variable ={}
-
+            
             interpolation_input = geo_model_test.interpolation_input
             
             # Create a random variable based on the provided dictionary used to modify input data of gempy
