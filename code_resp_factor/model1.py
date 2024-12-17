@@ -29,6 +29,9 @@ from sklearn.cluster import KMeans
 
 from pyro.nn import PyroModule, PyroSample
 
+# Change the backend to PyTorch for probabilistic modeling
+BackendTensor.change_backend_gempy(engine_backend=gp.data.AvailableBackends.PYTORCH)
+
 class MyModel(PyroModule):
     def __init__(self):
         super(MyModel, self).__init__()
@@ -189,7 +192,7 @@ class MyModel(PyroModule):
                     cov_eigen_values = pyro.sample("cov_eigen_values_"+str(i+1), dist.MultivariateNormal(loc=torch.sqrt(eigen_values_init),covariance_matrix=cov_matrix_cov))
                     #cov_eigen_values = pyro.sample("cov_eigen_values_"+str(i+1), dist.MultivariateNormal(loc=torch.zeros(eigen_values_init.shape[0],dtype=dtype, device =device),covariance_matrix=cov_matrix_cov))
                     # Q (lambda ^2 + epsilon ) Q^T
-                    cov_data = eigen_vectors_data @ (torch.diag(cov_eigen_values)**2 + 1e-8 * torch.eye(loc_mean[0].shape[0], dtype=dtype, device =device)) @ eigen_vectors_data.T #+ 1e-6 * torch.eye(loc_mean[0].shape[0], dtype=dtype, device =device)
+                    cov_data = eigen_vectors_data @ (torch.diag(cov_eigen_values)**2 + 1e-6 * torch.eye(loc_mean[0].shape[0], dtype=dtype, device =device)) @ eigen_vectors_data.T #+ 1e-6 * torch.eye(loc_mean[0].shape[0], dtype=dtype, device =device)
                     cov.append(cov_data)
                     
             if posterior_condition==4:
@@ -231,9 +234,9 @@ class MyModel(PyroModule):
             cov_tensor = torch.stack(cov, dim=0)
             
             # Priors for mixing coefficients
-            pi = pyro.sample("pi", dist.Dirichlet(torch.ones(int(len(pi_k)), dtype=dtype, device=device)))
+            #pi = pyro.sample("pi", dist.Dirichlet(torch.ones(int(len(pi_k)), dtype=dtype, device=device)))
             
-            log_pi = torch.log(pi).unsqueeze(0)
+            log_pi = torch.log(pi_k).unsqueeze(0)
             
             gmm_log_probs = torch.zeros((obs_data.shape[0], len(pi_k)), dtype=dtype, device=device)
            

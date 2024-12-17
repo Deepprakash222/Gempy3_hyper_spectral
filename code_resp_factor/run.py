@@ -12,7 +12,7 @@ import torch
 import torch.nn.functional as F
 import pyro
 import pyro.distributions as dist
-from pyro.infer import MCMC, NUTS, Predictive, EmpiricalMarginal
+from pyro.infer import MCMC, NUTS, Predictive, EmpiricalMarginal, RandomWalkKernel
 from pyro.infer.autoguide import init_to_mean, init_to_median, init_to_value
 from pyro.infer.inspect import get_dependencies
 from pyro.infer import SVI, TraceEnum_ELBO, config_enumerate, infer_discrete
@@ -45,24 +45,23 @@ parser.add_argument('--endval', metavar='endcol', type=int, default=22, help='en
 parser.add_argument('--cluster', metavar='cluster', type=int, default=6, help='total number of cluster')
 parser.add_argument('--dimred', metavar='dimred', type=str , default="pca", help='type of dimensionality reduction')
 parser.add_argument('--plot_dimred', metavar='plot_dimred', type=str , default="tsne", help='type of dimensionality reduction for plotting after data is alread reduced in a smaller dimension')
-parser.add_argument('--prior_number_samples', metavar='prior_number_samples', type=int , default=100, help='number of samples for prior')
-parser.add_argument('--posterior_number_samples', metavar='posterior_number_samples', type=int , default=500, help='number of samples for posterior')
-parser.add_argument('--posterior_warmup_steps', metavar='posterior_warmup_steps', type=int , default=200, help='number of  warmup steps for posterior')
+parser.add_argument('--prior_number_samples', metavar='prior_number_samples', type=int , default=1000, help='number of samples for prior')
+parser.add_argument('--posterior_number_samples', metavar='posterior_number_samples', type=int , default=1000, help='number of samples for posterior')
+parser.add_argument('--posterior_warmup_steps', metavar='posterior_warmup_steps', type=int , default=1000, help='number of  warmup steps for posterior')
 parser.add_argument('--directory_path', metavar='directory_path', type=str , default="./Results", help='name of the directory in which result should be stored')
 parser.add_argument('--dataset', metavar='dataset', type=str , default="Salinas", help='name of the dataset (Salinas, KSL, KSL_layer3 or other)')
-parser.add_argument('--posterior_num_chain', metavar='posterior_num_chain', type=int , default=4, help='number of chain')
+parser.add_argument('--posterior_num_chain', metavar='posterior_num_chain', type=int , default=5, help='number of chain')
 parser.add_argument('--posterior_condition',metavar='posterior_condition', type=int , default=1, help='1-Deterministic for mean and covariance for hsi data, 2-Deterministic for covariance but a prior on mean ,3-Prior on mean and covariance')
 #parser.add_argument('--num_layers',metavar='num_layers', type=int , default=4, help='number of points used to model layer information')
 parser.add_argument('--slope_gempy', metavar='slope_gempy', type=float , default=45.0, help='slope for gempy')
 parser.add_argument('--factor', metavar='factor', type=float , default=1000.0, help='scaling factor to avoid collaspe of covariance')
 parser.add_argument('--scale', metavar='scale', type=float , default=10.0, help='scaling factor to generate probability for each voxel')
-parser.add_argument('--alpha', metavar='alpha', type=float , default=1e4, help='scaling parameter for the mean, 0.1')
-parser.add_argument('--beta', metavar='beta', type=float , default=1e2, help='scaling parameter for the covariance, 20')
+parser.add_argument('--alpha', metavar='alpha', type=float , default=1e-4, help='scaling parameter for the mean, 0.1')
+parser.add_argument('--beta', metavar='beta', type=float , default= 7 *1e-4, help='scaling parameter for the covariance, 20')
 
 dtype = torch.float64
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-print(device)
-exit()
+
 def cluster_acc(Y_pred, Y, ignore_label=None):
     """ Rearranging the class labels of prediction so that it maximise the 
         match class labels.
@@ -200,11 +199,11 @@ def main():
     pyro.set_rng_seed(42)
     
     if posterior_condition==1:
-        directory_path = directory_path + "/" + dataset + "/posterior_condition_" + str(posterior_condition) + "_slope_gempy_" + str(slope_gempy) + "_scale_" + str(scale) +"_chain_" + str(posterior_num_chain)
+        directory_path = directory_path + "/" + dataset + "/posterior_condition_" + str(posterior_condition) + "_slope_gempy_" + str(slope_gempy) + "_scale_" + str(scale) +"_chain_" + str(posterior_num_chain) + "_warmup_step_" + str(posterior_warmup_steps) + "_posterior_sample_" + str(posterior_number_samples)
     elif posterior_condition==2:
-        directory_path = directory_path + "/" + dataset + "/posterior_condition_" + str(posterior_condition) + "_alpha_" + str(alpha) + "_slope_gempy_" + str(slope_gempy) + "_scale_" + str(scale) + "_chain_" + str(posterior_num_chain)
+        directory_path = directory_path + "/" + dataset + "/posterior_condition_" + str(posterior_condition) + "_alpha_" + str(alpha) + "_slope_gempy_" + str(slope_gempy) + "_scale_" + str(scale) + "_chain_" + str(posterior_num_chain)+ "_warmup_step_" + str(posterior_warmup_steps) + "_posterior_sample_" + str(posterior_number_samples)
     elif (posterior_condition==3) or (posterior_condition==4):
-        directory_path = directory_path + "/" + dataset + "/posterior_condition_" + str(posterior_condition) + "_alpha_" + str(alpha) + "_beta_"+str(beta) + "_slope_gempy_" + str(slope_gempy) + "_scale_" + str(scale) +"_chain_" + str(posterior_num_chain)
+        directory_path = directory_path + "/" + dataset + "/posterior_condition_" + str(posterior_condition) + "_alpha_" + str(alpha) + "_beta_"+str(beta) + "_slope_gempy_" + str(slope_gempy) + "_scale_" + str(scale) +"_chain_" + str(posterior_num_chain)+ "_warmup_step_" + str(posterior_warmup_steps) + "_posterior_sample_" + str(posterior_number_samples)
     # Check if the directory exists
    
     if not os.path.exists(directory_path):
@@ -446,6 +445,7 @@ def main():
     # for i in range(len(weights_init)):
     #     print("det of covaraince" +str(i), np.linalg.det(cov_init[i]))
     #     print("cond of covaraince" +str(i), np.linalg.cond(cov_init[i]))
+    #     print("eigen_values", np.linalg.eigvals(cov_init[i]))
     
     gmm_data_init ={}
     gmm_data_init["weights"] = weights_init.tolist()
@@ -539,7 +539,7 @@ def main():
     
     model = MyModel()
     
-    torch.multiprocessing.set_start_method("fork", force=True)
+    torch.multiprocessing.set_start_method("spawn", force=True)
     torch.multiprocessing.set_sharing_strategy("file_system")
     
     filename_Bayesian_graph =directory_path +"/Bayesian_graph.png"
@@ -575,9 +575,12 @@ def main():
     ################################################################################
     # Posterior 
     ################################################################################
+    
+
     pyro.primitives.enable_validation(is_validate=True)
     nuts_kernel = NUTS(model.model_test, step_size=0.0085, adapt_step_size=True, target_accept_prob=0.75, max_tree_depth=10, init_strategy=init_to_mean)
-    mcmc = MCMC(nuts_kernel, num_samples=posterior_number_samples,mp_context="fork", warmup_steps=posterior_warmup_steps,num_chains=posterior_num_chain, disable_validation=False)
+    #nuts_kernel = RandomWalkKernel(model=model.model_test, init_step_size=0.1, init_strategy=init_to_mean)
+    mcmc = MCMC(nuts_kernel, num_samples=posterior_number_samples, warmup_steps=posterior_warmup_steps,num_chains=posterior_num_chain,mp_context="spawn", disable_validation=False)
     mcmc.run(normalised_hsi,test_list,geo_model_test,mean_init,cov_init,factor,num_layers,posterior_condition,scale, cluster, alpha, beta,dtype,device)
     
     #posterior_samples = mcmc.get_samples(group_by_chain=True)
@@ -658,13 +661,19 @@ def main():
     MAP_sample_index_trace = torch.argmax(torch.tensor(log_posterior_vals))
     print("MAP_sample_index_trace\n", MAP_sample_index_trace)
     
-    MAP_sample_index, max_posterior_value, log_posterior_vals2 = compute_map(posterior_samples,geo_model_test,normalised_hsi,test_list,y_obs_label, mean_init,cov_init, factor, directory_path,num_layers,posterior_condition,scale, cluster, alpha, beta , dtype,device)
-    print("MAP_sample_index\n", MAP_sample_index)
+    # MAP_sample_index, max_posterior_value, log_posterior_vals2 = compute_map(posterior_samples,geo_model_test,normalised_hsi,test_list,y_obs_label, mean_init,cov_init, factor, directory_path,num_layers,posterior_condition,scale, cluster, alpha, beta , dtype,device)
+    # print("MAP_sample_index\n", MAP_sample_index)
+    MAP_sample_index = MAP_sample_index_trace
     # print(torch.tensor(log_posterior_vals, dtype=dtype))
     # print(torch.tensor(log_posterior_vals2,dtype=dtype))
     # print(torch.tensor(log_posterior_vals,dtype=dtype) - torch.tensor(log_posterior_vals2, dtype=dtype))
     directory_path_MAP = directory_path +"/MAP"
-    
+    if not os.path.exists(directory_path_MAP):
+        # Create the directory if it does not exist
+        os.makedirs(directory_path_MAP)
+        print(f"Directory '{directory_path_MAP}' was created.")
+    else:
+        print(f"Directory '{directory_path_MAP}' already exists.")
     ################################################################################
     #  Try Plot the data and save it as file in output folder
     ################################################################################
@@ -822,7 +831,7 @@ def main():
         for idx, (key, value) in enumerate(RV_mean_data_post_MAP.items()):
             mean_k = value
             eigen_vectors_data = torch.tensor(eigen_vector_list[idx], dtype=dtype, device=device)
-            cov_data = eigen_vectors_data @ (torch.diag(RV_post_cov_eigen_MAP[f"cov_eigen_values_{idx+1}"+"_post"])**2 +1e-8 * torch.eye(eigen_values_list[0].shape[0], dtype=dtype, device=device)) @ eigen_vectors_data.T
+            cov_data = eigen_vectors_data @ (torch.diag(RV_post_cov_eigen_MAP[f"cov_eigen_values_{idx+1}"+"_post"])**2 +1e-6 * torch.eye(eigen_values_list[0].shape[0], dtype=dtype, device=device)) @ eigen_vectors_data.T
             mean.append(mean_k)
             cov.append(cov_data)
             
@@ -1154,7 +1163,7 @@ def main():
         for idx, (key, value) in enumerate(RV_mean_data_post_Mean.items()):
             mean_k = value
             eigen_vectors_data = torch.tensor(eigen_vector_list[idx], dtype=dtype, device=device)
-            cov_data = eigen_vectors_data @ (torch.diag(RV_post_cov_eigen_Mean[f"cov_eigen_values_{idx+1}"+"_post"])**2 + 1e-8 * torch.eye(eigen_values_list[0].shape[0], dtype=dtype, device=device)) @ eigen_vectors_data.T
+            cov_data = eigen_vectors_data @ (torch.diag(RV_post_cov_eigen_Mean[f"cov_eigen_values_{idx+1}"+"_post"])**2 + 1e-6 * torch.eye(eigen_values_list[0].shape[0], dtype=dtype, device=device)) @ eigen_vectors_data.T
             mean.append(mean_k)
             cov.append(cov_data)
             
