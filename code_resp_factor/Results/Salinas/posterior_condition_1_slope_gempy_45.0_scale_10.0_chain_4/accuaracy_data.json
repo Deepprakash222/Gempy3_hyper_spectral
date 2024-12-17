@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 {"accuracy_init": 0.7751677632331848, "accuracy_final_MAP": 0.7953020334243774, "accuracy_final_mean": 0.8288590312004089}
+=======
+{"accuracy_init": 0.7751677632331848, "accuracy_final_MAP": 0.7046979665756226, "accuracy_final_mean": 0.755033552646637}
+>>>>>>> 4a64afdd8a95aa19b435a4694423de34e166c9f4

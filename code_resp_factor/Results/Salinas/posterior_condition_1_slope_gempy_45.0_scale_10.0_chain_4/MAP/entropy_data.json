@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 {"MAP index": 196, "entropy_prior_gmm": 0.0008925289686521755, "entropy_MAP_gmm": 0.012088953517377377, "entropy_z_nk_prior": 0.0012788791422551772, "entropy_MAP_z_nk": 0.010488836797474546, "entropy_mixing_prior": 88.99072030499339, "entropy_MAP_mixing": 1.6439277480540304}
+=======
+{"MAP index": 1613, "entropy_prior_gmm": 0.0008925289686521954, "entropy_MAP_gmm": 0.003955794032663107, "entropy_z_nk_prior": 0.00127887914225473, "entropy_MAP_z_nk": 0.004086924530604752, "entropy_mixing_prior": 88.99072030499339, "entropy_MAP_mixing": 1.5027685776262707}
+>>>>>>> 4a64afdd8a95aa19b435a4694423de34e166c9f4

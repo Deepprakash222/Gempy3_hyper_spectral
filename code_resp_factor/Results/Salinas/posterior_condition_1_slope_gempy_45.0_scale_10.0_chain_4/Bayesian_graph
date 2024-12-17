@@ -1,0 +1,27 @@
+digraph {
+	mu_1 [label=mu_1 fillcolor=white shape=ellipse style=filled]
+	mu_2 [label=mu_2 fillcolor=white shape=ellipse style=filled]
+	mu_3 [label=mu_3 fillcolor=white shape=ellipse style=filled]
+	mu_4 [label=mu_4 fillcolor=white shape=ellipse style=filled]
+	"mu_1 < mu_1 + 2 * std" [label="mu_1 < mu_1 + 2 * std" fillcolor=gray shape=ellipse style=filled]
+	"mu_1 > mu_2 " [label="mu_1 > mu_2 " fillcolor=gray shape=ellipse style=filled]
+	"mu_2 > mu_3 " [label="mu_2 > mu_3 " fillcolor=gray shape=ellipse style=filled]
+	"mu_3 > mu_4 " [label="mu_3 > mu_4 " fillcolor=gray shape=ellipse style=filled]
+	"mu_4 > mu_4 - 2 * std" [label="mu_4 > mu_4 - 2 * std" fillcolor=gray shape=ellipse style=filled]
+	pi [label=pi fillcolor=white shape=ellipse style=filled]
+	log_likelihood [label=log_likelihood fillcolor=gray shape=ellipse style=filled]
+	mu_1 -> "mu_1 < mu_1 + 2 * std"
+	mu_1 -> "mu_1 > mu_2 "
+	mu_2 -> "mu_1 > mu_2 "
+	mu_2 -> "mu_2 > mu_3 "
+	mu_3 -> "mu_2 > mu_3 "
+	mu_3 -> "mu_3 > mu_4 "
+	mu_4 -> "mu_3 > mu_4 "
+	mu_4 -> "mu_4 > mu_4 - 2 * std"
+	mu_1 -> log_likelihood
+	mu_2 -> log_likelihood
+	mu_3 -> log_likelihood
+	mu_4 -> log_likelihood
+	pi -> log_likelihood
+	distribution_description_node [label="mu_1 ~ Normal\lmu_2 ~ Normal\lmu_3 ~ Normal\lmu_4 ~ Normal\lmu_1 < mu_1 + 2 * std ~ Delta\lmu_1 > mu_2  ~ Delta\lmu_2 > mu_3  ~ Delta\lmu_3 > mu_4  ~ Delta\lmu_4 > mu_4 - 2 * std ~ Delta\lpi ~ Dirichlet\llog_likelihood ~ Unit\l" shape=plaintext]
+}

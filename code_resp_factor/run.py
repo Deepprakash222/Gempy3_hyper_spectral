@@ -48,6 +48,9 @@ parser.add_argument('--plot_dimred', metavar='plot_dimred', type=str , default="
 parser.add_argument('--prior_number_samples', metavar='prior_number_samples', type=int , default=1000, help='number of samples for prior')
 parser.add_argument('--posterior_number_samples', metavar='posterior_number_samples', type=int , default=1000, help='number of samples for posterior')
 parser.add_argument('--posterior_warmup_steps', metavar='posterior_warmup_steps', type=int , default=1000, help='number of  warmup steps for posterior')
+parser.add_argument('--prior_number_samples', metavar='prior_number_samples', type=int , default=1000, help='number of samples for prior')
+parser.add_argument('--posterior_number_samples', metavar='posterior_number_samples', type=int , default=1000, help='number of samples for posterior')
+parser.add_argument('--posterior_warmup_steps', metavar='posterior_warmup_steps', type=int , default=1000, help='number of  warmup steps for posterior')
 parser.add_argument('--directory_path', metavar='directory_path', type=str , default="./Results", help='name of the directory in which result should be stored')
 parser.add_argument('--dataset', metavar='dataset', type=str , default="Salinas", help='name of the dataset (Salinas, KSL, KSL_layer3 or other)')
 parser.add_argument('--posterior_num_chain', metavar='posterior_num_chain', type=int , default=5, help='number of chain')
@@ -55,13 +58,16 @@ parser.add_argument('--posterior_condition',metavar='posterior_condition', type=
 #parser.add_argument('--num_layers',metavar='num_layers', type=int , default=4, help='number of points used to model layer information')
 parser.add_argument('--slope_gempy', metavar='slope_gempy', type=float , default=45.0, help='slope for gempy')
 parser.add_argument('--factor', metavar='factor', type=float , default=1000.0, help='scaling factor to avoid collaspe of covariance')
+parser.add_argument('--scale', metavar='scale', type=float , default=2.0, help='scaling factor to generate probability for each voxel')
+parser.add_argument('--alpha', metavar='alpha', type=float , default=1e4, help='scaling parameter for the mean, 0.1')
+parser.add_argument('--beta', metavar='beta', type=float , default=1e2, help='scaling parameter for the covariance, 20')
 parser.add_argument('--scale', metavar='scale', type=float , default=10.0, help='scaling factor to generate probability for each voxel')
 parser.add_argument('--alpha', metavar='alpha', type=float , default=1e-4, help='scaling parameter for the mean, 0.1')
 parser.add_argument('--beta', metavar='beta', type=float , default= 7 *1e-4, help='scaling parameter for the covariance, 20')
 
 dtype = torch.float64
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-
+print(device)
 def cluster_acc(Y_pred, Y, ignore_label=None):
     """ Rearranging the class labels of prediction so that it maximise the 
         match class labels.
@@ -544,8 +550,8 @@ def main():
     
     filename_Bayesian_graph =directory_path +"/Bayesian_graph.png"
     pyro.clear_param_store()
-    dot = pyro.render_model(model.model_test, model_args=(normalised_hsi,test_list,geo_model_test,mean_init,cov_init,factor,num_layers,posterior_condition, scale, cluster, alpha, beta, dtype, device),render_distributions=True,filename=filename_Bayesian_graph)
-    #dot = pyro.render_model(model.model_test, model_args=(normalised_hsi,test_list,geo_model_test,mean_init,cov_init,factor,num_layers,posterior_condition, scale, cluster, alpha, beta,dtype,device))
+    #dot = pyro.render_model(model.model_test, model_args=(normalised_hsi,test_list,geo_model_test,mean_init,cov_init,factor,num_layers,posterior_condition, scale, cluster, alpha, beta, dtype, device),render_distributions=True,filename=filename_Bayesian_graph)
+    dot = pyro.render_model(model.model_test, model_args=(normalised_hsi,test_list,geo_model_test,mean_init,cov_init,factor,num_layers,posterior_condition, scale, cluster, alpha, beta,dtype,device))
     ################################################################################
     # Prior
     ################################################################################
@@ -661,6 +667,9 @@ def main():
     MAP_sample_index_trace = torch.argmax(torch.tensor(log_posterior_vals))
     print("MAP_sample_index_trace\n", MAP_sample_index_trace)
     
+    # MAP_sample_index, max_posterior_value, log_posterior_vals2 = compute_map(posterior_samples,geo_model_test,normalised_hsi,test_list,y_obs_label, mean_init,cov_init, factor, directory_path,num_layers,posterior_condition,scale, cluster, alpha, beta , dtype,device)
+    # print("MAP_sample_index\n", MAP_sample_index)
+    MAP_sample_index = MAP_sample_index_trace
     # MAP_sample_index, max_posterior_value, log_posterior_vals2 = compute_map(posterior_samples,geo_model_test,normalised_hsi,test_list,y_obs_label, mean_init,cov_init, factor, directory_path,num_layers,posterior_condition,scale, cluster, alpha, beta , dtype,device)
     # print("MAP_sample_index\n", MAP_sample_index)
     MAP_sample_index = MAP_sample_index_trace
