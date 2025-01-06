@@ -40,19 +40,19 @@ from initial_gempy_model import *
 from final_gempy_model import *
 
 parser = argparse.ArgumentParser(description='pass values using command line')
-parser.add_argument('--startval', metavar='startcol', type=int, default=17,  help='start x column value')
-parser.add_argument('--endval', metavar='endcol', type=int, default=25, help='end x column value')
+parser.add_argument('--startval', metavar='startcol', type=int, default=18,  help='start x column value')
+parser.add_argument('--endval', metavar='endcol', type=int, default=22, help='end x column value')
 parser.add_argument('--cluster', metavar='cluster', type=int, default=6, help='total number of cluster')
 parser.add_argument('--dimred', metavar='dimred', type=str , default="pca", help='type of dimensionality reduction')
 parser.add_argument('--plot_dimred', metavar='plot_dimred', type=str , default="tsne", help='type of dimensionality reduction for plotting after data is alread reduced in a smaller dimension')
-parser.add_argument('--prior_number_samples', metavar='prior_number_samples', type=int , default=100, help='number of samples for prior')
-parser.add_argument('--posterior_number_samples', metavar='posterior_number_samples', type=int , default=150, help='number of samples for posterior')
-parser.add_argument('--posterior_warmup_steps', metavar='posterior_warmup_steps', type=int , default=50, help='number of  warmup steps for posterior')
+parser.add_argument('--prior_number_samples', metavar='prior_number_samples', type=int , default=1000, help='number of samples for prior')
+parser.add_argument('--posterior_number_samples', metavar='posterior_number_samples', type=int , default=250, help='number of samples for posterior')
+parser.add_argument('--posterior_warmup_steps', metavar='posterior_warmup_steps', type=int , default=150, help='number of  warmup steps for posterior')
 parser.add_argument('--directory_path', metavar='directory_path', type=str , default="./Results", help='name of the directory in which result should be stored')
 parser.add_argument('--dataset', metavar='dataset', type=str , default="Salinas", help='name of the dataset (Salinas, KSL, KSL_layer3 or other)')
-parser.add_argument('--posterior_num_chain', metavar='posterior_num_chain', type=int , default=4, help='number of chain')
+parser.add_argument('--posterior_num_chain', metavar='posterior_num_chain', type=int , default=5, help='number of chain')
 
-parser.add_argument('--slope_gempy', metavar='slope_gempy', type=float , default=47.0, help='slope for gempy')
+parser.add_argument('--slope_gempy', metavar='slope_gempy', type=float , default=45.0, help='slope for gempy')
 
 parser.add_argument('--scale', metavar='scale', type=float , default=10.0, help='scaling factor to generate probability for each voxel')
 parser.add_argument('--likelihood_std', metavar='ikelihood_std', type=float , default=0.4, help='scaling parameter for the mean, 0.1')
@@ -530,7 +530,7 @@ def main():
     
     model = MyModel()
     
-    torch.multiprocessing.set_start_method("fork", force=True)
+    torch.multiprocessing.set_start_method("spawn", force=True)
     torch.multiprocessing.set_sharing_strategy("file_system")
     label_data = gmm_label_rearranged
     filename_Bayesian_graph =directory_path +"/Bayesian_graph.png"
@@ -568,7 +568,7 @@ def main():
     ################################################################################
     pyro.primitives.enable_validation(is_validate=True)
     nuts_kernel = NUTS(model.model_test, step_size=0.0085, adapt_step_size=True, target_accept_prob=0.9, max_tree_depth=10, init_strategy=init_to_mean)
-    mcmc = MCMC(nuts_kernel, num_samples=posterior_number_samples,mp_context="fork", warmup_steps=posterior_warmup_steps,num_chains=posterior_num_chain, disable_validation=False)
+    mcmc = MCMC(nuts_kernel, num_samples=posterior_number_samples,mp_context="spawn", warmup_steps=posterior_warmup_steps,num_chains=posterior_num_chain, disable_validation=False)
     mcmc.run(label_data,test_list,geo_model_test,num_layers, likelihood_std, dtype, device)
     
     #posterior_samples = mcmc.get_samples(group_by_chain=True)
@@ -655,7 +655,7 @@ def main():
     # print(torch.tensor(log_posterior_vals2,dtype=dtype))
     # print(torch.tensor(log_posterior_vals,dtype=dtype) - torch.tensor(log_posterior_vals2, dtype=dtype))
     directory_path_MAP = directory_path +"/MAP"
-    
+    MAP_sample_index = MAP_sample_index_trace
     ################################################################################
     #  Try Plot the data and save it as file in output folder
     ################################################################################

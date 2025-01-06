@@ -29,11 +29,14 @@ from sklearn.cluster import KMeans
 
 from pyro.nn import PyroModule, PyroSample
 
+# Change the backend to PyTorch for probabilistic modeling
+BackendTensor.change_backend_gempy(engine_backend=gp.data.AvailableBackends.PYTORCH)
+
 class MyModel(PyroModule):
     def __init__(self):
         super(MyModel, self).__init__()
     
-    @config_enumerate
+    #@config_enumerate
     def model_test(self, obs_data,interpolation_input_,geo_model_test,num_layers,likelihood_std,  dtype, device):
             """
             This Pyro model represents the probabilistic aspects of the geological model.
@@ -141,5 +144,5 @@ class MyModel(PyroModule):
             # Always write pyro.factor outside the pyro plate, otherwise the likelihood will be multiplied with number of plate dim
             pyro.factor("log_likelihood", log_likelihood.sum())  # Scalar log joint 
             
-            print(log_likelihood.sum())
+            #print(log_likelihood.sum())
                 
