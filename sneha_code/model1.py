@@ -36,7 +36,7 @@ class MyModel(PyroModule):
         super(MyModel, self).__init__()
     
     #@config_enumerate
-    def model_test(self, obs_data,interpolation_input_,geo_model_test,mean_init,cov_init,factor,num_layers,posterior_condition, scale, cluster, alpha, beta):
+    def model_test(self, obs_data,interpolation_input_,geo_model_test,mean_init,cov_init,factor,num_layers,posterior_condition, scale, cluster, alpha, beta, device, dtype):
             """
             This Pyro model represents the probabilistic aspects of the geological model.
             It defines a prior distribution for the top layer's location and
@@ -108,19 +108,19 @@ class MyModel(PyroModule):
             #Ensuring layer order
             #print("Random_variable\n", Random_variable)
             
-            # pyro.sample('mu_1 < 0', dist.Delta(torch.tensor(1.0, dtype=torch.float64)), obs=(Random_variable["mu_1"] < 3.7))
-            # pyro.sample('mu_1 > mu_2', dist.Delta(torch.tensor(1.0, dtype=torch.float64)), obs=(Random_variable["mu_1"] > Random_variable["mu_2"]))
-            # pyro.sample('mu_2 > mu_3', dist.Delta(torch.tensor(1.0, dtype=torch.float64)), obs=(Random_variable["mu_2"] > Random_variable["mu_3"]))
-            # pyro.sample('mu_3 > mu_4', dist.Delta(torch.tensor(1.0, dtype=torch.float64)), obs=(Random_variable["mu_3"] > Random_variable["mu_4"]))
-            # pyro.sample('mu_4 > -83', dist.Delta(torch.tensor(1.0, dtype=torch.float64)), obs=(Random_variable["mu_4"] > - 0.2 ))
+            # pyro.sample('mu_1 < 0', dist.Delta(torch.tensor(1.0, device =device, dtype =dtype)), obs=(Random_variable["mu_1"] < 3.7))
+            # pyro.sample('mu_1 > mu_2', dist.Delta(torch.tensor(1.0, device =device, dtype =dtype)), obs=(Random_variable["mu_1"] > Random_variable["mu_2"]))
+            # pyro.sample('mu_2 > mu_3', dist.Delta(torch.tensor(1.0, device =device, dtype =dtype)), obs=(Random_variable["mu_2"] > Random_variable["mu_3"]))
+            # pyro.sample('mu_3 > mu_4', dist.Delta(torch.tensor(1.0, device =device, dtype =dtype)), obs=(Random_variable["mu_3"] > Random_variable["mu_4"]))
+            # pyro.sample('mu_4 > -83', dist.Delta(torch.tensor(1.0, device =device, dtype =dtype)), obs=(Random_variable["mu_4"] > - 0.2 ))
             
             for i in range(len(interpolation_input_)+1):
                 if i==0:
-                    pyro.sample(f'mu_{i+1} < mu_{i+1} + 2 * std', dist.Delta(torch.tensor(1.0, dtype=torch.float64)), obs=(Random_variable[f'mu_{i+1}'] < interpolation_input_[0]["normal"]["mean"] + 2 * interpolation_input_[0]["normal"]["std"]))
+                    pyro.sample(f'mu_{i+1} < mu_{i+1} + 2 * std', dist.Delta(torch.tensor(1.0, device =device, dtype =dtype)), obs=(Random_variable[f'mu_{i+1}'] < interpolation_input_[0]["normal"]["mean"] + 2 * interpolation_input_[0]["normal"]["std"]))
                 elif i==len(interpolation_input_):
-                    pyro.sample(f'mu_{i} > mu_{i} - 2 * std', dist.Delta(torch.tensor(1.0, dtype=torch.float64)), obs=(Random_variable[f"mu_{i}"] > interpolation_input_[-1]["normal"]["mean"] - 2 * interpolation_input_[-1]["normal"]["std"]))
+                    pyro.sample(f'mu_{i} > mu_{i} - 2 * std', dist.Delta(torch.tensor(1.0, device =device, dtype =dtype)), obs=(Random_variable[f"mu_{i}"] > interpolation_input_[-1]["normal"]["mean"] - 2 * interpolation_input_[-1]["normal"]["std"]))
                 else:
-                    pyro.sample(f'mu_{i} > mu_{i+1} ', dist.Delta(torch.tensor(1.0, dtype=torch.float64)), obs=(Random_variable[f"mu_{i}"] > Random_variable[f"mu_{i+1}"]))
+                    pyro.sample(f'mu_{i} > mu_{i+1} ', dist.Delta(torch.tensor(1.0, device =device, dtype =dtype)), obs=(Random_variable[f"mu_{i}"] > Random_variable[f"mu_{i+1}"]))
                 
             
             # Update the model with the new top layer's location
@@ -140,7 +140,7 @@ class MyModel(PyroModule):
             mean = []
             cov = []
             
-            z_nk = F.softmax(- scale* (torch.linspace(1,cluster,cluster, dtype=torch.float64) - custom_grid_values.reshape(-1,1))**2, dim=1)
+            z_nk = F.softmax(- scale* (torch.linspace(1,cluster,cluster, device =device, dtype =dtype) - custom_grid_values.reshape(-1,1))**2, dim=1)
             N_k = torch.sum(z_nk,axis=0)
             N = len(custom_grid_values)
             pi_k = N_k /N
@@ -149,40 +149,40 @@ class MyModel(PyroModule):
                 ################# Condition 1:  Deterministic for mean and covariance for hsi data ###########################
                 for i in range(z_nk.shape[1]):
                     mean_k = torch.sum( z_nk[:,i][:,None] * obs_data, axis=0)/ N_k[i]
-                    cov_k = torch.zeros((mean_k.shape[0],mean_k.shape[0]),dtype=torch.float64)
+                    cov_k = torch.zeros((mean_k.shape[0],mean_k.shape[0]),device =device, dtype =dtype)
                     for j in range(z_nk.shape[0]):
                         cov_k +=  z_nk[j,i]* torch.matmul((obs_data[j,:] - mean_k).reshape((-1,1)) ,(obs_data[j,:] - mean_k).reshape((1,-1)))
                     mean.append(mean_k)
-                    cov_k=cov_k/N_k[i] #+ 1e-3 * torch.diag(torch.ones(cov_k.shape[0],dtype=torch.float64))
+                    cov_k=cov_k/N_k[i] #+ 1e-3 * torch.diag(torch.ones(cov_k.shape[0],device =device, dtype =dtype))
                     cov.append(cov_k)
                 
             
             if posterior_condition==2:
                 ################# Condition 2: Deterministic for covariance but a prior on mean ###########################
             
-                loc_mean = torch.tensor(mean_init,dtype=torch.float64)
-                #loc_cov =  torch.tensor(cov_init, dtype=torch.float64)
-                cov_matrix = alpha * torch.eye(loc_mean[0].shape[0],dtype=torch.float64)
+                loc_mean = torch.tensor(mean_init,device =device, dtype =dtype)
+                #loc_cov =  torch.tensor(cov_init, device =device, dtype =dtype)
+                cov_matrix = alpha * torch.eye(loc_mean[0].shape[0],device =device, dtype =dtype)
                 
                 for i in range(loc_mean.shape[0]):
                     mean_data = pyro.sample("mean_data"+str(i+1), dist.MultivariateNormal(loc=loc_mean[i],covariance_matrix=cov_matrix))
                     mean.append(mean_data)
                     
                 for i in range(loc_mean.shape[0]):
-                    cov_k = torch.zeros((loc_mean.shape[1],loc_mean.shape[1]),dtype=torch.float64)
+                    cov_k = torch.zeros((loc_mean.shape[1],loc_mean.shape[1]),device =device, dtype =dtype)
                     for j in range(z_nk.shape[0]):
                         cov_k +=  z_nk[j,i]* torch.matmul((obs_data[j,:] - mean[i]).reshape((-1,1)) ,(obs_data[j,:] - mean[i]).reshape((1,-1)))
-                    cov_k=cov_k/N_k[i] #+ 1e-3 * torch.diag(torch.ones(cov_k.shape[0],dtype=torch.float64))
+                    cov_k=cov_k/N_k[i] #+ 1e-3 * torch.diag(torch.ones(cov_k.shape[0],device =device, dtype =dtype))
                     cov.append(cov_k)
                 
                 
             if posterior_condition==3:
                 ################# Condition 3:Prior on mean and covariance ###########################
                 
-                loc_mean = torch.tensor(mean_init,dtype=torch.float64)
-                #loc_cov =  torch.tensor(cov_init, dtype=torch.float64)
-                cov_matrix_mean = alpha * torch.eye(loc_mean[0].shape[0], dtype=torch.float64)
-                cov_matrix_cov = beta * torch.eye(loc_mean[0].shape[0], dtype=torch.float64)
+                loc_mean = torch.tensor(mean_init,device =device, dtype =dtype)
+                #loc_cov =  torch.tensor(cov_init, device =device, dtype =dtype)
+                cov_matrix_mean = alpha * torch.eye(loc_mean[0].shape[0], device =device, dtype =dtype)
+                cov_matrix_cov = beta * torch.eye(loc_mean[0].shape[0], device =device, dtype =dtype)
                 
                 D = loc_mean.shape[1]
                 eigen_vector_list , eigen_values_list =[],[]
@@ -194,22 +194,22 @@ class MyModel(PyroModule):
                 for i in range(loc_mean.shape[0]):
                     mean_data= pyro.sample("mean_data_"+str(i+1), dist.MultivariateNormal(loc=loc_mean[i],covariance_matrix=cov_matrix_mean))
                     mean.append(mean_data)
-                    eigen_values_init = torch.tensor(eigen_values_list[i],dtype=torch.float64)
-                    eigen_vectors_data = torch.tensor(eigen_vector_list[i], dtype=torch.float64)
+                    eigen_values_init = torch.tensor(eigen_values_list[i],device =device, dtype =dtype)
+                    eigen_vectors_data = torch.tensor(eigen_vector_list[i], device =device, dtype =dtype)
                     cov_eigen_values = pyro.sample("cov_eigen_values_"+str(i+1), dist.MultivariateNormal(loc=torch.sqrt(eigen_values_init),covariance_matrix=cov_matrix_cov))
-                    cov_data = eigen_vectors_data @ (torch.diag(cov_eigen_values)**2 + 1e-8 * torch.eye(cov_eigen_values.shape[0], dtype=torch.float64)) @ eigen_vectors_data.T #+ 1e-6 * torch.eye(loc_mean[0].shape[0], dtype=torch.float64)
+                    cov_data = eigen_vectors_data @ (torch.diag(cov_eigen_values)**2 + 1e-8 * torch.eye(cov_eigen_values.shape[0], device =device, dtype =dtype)) @ eigen_vectors_data.T #+ 1e-6 * torch.eye(loc_mean[0].shape[0], device =device, dtype =dtype)
                     cov.append(cov_data)
                     
             if posterior_condition==4:
                 ################# Condition 3:Prior on mean and covariance ###########################
                 # Assume cov = e^ A
-                loc_mean = torch.tensor(mean_init,dtype=torch.float64)
-                #loc_cov =  torch.tensor(cov_init, dtype=torch.float64)
-                cov_matrix_mean = alpha * torch.eye(loc_mean[0].shape[0], dtype=torch.float64)
+                loc_mean = torch.tensor(mean_init,device =device, dtype =dtype)
+                #loc_cov =  torch.tensor(cov_init, device =device, dtype =dtype)
+                cov_matrix_mean = alpha * torch.eye(loc_mean[0].shape[0], device =device, dtype =dtype)
                 n = loc_mean.shape[1]
                 # Number of elements in the upper triangular part (including diagonal)
                 num_upper_tri_elements = n * (n + 1) // 2
-                cov_matrix_cov = beta * torch.eye(num_upper_tri_elements, dtype=torch.float64)
+                cov_matrix_cov = beta * torch.eye(num_upper_tri_elements, device =device, dtype =dtype)
                 
                 D = loc_mean.shape[1]
                 
@@ -217,9 +217,9 @@ class MyModel(PyroModule):
                 for i in range(loc_mean.shape[0]):
                     mean_data= pyro.sample("mean_data_"+str(i+1), dist.MultivariateNormal(loc=loc_mean[i],covariance_matrix=cov_matrix_mean))
                     mean.append(mean_data)
-                    A = torch.zeros((n,n), dtype=torch.float64)
+                    A = torch.zeros((n,n), device =device, dtype =dtype)
                     
-                    upper_tri_cov = pyro.sample("upper_tri_cov_"+str(i+1), dist.MultivariateNormal(loc=torch.zeros(num_upper_tri_elements, dtype=torch.float64), covariance_matrix=cov_matrix_cov))
+                    upper_tri_cov = pyro.sample("upper_tri_cov_"+str(i+1), dist.MultivariateNormal(loc=torch.zeros(num_upper_tri_elements, device =device, dtype =dtype), covariance_matrix=cov_matrix_cov))
                     
                     # Get the upper triangular indices
                     upper_tri_indices = torch.triu_indices(n, n)
